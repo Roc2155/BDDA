@@ -1,12 +1,10 @@
 
 public class DBParams {
-	public static String DBPath;
-	public static int pageSize;
-	public static int maxPagesPerFile;
+	public static String DBPath = "";
+	public static int pageSize = 4096;
+	public static int maxPagesPerFile = 4;
 	
-	
-	
-	
+		
 	
 	
 }
