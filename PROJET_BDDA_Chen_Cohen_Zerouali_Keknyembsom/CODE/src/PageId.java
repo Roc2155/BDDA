@@ -4,8 +4,8 @@ public class PageId {
 	private int pageIdx;
 	
 	public PageId(int fileIdx, int pageIdx) {
-		this.setFileIdx(fileIdx);
-		this.setPageIdx(pageIdx);
+		this.fileIdx = fileIdx;
+		this.pageIdx=pageIdx;
 	}
 
 	public int getFileIdx() {
