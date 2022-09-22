@@ -1,15 +1,13 @@
 
 public class DiskManager {
-	pageId AllocPage () {
+	PageId AllocPage () {
 		
 	}
-	pageId AllocPage (),{
+	
+	void WritePage (PageId pageId, buff) {
 		
 	}
-	void WritePage (pageId, buff) {
-		
-	}
-	void DeallocPage (pageId) {
+	void DeallocPage (PageId pageId ) {
 		
 	}
 	int GetCurrentCountAllocPages() {
