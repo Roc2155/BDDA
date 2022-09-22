@@ -8,6 +8,9 @@ public class DiskManager {
 	void WritePage (PageId pageId, ByteBuffer buff) {
 		
 	}
+	void ReasPage (PageId pageId, ByteBuffer buff) {
+		
+	}
 	void DeallocPage (PageId pageId ) {
 		
 	}
