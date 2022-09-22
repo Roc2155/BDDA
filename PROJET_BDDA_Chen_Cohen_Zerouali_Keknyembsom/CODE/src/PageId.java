@@ -12,16 +12,11 @@ public class PageId {
 		return fileIdx;
 	}
 
-	public void setFileIdx(int fileIdx) {
-		this.fileIdx = fileIdx;
-	}
+
 
 	public int getPageIdx() {
 		return pageIdx;
 	}
 
-	public void setPageIdx(int pageIdx) {
-		this.pageIdx = pageIdx;
-	}
-	
+
 }
