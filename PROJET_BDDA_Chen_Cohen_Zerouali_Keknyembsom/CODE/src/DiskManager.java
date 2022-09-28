@@ -16,18 +16,32 @@ public class DiskManager {
 			ListeDePagesNonAlloue.remove(NombreAléatoire);
 			CurrentCountAllocPages = CurrentCountAllocPages + 1;
 			ListeDePagesAlloue.add(pageid);
-			return pageid;
-			
-			
+			return pageid;			
 		}
 		else {//Si aucune pages disponibles, création d'un nouveau fichier
-			int max = PageId.ListeDesFichiers.get(PageId.ListeDesFichiers.size());
-			File fichier = new File(DBParams.DBPath+"F"+(max+1)+".bdda");
-			PageId.ListeDesFichiers.add(max+1);
-			PageId pageid = new PageId(max+1,0);
-			return pageid;
-				
+			boolean cherchenomdispo = false;
+			while(!cherchenomdispo) {
+				int i = 0;
+				File file = new File(DBParams.DBPath+"F"+i+".bdda");
+				if(!file.exists()) {//si il nexiste pas on cree un file, on met la premiere page en actif et les autres en non actives
+					try {
+						file.createNewFile();
+						PageId pageid = new PageId(0,0);
+						ListeDePagesAlloue.add(pageid);
+						for(int j = 0; j<DBParams.maxPagesPerFile-1;j++) {
+							PageId pageid1 = new PageId(0,j+1);
+							ListeDePagesNonAlloue.add(pageid);
+						}
+						return pageid;
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else{i++;}
+		}
 			}
+		return null;//Si on sort de la boucle avec une erreur de creation
 		}	
 	public void ReadPage (PageId pageId, ByteBuffer buff) {
 		String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
