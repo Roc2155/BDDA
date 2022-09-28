@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Random;
 public class DiskManager {
 	private static int CurrentCountAllocPages=0;
-	ArrayList<PageId> ListeDePagesNonAlloue = new ArrayList<PageId>(); 
-	ArrayList<PageId> ListeDePagesAlloue = new ArrayList<PageId>(); 
+	static ArrayList<PageId> ListeDePagesNonAlloue = new ArrayList<PageId>(); 
+	static ArrayList<PageId> ListeDePagesAlloue = new ArrayList<PageId>(); 
 	public PageId AllocPage() {
 		if(ListeDePagesNonAlloue.size()>0) {
 			int NombreAléatoire = new Random().nextInt(ListeDePagesNonAlloue.size()+1);

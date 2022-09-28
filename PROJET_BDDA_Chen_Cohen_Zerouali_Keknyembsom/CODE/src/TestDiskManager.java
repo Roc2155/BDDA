@@ -16,6 +16,15 @@ public class TestDiskManager {
     //System.out.println(bufferTest.position());
     //PageId pageIdTest = DiskManager.AllocPage(2);
     //System.out.println(pageIdTest.position());
+	  System.out.println(DiskManager.ListeDePagesAlloue);
+	  System.out.println(DiskManager.ListeDePagesNonAlloue);
+	  DiskManager diskmanager = new DiskManager();
+	  diskmanager.AllocPage();
+	  System.out.println(DiskManager.ListeDePagesAlloue);
+	  System.out.println(DiskManager.ListeDePagesNonAlloue);
+
+	  
+	  
   }
 
 
