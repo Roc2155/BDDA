@@ -1,87 +1,23 @@
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class DiskManager {
-	private static int CurrentCountAllocPages=0;
-	ArrayList<PageId> ListeDePagesNonAlloue = new ArrayList<PageId>(); 
-	ArrayList<PageId> ListeDePagesAlloue = new ArrayList<PageId>(); 
+	private static int CurrentAllocPages=0;
+
 	public PageId AllocPage () {
-		if(ListeDePagesNonAlloue.size()>0) {
-			int NombreAléatoire = new Random().nextInt(ListeDePagesNonAlloue.size()+1);
-			PageId pageid = ListeDePagesNonAlloue.get(NombreAléatoire);//On prends une page aléatoire parmis les pages disponibles
-			ListeDePagesNonAlloue.remove(NombreAléatoire);
-			CurrentCountAllocPages = CurrentCountAllocPages + 1;
-			ListeDePagesAlloue.add(pageid);
-			return pageid;
-			
-			
-		}
-		else {//Si aucune pages disponibles, création d'un nouveau fichier
-			return null;
-		}
-		
-		
-		
-		
-		
-
-		
-		
-		
-		
-	}	
-	public void ReadPage (PageId pageId, ByteBuffer buff) {
-		String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
-		try {
-			RandomAccessFile randomaccessfile = new RandomAccessFile(fichier, "r");
-			randomaccessfile.seek(pageId.getPageIdx()*DBParams.pageSize);
-			byte[] tableaudebyte = new byte[DBParams.pageSize];
-			randomaccessfile.read(tableaudebyte);
-			buff = ByteBuffer.wrap(tableaudebyte);
-			buff.rewind();
-			randomaccessfile.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
+		return null;
 	}
-	
+
 	public void WritePage (PageId pageId, ByteBuffer buff) {
-		String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
-		try {
-			RandomAccessFile randomaccessfile = new RandomAccessFile(fichier, "w");
-			randomaccessfile.seek(pageId.getPageIdx());
-			randomaccessfile.write(buff.array());
-			
-			
-			
-			randomaccessfile.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-	}
 
-	public void DeallocPage (PageId pageId ) {	
-		
-		CurrentCountAllocPages = CurrentCountAllocPages - 1;
-		ListeDePagesAlloue.remove(pageId);
-		ListeDePagesNonAlloue.add(pageId);
-		
-		
-		
+	}
+	public void ReadPage (PageId pageId, ByteBuffer buff) {
+
+	}
+	public void DeallocPage (PageId pageId ) {
+
 	}
 	public int GetCurrentCountAllocPages() {
-		return CurrentCountAllocPages;
+		return CurrentAllocPages;
 	}
-
-	
-	
 
 }
