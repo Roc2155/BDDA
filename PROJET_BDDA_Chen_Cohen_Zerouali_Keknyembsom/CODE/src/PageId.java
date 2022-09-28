@@ -17,6 +17,13 @@ public class PageId {
 	public int getPageIdx() {
 		return pageIdx;
 	}
-
+	private boolean equals(PageId pageid) {
+		if(this.getPageIdx()==pageid.getPageIdx()&&this.getFileIdx()==pageid.getFileIdx()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 }
