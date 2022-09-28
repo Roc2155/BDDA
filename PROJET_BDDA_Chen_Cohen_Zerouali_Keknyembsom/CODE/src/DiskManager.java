@@ -2,20 +2,21 @@ import java.nio.ByteBuffer;
 
 public class DiskManager {
 	private static int CurrentAllocPages=0;
-	PageId AllocPage () {
+
+	public PageId AllocPage () {
 		return null;
 	}
-	
-	void WritePage (PageId pageId, ByteBuffer buff) {
-		
+
+	public void WritePage (PageId pageId, ByteBuffer buff) {
+
 	}
-	void ReadPage (PageId pageId, ByteBuffer buff) {
-		
+	public void ReadPage (PageId pageId, ByteBuffer buff) {
+
 	}
-	void DeallocPage (PageId pageId ) {
-		
+	public void DeallocPage (PageId pageId ) {
+
 	}
-	int GetCurrentCountAllocPages() {
+	public int GetCurrentCountAllocPages() {
 		return CurrentAllocPages;
 	}
 
