@@ -31,5 +31,8 @@ public class PageId {
 			return false;
 		}
 	}
+	public String toString() {
+		return"Fichier numero "+this.getFileIdx()+" Page numero "+this.getPageIdx();
+	}
 
 }

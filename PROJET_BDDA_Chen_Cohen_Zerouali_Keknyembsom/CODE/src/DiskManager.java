@@ -20,17 +20,25 @@ public class DiskManager {
 		}
 		else {//Si aucune pages disponibles, création d'un nouveau fichier
 			boolean cherchenomdispo = false;
+			int i = 0;
 			while(!cherchenomdispo) {
-				int i = 0;
-				File file = new File(DBParams.DBPath+"F"+i+".bdda");
+				
+				String path = DBParams.DBPath+"F"+i+".bdda";
+				System.out.println(path);
+				File file = new File(path);
+				
+				
 				if(!file.exists()) {//si il nexiste pas on cree un file, on met la premiere page en actif et les autres en non actives
 					try {
-						file.createNewFile();
+						System.out.println("Hey");
+						
+						boolean isfilecreated = file.createNewFile();
+						System.out.println(isfilecreated);
 						PageId pageid = new PageId(0,0);
 						ListeDePagesAlloue.add(pageid);
 						for(int j = 0; j<DBParams.maxPagesPerFile-1;j++) {
 							PageId pageid1 = new PageId(0,j+1);
-							ListeDePagesNonAlloue.add(pageid);
+							ListeDePagesNonAlloue.add(pageid1);
 						}
 						return pageid;
 					} catch (IOException e) {
@@ -38,7 +46,11 @@ public class DiskManager {
 						e.printStackTrace();
 					}
 				}
-				else{i++;}
+				else{
+					System.out.println("Huh");
+					i=i+1;
+				}
+				
 		}
 			}
 		return null;//Si on sort de la boucle avec une erreur de creation
