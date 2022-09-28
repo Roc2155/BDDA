@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -8,7 +9,7 @@ public class DiskManager {
 	private static int CurrentCountAllocPages=0;
 	ArrayList<PageId> ListeDePagesNonAlloue = new ArrayList<PageId>(); 
 	ArrayList<PageId> ListeDePagesAlloue = new ArrayList<PageId>(); 
-	public PageId AllocPage () {
+	public PageId AllocPage() {
 		if(ListeDePagesNonAlloue.size()>0) {
 			int NombreAléatoire = new Random().nextInt(ListeDePagesNonAlloue.size()+1);
 			PageId pageid = ListeDePagesNonAlloue.get(NombreAléatoire);//On prends une page aléatoire parmis les pages disponibles
@@ -20,19 +21,14 @@ public class DiskManager {
 			
 		}
 		else {//Si aucune pages disponibles, création d'un nouveau fichier
-			return null;
-		}
-		
-		
-		
-		
-		
-
-		
-		
-		
-		
-	}	
+			int max = PageId.ListeDesFichiers.get(PageId.ListeDesFichiers.size());
+			File fichier = new File(DBParams.DBPath+"F"+(max+1)+".bdda");
+			PageId.ListeDesFichiers.add(max+1);
+			PageId pageid = new PageId(max+1,0);
+			return pageid;
+				
+			}
+		}	
 	public void ReadPage (PageId pageId, ByteBuffer buff) {
 		String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
 		try {

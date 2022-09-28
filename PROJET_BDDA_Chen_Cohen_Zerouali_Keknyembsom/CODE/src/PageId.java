@@ -1,11 +1,19 @@
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class PageId {
 	private int fileIdx;
 	private int pageIdx;
+	static ArrayList<Integer> ListeDesFichiers = new ArrayList<Integer>();
 	
 	public PageId(int fileIdx, int pageIdx) {
 		this.fileIdx = fileIdx;
 		this.pageIdx=pageIdx;
+		if(!ListeDesFichiers.contains(fileIdx)) {
+			ListeDesFichiers.add(fileIdx);	
+			ListeDesFichiers.sort(Comparator.naturalOrder());
+		}
+		
 	}
 
 	public int getFileIdx() {
