@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 import java.util.Random;
 
 public class DiskManager {
@@ -17,15 +19,15 @@ public class DiskManager {
     	private ObjectInputStream ois;
 
 
-	private static DiskManager LeDiskManager;
-	
-	private DiskManager() throws IOException {
+	private static DiskManager LeDiskManager; // = new DiskManager();
+
+	public DiskManager() throws IOException {
         	if (save.exists()) {
             		is = new FileInputStream(save);
             		ois = new ObjectInputStream(is);
         		}
 		LeDiskManager = new DiskManager();
-    	}
+	}
 
 	public static DiskManager getLeDiskManager() {
 		return LeDiskManager;
@@ -55,6 +57,7 @@ public class DiskManager {
         	return pageId;
         //ecriture
     	}
+			
 	public void ReadPage (PageId pageId, ByteBuffer buff) {
 		String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
 		String path = DBParams.DBPath+"F"+fichier+".bdda";
@@ -97,7 +100,7 @@ public class DiskManager {
 	public int GetCurrentCountAllocPages() {
 		return CurrentCountAllocPages;
 	}
-	
+
 	private void ecriture(Fichier f) throws IOException {
         FileWriter fw = new FileWriter(f.getFile(),true);
         for (int i = 0; i < 4096; i++)
@@ -107,7 +110,7 @@ public class DiskManager {
         fw.close();
         f.setSize(f.getSize()+1);
     	}
-	
+
 	private Fichier creerF() throws IOException {
         StringBuffer nomF = new StringBuffer();
         int i1 = 0;
@@ -128,7 +131,7 @@ public class DiskManager {
         listF.add(fichier);
         return fichier;
     	}
-	
+
 	private Fichier fIsDisp() {
         if (listF.isEmpty())
             return null;
@@ -138,14 +141,14 @@ public class DiskManager {
         }
         return null;
    	}
-	
+
 	 private void outList() throws IOException {
         OutputStream os = new FileOutputStream(save);
         ObjectOutputStream oos = new ObjectOutputStream(os);
         for (Fichier fichier : listF)
             oos.writeObject(fichier);
     	}
-	
+
 	private void inList() {
         boolean restaL = false;
         try {
