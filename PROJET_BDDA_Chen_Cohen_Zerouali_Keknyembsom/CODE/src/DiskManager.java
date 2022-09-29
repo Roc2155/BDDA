@@ -70,8 +70,9 @@ public class DiskManager {
 		}
 	public void ReadPage (PageId pageId, ByteBuffer buff) {
 		String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
+		String path = DBParams.DBPath+"F"+fichier+".bdda";
 		try {
-			RandomAccessFile randomaccessfile = new RandomAccessFile(fichier, "r");
+			RandomAccessFile randomaccessfile = new RandomAccessFile(path, "r");
 			randomaccessfile.seek(pageId.getPageIdx()*DBParams.pageSize);
 			byte[] tableaudebyte = new byte[DBParams.pageSize];
 			randomaccessfile.read(tableaudebyte);

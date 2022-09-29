@@ -8,11 +8,12 @@ public class BufferManager {
 	private static ArrayList<Frame> ListeDesFrames = new ArrayList<Frame>();
 	private static ArrayList<PageId> ListeDesPages = new ArrayList<PageId>();
 	
-	public void setAllFrame() {
+	public void setAllFrame() {//A lancer au debut du programme
 		for(int i = 0; i<FrameCount;i++) {
 			ListeDesFrames.add(new Frame());
+			ListeDesPages.add(null);
 		}
-	};
+	}
 	
 	
 	public ByteBuffer GetPage(PageId pageid) {
@@ -30,15 +31,15 @@ public class BufferManager {
 			}
 			
 		}
-		//si il y a des cases de pages vides on met dans cette cases
-		if(!ListeDesPagesVides.isEmpty()) {
+		
+		if(!ListeDesPagesVides.isEmpty()) {//Si au moins une casePage vide
 			ListeDesPages.add(ListeDesPages.lastIndexOf(ListeDesPagesVides.get(0)),pageid);
 			int emplacemnet = ListeDesPages.lastIndexOf(pageid);
 			ListeDesFrames.get(emplacemnet).isDirty();//on le met dirty
 			ListeDesFrames.get(emplacemnet).setPin_count(ListeDesFrames.get(emplacemnet).getPin_count()+1);//On incremente le pincount
 			return ListeDesFrames.get(emplacemnet).getBuff();
 		}
-		else {
+		else {//Si aucunes casesPages vides
 			ArrayList<PageId> ListeDesPropres = new ArrayList<PageId>();
 			for(Frame frame : ListeDesFrames) {
 				if(!frame.isDirty()) {
