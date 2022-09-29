@@ -21,53 +21,30 @@ public class DiskManager {
 		return LeDiskManager;
 	}
 
-	public PageId AllocPage() {
-		if(ListeDePagesNonAlloue.size()>0) {
-			int NombreAleatoire = new Random().nextInt(ListeDePagesNonAlloue.size()+1);
-			PageId pageid = ListeDePagesNonAlloue.get(NombreAleatoire);//On prends une page aléatoire parmis les pages disponibles
-			ListeDePagesNonAlloue.remove(NombreAleatoire);
-			CurrentCountAllocPages = CurrentCountAllocPages + 1;
-			ListeDePagesAlloue.add(pageid);
-			return pageid;
-		}
-		else {//Si aucune pages disponibles, création d'un nouveau fichier
-			boolean cherchenomdispo = false;
-			int i = 0;
-			ListeDePagesNonAlloue.clear();
-			while(!cherchenomdispo) {
-
-				String path = DBParams.DBPath+"F"+i+".bdda";
-				System.out.println(path);
-				File file = new File(path);
-
-
-				if(!file.exists()) {//si il nexiste pas on cree un file, on met la premiere page en actif et les autres en non actives
-					try {
-
-
-						boolean isfilecreated = file.createNewFile();
-
-						PageId pageid = new PageId(i,0);
-						ListeDePagesAlloue.add(pageid);
-						for(int j = 0; j<DBParams.maxPagesPerFile-1;j++) {
-							PageId pageid1 = new PageId(i,j+1);
-							ListeDePagesNonAlloue.add(pageid1);
-						}
-						return pageid;
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				else{
-
-					i=i+1;
-				}
-
-		}
-			}
-		return null;//Si on sort de la boucle avec une erreur de creation
-		}
+	public PageId allocPage() throws IOException, ClassNotFoundException {
+        	if (save.length() != 0)
+            		inList();
+        	for (Fichier f : listF)
+        	{
+            		System.out.println(f.getFile());
+        	}
+        	int i1 = 0;
+        	Fichier nomFDisp = fIsDisp();
+        	if (listF.isEmpty()) {
+         	   nomFDisp = creerF();
+       		} else if (nomFDisp == null) {
+            		nomFDisp = creerF();
+        	}
+        	for (Fichier fichier : listF)
+         	   i1++;
+      		System.out.println(i1);
+        	assert nomFDisp != null;
+        	PageId pageId = new PageId(i1-1,nomFDisp.getSize());
+        	ecriture(nomFDisp);
+        	outList();
+        	return pageId;
+        //ecriture
+    	}
 	public void ReadPage (PageId pageId, ByteBuffer buff) {
 		String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
 		String path = DBParams.DBPath+"F"+fichier+".bdda";
@@ -110,5 +87,72 @@ public class DiskManager {
 	public int GetCurrentCountAllocPages() {
 		return CurrentCountAllocPages;
 	}
+	
+	private void ecriture(Fichier f) throws IOException {
+        FileWriter fw = new FileWriter(f.getFile(),true);
+        for (int i = 0; i < 4096; i++)
+        {
+            fw.write(" ");
+        }
+        fw.close();
+        f.setSize(f.getSize()+1);
+    	}
+	
+	private Fichier creerF() throws IOException {
+        StringBuffer nomF = new StringBuffer();
+        int i1 = 0;
+        if (listF.isEmpty()) {
+            nomF.append("F").append(i1).append(".bdda");
+        }
+        else
+        {
+            for (Fichier fichier : listF)
+                i1++;
+            nomF.append("F").append(i1).append(".bdda");
+        }
+        Fichier fichier = new Fichier(nomF.toString());
+        File myFile = new File(DBParams.DBPath+"/"+nomF);
+
+        if (myFile.createNewFile()){
+        }
+        listF.add(fichier);
+        return fichier;
+    	}
+	
+	private Fichier fIsDisp() {
+        if (listF.isEmpty())
+            return null;
+        for (Fichier fichier : listF) {
+            if (fichier.getSize() < DBParams.maxPagesPerFile)
+                return fichier;
+        }
+        return null;
+   	}
+	
+	 private void outList() throws IOException {
+        OutputStream os = new FileOutputStream(save);
+        ObjectOutputStream oos = new ObjectOutputStream(os);
+        for (Fichier fichier : listF)
+            oos.writeObject(fichier);
+    	}
+	
+	private void inList() {
+        boolean restaL = false;
+        try {
+            restaL = true;
+            while (restaL) {
+                try {
+                    Fichier nF = (Fichier) ois.readObject();
+                    listF.add(nF);
+                    restaL = true;
+                } catch (Exception e) {
+                    restaL = false;
+                }
+            }
+            ois.close();
+        } catch (Exception e) {
+            restaL = false;
+        }
+    	}
 
 }
