@@ -21,7 +21,7 @@ public class BufferManager {
 		ArrayList<PageId> ListeDesPagesPleines = new ArrayList<PageId>();
 		for(PageId pageidlook : ListeDesPages) {
 			if(pageidlook==pageid) {
-				return ListeDesFrames.get(ListeDesPages.indexOf(pageidlook)).getBuff();
+				return ListeDesFrames.get(ListeDesPages.indexOf(pageidlook)).getBuff();//Si on trouve la page dans la liste on la retourne directement
 			}
 			else if(pageidlook==null) {
 				ListeDesPagesVides.add(pageidlook);
@@ -40,49 +40,15 @@ public class BufferManager {
 			return ListeDesFrames.get(emplacemnet).getBuff();
 		}
 		else {//Si aucunes casesPages vides
-			ArrayList<PageId> ListeDesPropres = new ArrayList<PageId>();
+			ArrayList<Frame> ListeDesFramesAPin0 = new ArrayList<Frame>();
 			for(Frame frame : ListeDesFrames) {
-				if(!frame.isDirty()) {
-					ListeDesPropres.add(ListeDesPages.get(ListeDesFrames.lastIndexOf(frame)));			
+				if(frame.getPin_count()==0) {
+					ListeDesFramesAPin0.add(frame);
 				}
-				
+			if(ListeDesFrames.size()==0) {
+				System.out.println("ERROR CRITICAL");//Aucune frame à pin 0
 			}
-			if(ListeDesPropres.size()==0) {
-				int valeurMinPinCount = 1147483647;
-				Frame frameCible = new Frame();
-				for(Frame frame : ListeDesFrames) {
-					if(frame.getPin_count()<valeurMinPinCount) {
-						valeurMinPinCount=frame.getPin_count();
-						frameCible=frame;
-					}
-				}
-				int framePose = ListeDesFrames.lastIndexOf(frameCible);
-				int pagePose = framePose;
-				FreePage(ListeDesPages.get(pagePose),true);
-				ListeDesPages.set(pagePose, pageid);
-				return ListeDesFrames.get(pagePose).getBuff();	
-				//Politique de remplacement
-			}
-			else {
-				
-				ArrayList<Frame> ListeDesFramesPropres = new ArrayList<Frame>();
-				for(Frame frame : ListeDesFrames) {
-					if(ListeDesPropres.contains(ListeDesPages.get(ListeDesFrames.lastIndexOf(frame)))) {
-						ListeDesFramesPropres.add(frame);
-					}
-				}
-				int valeurMinPinCount = 1147483647;
-				Frame frameCible = new Frame();
-				for(Frame frame : ListeDesFramesPropres) {
-					if(frame.getPin_count()<valeurMinPinCount) {
-						valeurMinPinCount=frame.getPin_count();
-						frameCible=frame;
-					}
-				}
-				int framePose = ListeDesFrames.lastIndexOf(frameCible);
-				int pagePose = framePose;
-				ListeDesPages.set(pagePose, pageid);
-				return ListeDesFrames.get(pagePose).getBuff();	
+			//Creer UNE FILE ou on rentrer chaque page à chaque utilisation, et on prendra celle la moins recente 
 				
 			}
 		}
