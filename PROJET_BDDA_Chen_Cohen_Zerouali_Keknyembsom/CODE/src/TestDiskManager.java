@@ -20,7 +20,7 @@ public class TestDiskManager {
 	  System.out.println(DiskManager.ListeDePagesAlloue);
 	  System.out.println(DiskManager.ListeDePagesNonAlloue);
 	  //DiskManager diskmanager = new DiskManager();
-	  getLeDiskManager().AllocPage();//C'est sensé creer un nouveau fichier selon ceux qui sont déja dans le repertoire
+	  DiskManager.getLeDiskManager().AllocPage();//C'est sensé creer un nouveau fichier selon ceux qui sont déja dans le repertoire
 	  System.out.println(DiskManager.ListeDePagesAlloue.toString());
 	  System.out.println(DiskManager.ListeDePagesNonAlloue.toString());
 
