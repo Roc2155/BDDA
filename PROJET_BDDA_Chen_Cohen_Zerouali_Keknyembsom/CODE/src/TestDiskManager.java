@@ -33,7 +33,11 @@ public class TestDiskManager {
 	  //doit afficher 3 pages dans le tableau d'allocation
 
   }
-
+	
+public static void main (String [] args){
+	
+}
+	
 
 
 }
