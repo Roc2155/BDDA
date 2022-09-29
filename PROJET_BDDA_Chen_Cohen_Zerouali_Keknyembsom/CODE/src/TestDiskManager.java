@@ -3,11 +3,11 @@ import java.nio.ByteBuffer;
 
 public class TestDiskManager {
 
-  public static void TestEcriturePage(int fileIdx) {
+  public static void TestEcriturePage(PageId pageId, ByteBuffer buff) {
 
   }
 
-  public static void TestLecturePage(int fileIdx) {
+  public static void TestLecturePage(PageId pageId, ByteBuffer buff) {
 
 
   }
@@ -33,7 +33,11 @@ public class TestDiskManager {
 	  //doit afficher 3 pages dans le tableau d'allocation
 
   }
-
+	
+public static void main (String [] args){
+	
+}
+	
 
 
 }
