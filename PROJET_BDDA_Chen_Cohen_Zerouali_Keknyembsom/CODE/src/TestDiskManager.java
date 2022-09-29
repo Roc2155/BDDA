@@ -41,18 +41,24 @@ public class TestDiskManager {
     }*/
   }
 
-public static void main (String [] args){
-	 DBParams.DBPath = args[0];
-	 DBParams.pageSize = 2;
-	 DBParams.maxPagesPerFile = 4;
-	 DBParams.frameCount = 2;
-	 //ByteBuffer buff = new ByteBuffer();
-	 //TestDiskManager.TestEcriturePage(PageId pageId, ByteBuffer buff);
+  public static void TestDeallocPage(PageId pageId) {
+    DiskManager.getLeDiskManager().DeallocPage(pageId);
+    if(DiskManager.ListeDePagesNonAlloue.contains(pageId)) {
+      System.out.println("Page désallouée avec succès");
+    }
+    System.out.println(DiskManager.ListeDePagesNonAlloue.toString());
+  }
 
-//   DiskManager.getLeDiskManager();
+  public static void main (String [] args){
+	  DBParams.DBPath = args[0];
+	  DBParams.pageSize = 2;
+	  DBParams.maxPagesPerFile = 4;
+	  DBParams.frameCount = 2;
+	  //ByteBuffer buff = new ByteBuffer();
+	  //TestDiskManager.TestEcriturePage(PageId pageId, ByteBuffer buff);
    TestAllocPage();
    //DiskManager.LeDiskManager.AllocPage();
-}
+  }
 
 
 
