@@ -5,7 +5,7 @@ public class Main {
 		    DBParams.pageSize = 4096;
 		    DBParams.maxPagesPerFile = 4;
 		    DBParams.frameCount = 2;
-		    TestDiskManager.TestAllocPage();
+		    
 		    
 		  }
 
