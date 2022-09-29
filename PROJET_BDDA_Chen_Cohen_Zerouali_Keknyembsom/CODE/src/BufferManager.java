@@ -6,6 +6,7 @@ public class BufferManager {
 	DiskManager diskmanager = new DiskManager();
 	public static boolean setFrame = false;
 	private static ArrayList<Frame> ListeDesFrames = new ArrayList<Frame>();
+	private static ArrayList<PageId> ListeDesPages = new ArrayList<PageId>();
 	
 	public void setAllFrame() {
 		for(int i = 0; i<FrameCount;i++) {
@@ -15,26 +16,26 @@ public class BufferManager {
 	
 	
 	public ByteBuffer GetPage(PageId pageid) {
-		if(ListeDesFrames.size()<FrameCount) {//Si on peut rajouter des frames on en rajoute
-			int i;
-			for(Frame frame : ListeDesFrames) {
-				if(frame!=null) {
-					ListeDesFrames.add(frame);
-					i = ListeDesFrames.lastIndexOf(frame);
-				}
-				else {}
+		ArrayList<PageId> ListeDesPagesVides = new ArrayList<PageId>();
+		ArrayList<PageId> ListeDesPagesPleines = new ArrayList<PageId>();
+		for(PageId pageidlook : ListeDesPages) {
+			if(pageidlook==pageid) {
+				return ListeDesFrames.get(ListeDesPages.indexOf(pageidlook)).getBuff();
+			}
+			else if(pageidlook==null) {
+				ListeDesPagesVides.add(pageidlook);
+			}
+			else {
+				ListeDesPagesPleines.add(pageidlook);
 			}
 			
-			
-			
-			
-			return ListeDesFrames.get(ListeDesFrames.size()-1).getBuff();
-			
-			
 		}
-		else {//Pas de possibilité de rajout de frame, on va donc devoir verifier si elles sont vide, puis eventuellement en liberer
-			
-		}//Faire des comparaisons avec les dirty et pincount dans les frames de la liste des frames
+		//si il y a des cases de pages vides on met dans cette cases
+		if(!ListeDesPagesVides.isEmpty()) {
+			ListeDesPages.add(ListeDesPages.lastIndexOf(ListeDesPagesVides.get(0)),pageid);
+		}
+		
+		//Faire des comparaisons avec les dirty et pincount dans les frames de la liste des frames
 		
 		
 	}
