@@ -39,7 +39,9 @@ public static void main (String [] args){
 	 DBParams.pageSize = 2;
 	 DBParams.maxPagesPerFile = 4;
 	 DBParams.frameCount = 2;
-	 TestDiskManager.TestEcriturePage(PageId pageId, ByteBuffer buff);
+	ByteBuffer buff = new ByteBuffer();
+	TestDiskManager.TestEcriturePage(PageId pageId, ByteBuffer buff);
+	
 }
 	
 
