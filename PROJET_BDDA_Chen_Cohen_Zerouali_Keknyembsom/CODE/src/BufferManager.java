@@ -48,10 +48,13 @@ public class BufferManager {
 			if(ListeDesFrames.size()==0) {
 				System.out.println("ERROR CRITICAL");//Aucune frame à pin 0
 			}
+			ListeDesPages.set(ListeDesFrames.lastIndexOf(ListeDesFramesAPin0.get(0)), pageid);
+			return ListeDesFramesAPin0.get(0).getBuff();
 			//Creer UNE FILE ou on rentrer chaque page à chaque utilisation, et on prendra celle la moins recente 
 				
 			}
 		}
+		return null;//si pblm
 		
 		
 		
