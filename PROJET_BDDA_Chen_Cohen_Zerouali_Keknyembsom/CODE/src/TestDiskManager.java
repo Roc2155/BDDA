@@ -35,11 +35,5 @@ public class TestDiskManager {
   }
 
 
-  public static void main(String[] args) {
-    DBParams.DBPath = args[0];
-    DBParams.pageSize = 2;
-    DBParams.maxPagesPerFile = 4;
-    TestAllocPage();
-    
-  }
+
 }
