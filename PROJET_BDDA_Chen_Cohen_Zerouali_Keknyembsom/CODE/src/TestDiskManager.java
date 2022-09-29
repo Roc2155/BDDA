@@ -35,7 +35,7 @@ public class TestDiskManager {
   }
 	
 public static void main (String [] args){
-	
+	TestDiskManager.TestEcriturePage(PageId pageId, ByteBuffer buff);
 }
 	
 
