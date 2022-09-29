@@ -10,12 +10,22 @@ public class DiskManager {
 	private static int CurrentCountAllocPages=0;
 	static ArrayList<PageId> ListeDePagesNonAlloue = new ArrayList<PageId>();
 	static ArrayList<PageId> ListeDePagesAlloue = new ArrayList<PageId>();
+	static List<Fichier> listF = new ArrayList<>();
+    	private static String path_name = DBParams.DBPath + "/save.data";
+	private static File save = new File(path_name);
+	private InputStream is;
+    	private ObjectInputStream ois;
+
 
 	private static DiskManager LeDiskManager;
-
-	private DiskManager() {
+	
+	private DiskManager() throws IOException {
+        	if (save.exists()) {
+            		is = new FileInputStream(save);
+            		ois = new ObjectInputStream(is);
+        		}
 		LeDiskManager = new DiskManager();
-	}
+    	}
 
 	public static DiskManager getLeDiskManager() {
 		return LeDiskManager;
