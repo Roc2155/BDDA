@@ -5,10 +5,22 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Random;
+
 public class DiskManager {
 	private static int CurrentCountAllocPages=0;
-	static ArrayList<PageId> ListeDePagesNonAlloue = new ArrayList<PageId>(); 
-	static ArrayList<PageId> ListeDePagesAlloue = new ArrayList<PageId>(); 
+	static ArrayList<PageId> ListeDePagesNonAlloue = new ArrayList<PageId>();
+	static ArrayList<PageId> ListeDePagesAlloue = new ArrayList<PageId>();
+
+	private static DiskManager LeDiskManager;
+
+	private DiskManager() {
+		LeDiskManager = new DiskManager();
+	}
+
+	public static DiskManager getLeDiskManager() {
+		return LeDiskManager;
+	}
+
 	public PageId AllocPage() {
 		if(ListeDePagesNonAlloue.size()>0) {
 			int NombreAleatoire = new Random().nextInt(ListeDePagesNonAlloue.size()+1);
@@ -16,25 +28,25 @@ public class DiskManager {
 			ListeDePagesNonAlloue.remove(NombreAleatoire);
 			CurrentCountAllocPages = CurrentCountAllocPages + 1;
 			ListeDePagesAlloue.add(pageid);
-			return pageid;			
+			return pageid;
 		}
 		else {//Si aucune pages disponibles, création d'un nouveau fichier
 			boolean cherchenomdispo = false;
 			int i = 0;
 			ListeDePagesNonAlloue.clear();
 			while(!cherchenomdispo) {
-				
+
 				String path = DBParams.DBPath+"F"+i+".bdda";
 				System.out.println(path);
 				File file = new File(path);
-				
-				
+
+
 				if(!file.exists()) {//si il nexiste pas on cree un file, on met la premiere page en actif et les autres en non actives
 					try {
-						
-						
+
+
 						boolean isfilecreated = file.createNewFile();
-						
+
 						PageId pageid = new PageId(i,0);
 						ListeDePagesAlloue.add(pageid);
 						for(int j = 0; j<DBParams.maxPagesPerFile-1;j++) {
@@ -48,14 +60,14 @@ public class DiskManager {
 					}
 				}
 				else{
-					
+
 					i=i+1;
 				}
-				
+
 		}
 			}
 		return null;//Si on sort de la boucle avec une erreur de creation
-		}	
+		}
 	public void ReadPage (PageId pageId, ByteBuffer buff) {
 		String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
 		try {
@@ -70,8 +82,8 @@ public class DiskManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
 	}
 	public void WritePage (PageId pageId, ByteBuffer buff) {
 		String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
@@ -79,17 +91,17 @@ public class DiskManager {
 			RandomAccessFile randomaccessfile = new RandomAccessFile(fichier, "w");
 			randomaccessfile.seek(pageId.getPageIdx());
 			randomaccessfile.write(buff.array());
-			
-			
-			
+
+
+
 			randomaccessfile.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
 	}
-	public void DeallocPage (PageId pageId ) {	
-		
+	public void DeallocPage (PageId pageId ) {
+
 		CurrentCountAllocPages = CurrentCountAllocPages - 1;
 		ListeDePagesAlloue.remove(pageId);
 		ListeDePagesNonAlloue.add(pageId);
