@@ -11,9 +11,9 @@ public class DiskManager {
 	static ArrayList<PageId> ListeDePagesAlloue = new ArrayList<PageId>(); 
 	public PageId AllocPage() {
 		if(ListeDePagesNonAlloue.size()>0) {
-			int NombreAléatoire = new Random().nextInt(ListeDePagesNonAlloue.size()+1);
-			PageId pageid = ListeDePagesNonAlloue.get(NombreAléatoire);//On prends une page aléatoire parmis les pages disponibles
-			ListeDePagesNonAlloue.remove(NombreAléatoire);
+			int NombreAleatoire = new Random().nextInt(ListeDePagesNonAlloue.size()+1);
+			PageId pageid = ListeDePagesNonAlloue.get(NombreAleatoire);//On prends une page aléatoire parmis les pages disponibles
+			ListeDePagesNonAlloue.remove(NombreAleatoire);
 			CurrentCountAllocPages = CurrentCountAllocPages + 1;
 			ListeDePagesAlloue.add(pageid);
 			return pageid;			
