@@ -18,7 +18,7 @@ public class DiskManager {
 	}
 
 	public static DiskManager getLeDiskManager() {
-		return DiskManager();
+		return LeDiskManager;
 	}
 
 	public PageId AllocPage() {
