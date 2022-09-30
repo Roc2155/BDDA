@@ -27,6 +27,7 @@ public class TestDiskManager {
       System.out.println("Etat de la liste de pages allouées après allocation des pages: " + DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
   	  System.out.println("Etat de la liste de pages non allouées : " + DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
     } catch(IOException e) {
+      System.out.println("err");
       e.printStackTrace();
     }
 /*
@@ -72,12 +73,7 @@ public class TestDiskManager {
 */
 	  //ByteBuffer buff = new ByteBuffer();
 	  //TestDiskManager.TestEcriturePage(PageId pageId, ByteBuffer buff);
-   //TestAllocPage();
-   try {
-     DiskManager.getLeDiskManager().allocPage();
-   } catch(IOException e) {
-     System.out.println("err");
-   }
+   TestAllocPage();
   }
 
 

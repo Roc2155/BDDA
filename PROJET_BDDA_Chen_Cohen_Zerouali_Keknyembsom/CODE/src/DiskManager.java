@@ -12,10 +12,9 @@ public class DiskManager {
     private static File savePA = new File(DBParams.DBPath+"/savePA.data");
     private static ArrayList<PageId> listeDePagesNonAlloue;// = new ArrayList<PageId>();
     private static ArrayList<PageId> listeDePagesAlloue;// = new ArrayList<PageId>();
-    private static DiskManager leDiskManager;// = new DiskManager();
+    private static DiskManager leDiskManager = new DiskManager();
 
     private DiskManager() {
-			leDiskManager = new DiskManager();
 			listeDePagesAlloue = new ArrayList<PageId>();
 			listeDePagesNonAlloue = new ArrayList<PageId>();
     }
