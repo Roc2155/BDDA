@@ -33,7 +33,7 @@ public class DiskManager {
 
     public PageId allocPage() throws IOException{
         rempTabs();
-        System.out.println(listeDePagesAlloue.size());
+        System.out.println("Taille de la liste des pages allouée : " + listeDePagesAlloue.size());
         Fichier nomFDisp = fIsDisp();
         if (listF.isEmpty()) {
             nomFDisp = creerF();

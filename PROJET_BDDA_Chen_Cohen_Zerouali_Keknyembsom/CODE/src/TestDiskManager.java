@@ -30,17 +30,21 @@ public class TestDiskManager {
       System.out.println("err");
       e.printStackTrace();
     }
-/*
-	  DiskManager.getLeDiskManager().allocPage();
-
-	  System.out.println(DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
-	  System.out.println(DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
-
-    DiskManager.getLeDiskManager().allocPage();
-	  System.out.println(DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
-	  System.out.println(DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
+    try {
+      DiskManager.getLeDiskManager().allocPage();
+      System.out.println("Etat de la liste de pages allouées après allocation des pages: " + DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
+  	  System.out.println("Etat de la liste de pages non allouées : " + DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
+    } catch(IOException e) {
+      e.printStackTrace();
+    }
+    try {
+      DiskManager.getLeDiskManager().allocPage();
+      System.out.println("Etat de la liste de pages allouées après allocation des pages: " + DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
+  	  System.out.println("Etat de la liste de pages non allouées : " + DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
+    } catch(IOException e) {
+      e.printStackTrace();
+    }
 	  //doit afficher 3 pages dans le tableau d'allocation
-*/
   }
 
 
