@@ -66,15 +66,7 @@ public class TestDiskManager {
 	  DBParams.pageSize = 2;
 	  DBParams.maxPagesPerFile = 4;
 	  DBParams.frameCount = 2;
-/*
-        DiskManager diskmanager = DiskManager.getLeDiskManager();
-        if(diskmanager == null) {
-          System.out.println("r");
-        }
-        else {
-          System.out.println("ok");
-        }
-*/
+    
 	  //ByteBuffer buff = new ByteBuffer();
 	  //TestDiskManager.TestEcriturePage(PageId pageId, ByteBuffer buff);
     PageId pageId = new PageId(2, 3);
