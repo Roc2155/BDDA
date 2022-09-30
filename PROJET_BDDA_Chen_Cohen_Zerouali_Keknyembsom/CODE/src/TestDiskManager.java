@@ -18,48 +18,50 @@ public class TestDiskManager {
     //PageId pageIdTest = DiskManager.AllocPage(2);
     //System.out.println(pageIdTest.position());
 
-	  System.out.println(DiskManager.ListeDePagesAlloue);
-	  System.out.println(DiskManager.ListeDePagesNonAlloue);
-	  DiskManager.getLeDiskManager().allocPage();//C'est sensé creer un nouveau fichier selon ceux qui sont déja dans le repertoire
-	  System.out.println(DiskManager.ListeDePagesAlloue.toString());
-	  System.out.println(DiskManager.ListeDePagesNonAlloue.toString());
+	  System.out.println("Etat de la liste des pages non allouées : " + DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
 
-	//  DiskManager.getLeDiskManager().AllocPage();
-	  System.out.println(DiskManager.ListeDePagesAlloue.toString());
-	  System.out.println(DiskManager.ListeDePagesNonAlloue.toString());
-//	  DiskManager.getLeDiskManager().AllocPage();
-	  System.out.println(DiskManager.ListeDePagesAlloue.toString());
-	  System.out.println(DiskManager.ListeDePagesNonAlloue.toString());
+    DiskManager.getLeDiskManager().allocPage();//C'est sensé creer un nouveau fichier selon ceux qui sont déja dans le repertoire
+	  System.out.println("Etat de la liste de pages allouées après allocation des pages: " + DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
+	  System.out.println("Etat de la liste de pages non allouées : " + DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
+
+	  DiskManager.getLeDiskManager().allocPage();
+	  System.out.println(DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
+	  System.out.println(DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
+
+    DiskManager.getLeDiskManager().allocPage();
+	  System.out.println(DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
+	  System.out.println(DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
 	  //doit afficher 3 pages dans le tableau d'allocation
-
-/*    DiskManager diskmanager = DiskManager.getLeDiskManager();
-    if(diskmanager == null) {
-      System.out.println("r");
-    }
-    else {
-      System.out.println("ok");
-    }*/
   }
+
 
   public static void TestDeallocPage(PageId pageId) {
     DiskManager.getLeDiskManager().DeallocPage(pageId);
-    if(DiskManager.ListeDePagesNonAlloue.contains(pageId)) {
+    if(DiskManager.getLeDiskManager().getListeDePagesNonAlloue().contains(pageId)) {
       System.out.println("Page désallouée avec succès");
     }
-    System.out.println(DiskManager.ListeDePagesNonAlloue.toString());
+    System.out.println(DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
   }
+
 
   public static void main (String [] args){
 	  DBParams.DBPath = args[0];
 	  DBParams.pageSize = 2;
 	  DBParams.maxPagesPerFile = 4;
 	  DBParams.frameCount = 2;
+    /*
+        DiskManager diskmanager = DiskManager.getLeDiskManager();
+        if(diskmanager == null) {
+          System.out.println("r");
+        }
+        else {
+          System.out.println("ok");
+        }
+    */
 	  //ByteBuffer buff = new ByteBuffer();
 	  //TestDiskManager.TestEcriturePage(PageId pageId, ByteBuffer buff);
-   TestAllocPage();
-   //DiskManager.LeDiskManager.AllocPage();
+   //TestAllocPage();
   }
-
 
 
 }

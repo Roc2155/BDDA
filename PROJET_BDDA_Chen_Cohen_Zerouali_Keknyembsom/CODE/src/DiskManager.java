@@ -10,16 +10,28 @@ public class DiskManager {
     private static File save = new File(path_name);
     private static File savePNA = new File(DBParams.DBPath+"/savePNA.data");
     private static File savePA = new File(DBParams.DBPath+"/savePA.data");
-    private static ArrayList<PageId> listeDePagesNonAlloue = new ArrayList<PageId>();
-    private static ArrayList<PageId> listeDePagesAlloue = new ArrayList<PageId>();
-    private static DiskManager leDiskManager = new DiskManager();
+    private static ArrayList<PageId> listeDePagesNonAlloue;// = new ArrayList<PageId>();
+    private static ArrayList<PageId> listeDePagesAlloue;// = new ArrayList<PageId>();
+    private static DiskManager leDiskManager;// = new DiskManager();
 
     private DiskManager() {
+			leDiskManager = new DiskManager();
+			listeDePagesAlloue = new ArrayList<PageId>();
+			listeDePagesNonAlloue = new ArrayList<PageId>();
     }
 
     public static DiskManager getLeDiskManager() {
         return leDiskManager;
     }
+
+		public static ArrayList<PageId> getListeDePagesNonAlloue() {
+			return listeDePagesNonAlloue;
+		}
+
+		public static ArrayList<PageId> getListeDePagesAlloue() {
+			return listeDePagesAlloue;
+		}
+
     public PageId allocPage() throws IOException{
         rempTabs();
         System.out.println(listeDePagesAlloue.size());
