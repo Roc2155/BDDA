@@ -1,38 +1,29 @@
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.io.Serializable;
 
-public class PageId {
-	private int fileIdx;
-	private int pageIdx;
-	
-	
-	public PageId(int fileIdx, int pageIdx) {
-		
-		this.fileIdx = fileIdx;
-		this.pageIdx=pageIdx;
-		
-		
-	}
+public class PageId implements Serializable
+{
+    private int fileIdx;
+    private int pageIdx;
 
-	public int getFileIdx() {
-		return fileIdx;
-	}
+    public PageId(int fileIdx, int pageIdx)
+    {
+        this.fileIdx = fileIdx;
+        this.pageIdx = pageIdx;
+    }
 
+    public int getFileIdx() {
+        return this.fileIdx;
+    }
 
+    public int getPageIdx()
+    {
+        return this.pageIdx;
+    }
 
-	public int getPageIdx() {
-		return pageIdx;
-	}
-	private boolean equals(PageId pageid) {
-		if(this.getPageIdx()==pageid.getPageIdx()&&this.getFileIdx()==pageid.getFileIdx()) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	public String toString() {
-		return"Fichier numero "+this.getFileIdx()+" Page numero "+this.getPageIdx();
-	}
-
+    public boolean compareTo(PageId o) {
+        if ((this.getPageIdx() == o.getPageIdx()) && (this.getFileIdx() == o.getFileIdx()))
+            return true;
+        else
+            return false;
+    }
 }
