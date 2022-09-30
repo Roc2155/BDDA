@@ -77,7 +77,9 @@ public class TestDiskManager {
 */
 	  //ByteBuffer buff = new ByteBuffer();
 	  //TestDiskManager.TestEcriturePage(PageId pageId, ByteBuffer buff);
-   TestAllocPage();
+    PageId pageId = new PageId(2, 3);
+    TestAllocPage();
+    TestDeallocPage(pageId);
   }
 
 
