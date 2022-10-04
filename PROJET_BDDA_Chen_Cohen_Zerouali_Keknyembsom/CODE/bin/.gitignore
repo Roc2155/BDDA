@@ -1,8 +1,9 @@
+/BufferManager.class
 /DBParams.class
 /DiskManager.class
+/Fichier.class
+/Frame.class
 /Main.class
 /PageId.class
 /TestDiskManager.class
 /TestPageId.class
-/Frame.class
-/BufferManager.class

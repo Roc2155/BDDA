@@ -2,11 +2,13 @@ import java.nio.ByteBuffer;
 
 public class Frame {
 	private static ByteBuffer buff;
-	private int pin_count;
-	private boolean dirty;
+	private int pin_count=0;
+	private boolean dirty=false;
+	private int time;
 	public Frame() {
 		ByteBuffer.allocate(DBParams.pageSize);	
 	}
+	
 	public ByteBuffer getBuff() {
 		return buff;
 	}
@@ -21,6 +23,12 @@ public class Frame {
 	}
 	public void setDirty(boolean dirty) {
 		this.dirty = dirty;
+	}
+	public int getTime() {
+		return time;
+	}
+	public void setTime(int time) {
+		this.time = time;
 	}
 
 }
