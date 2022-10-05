@@ -90,7 +90,7 @@ public class DiskManager {
         try {
             String n = "F"+fichier+".bdda";
             File file = new File(DBParams.DBPath+"/"+n);
-            RandomAccessFile randomaccessfile = new RandomAccessFile(file, "w");
+            RandomAccessFile randomaccessfile = new RandomAccessFile(file, "rw");
             randomaccessfile.seek(pageId.getPageIdx());
             randomaccessfile.write(buff.array());
 
