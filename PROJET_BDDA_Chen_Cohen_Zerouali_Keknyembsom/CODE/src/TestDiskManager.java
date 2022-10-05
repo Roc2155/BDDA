@@ -6,11 +6,7 @@ import java.util.Arrays;
 public class TestDiskManager {
 
   public static void TestEcriturePage(PageId pageId, ByteBuffer buff) {
-    System.out.println("Avant de remplir le buff : " + Arrays.toString(buff.array()));
-    for(int i=1; i<=DBParams.pageSize; i++) {
-      buff.put((byte)i);
-    }
-    System.out.println("Après avoir remplis le buff : " + Arrays.toString(buff.array()));
+    System.out.println("Tableau de buffer : " + Arrays.toString(buff.array()));
     try {
       DiskManager.getLeDiskManager().WritePage(pageId, buff);
       System.out.println("Ecriture avec succès !");
@@ -25,11 +21,6 @@ public class TestDiskManager {
   }
 
   public static void TestAllocPage() {
-    //ByteBuffer bufferTest = ByteBuffer.allocate(2);
-    //System.out.println(bufferTest.position());
-    //PageId pageIdTest = DiskManager.AllocPage(2);
-    //System.out.println(pageIdTest.position());
-
 	  System.out.println("Etat initial de la liste des pages non allouées : " + DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
 
     //C'est sensé creer un nouveau fichier selon ceux qui sont déja dans le repertoire
@@ -79,7 +70,7 @@ public class TestDiskManager {
 	  DBParams.frameCount = 2;
 
     PageId pageId = new PageId(2, 3);
-    ByteBuffer buff = ByteBuffer.allocate(DBParams.pageSize);
+    ByteBuffer buff = ByteBuffer.wrap("test".getBytes());
 
     TestAllocPage();
     TestDeallocPage(pageId);
