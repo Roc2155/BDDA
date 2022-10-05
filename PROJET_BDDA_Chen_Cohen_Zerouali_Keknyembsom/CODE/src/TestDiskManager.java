@@ -5,12 +5,32 @@ import java.io.IOException;
 public class TestDiskManager {
 
   public static void TestEcriturePage(PageId pageId, ByteBuffer buff) {
-
+    System.out.println("Avant de remplir le buff : " + Arrays.toString(buff.array()));
+    for(int i=1; i<=DBParams.pageSize; i++) {
+      buff.put((byte)i);
+    }
+    System.out.println("Après avoir remplis le buff : " + Arrays.toString(buff.array()));
+    if(DiskManager.getLeDiskManager().getListeDePagesAlloue().contains(pageId)) {
+      try {
+        DiskManager.getLeDiskManager().WritePage(pageId, buff);
+        System.out.println("Ecriture avec succès !");
+      }
+      finally {
+        System.out.println("Fermeture du fichier");
+      }
+    }
+    else {
+      System.out.println("Page inexistante ! ");
+    }
   }
 
   public static void TestLecturePage(PageId pageId, ByteBuffer buff) {
-
-
+    if(DiskManager.getLeDiskManager().getListeDePagesAlloue().contains(pageId)) {
+      DiskManager.getLeDiskManager().ReadPage(pageId);
+    }
+    else {
+      System.out.println("Page inexistante ! ");
+    }
   }
 
   public static void TestAllocPage() {
@@ -66,12 +86,14 @@ public class TestDiskManager {
 	  DBParams.pageSize = 2;
 	  DBParams.maxPagesPerFile = 4;
 	  DBParams.frameCount = 2;
-    
+
 	  //ByteBuffer buff = new ByteBuffer();
 	  //TestDiskManager.TestEcriturePage(PageId pageId, ByteBuffer buff);
     PageId pageId = new PageId(2, 3);
     TestAllocPage();
     TestDeallocPage(pageId);
+    TestEcriturePage(pageId, buff);
+    TestLecturePage(pageId);
   }
 
 
