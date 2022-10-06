@@ -80,28 +80,33 @@ public class TestDiskManager {
 
   public static void main (String [] args){
 	  DBParams.DBPath = args[0];
-	  DBParams.pageSize = 2;
+	  DBParams.pageSize = 2; //On aura 3 pages : 0, 1, 2
 	  DBParams.maxPagesPerFile = 4;
 	  DBParams.frameCount = 2;
 
-    PageId pageId = new PageId(2, 3);
+    PageId pageId = new PageId(2, 1);
     PageId pageId1 = new PageId(0, 1);
-    ByteBuffer buff = ByteBuffer.wrap("test".getBytes());
+    ByteBuffer buff = ByteBuffer.wrap("test".getBytes()); //On convertie la chaine de caractère en tableau binaire qu'on met dans un tampon
 
     try {
-		    System.out.println("Etat de la liste de pages allouées après allocation des pages: " + DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
+		    System.out.println("Etat de la liste de pages allouées : " + DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
 	  } catch (IOException e) {
 		   e.printStackTrace();
 	  }
 
     TestAllocPage();
-    TestDeallocPage(pageId);
+    TestDeallocPage(pageId); //Test : désalocation de la page 1 du fichier 2
+    //Résultat attendu : erreur si page non allouée sinon désallocation avec succès
 
-    TestEcriturePage(pageId, buff);
-    TestLecturePage(pageId);
+    TestEcriturePage(pageId, buff); //Test : écriture du mot 'test' sur la page 1 du fichier 2
+    //Résultat attendu : erreur car page désallouée
+    TestLecturePage(pageId);//Lecture : lecture sur la page 1 du fichier 2
+    //Résultat attendu : erreur car page désallouée
 
-    TestEcriturePage(pageId1, buff);
-    TestLecturePage(pageId1);
+    TestEcriturePage(pageId1, buff); //Test : écriture du mot 'test' sur la page 1 du fichier 0
+    //Résultat attendu : écriture avec succès car 1er fichier créé avec les pages 0, 1, 2
+    TestLecturePage(pageId1);//Test : lecture sur la page 1 du fichier 0
+    //Résultat attendu : lecture avec succès
     TestDeallocPage(new PageId(0, 2));
   }
 
