@@ -9,7 +9,8 @@ public class TestDiskManager {
     System.out.println("Tableau de buffer : " + Arrays.toString(buff.array()));
     try {
       DiskManager.getLeDiskManager().WritePage(pageId, buff);
-      System.out.println("Ecriture avec succès !");
+    } catch(IOException e) {
+      e.printStackTrace();
     }
     finally {
       System.out.println("Fermeture du fichier");
@@ -17,7 +18,14 @@ public class TestDiskManager {
   }
 
   public static void TestLecturePage(PageId pageId) {
-    DiskManager.getLeDiskManager().ReadPage(pageId);
+    try {
+      DiskManager.getLeDiskManager().ReadPage(pageId);
+    } catch(IOException e) {
+      e.printStackTrace();
+    }
+    finally {
+      System.out.println("Fermeture du fichier");
+    }
   }
 
   public static void TestAllocPage() {
@@ -77,7 +85,7 @@ public class TestDiskManager {
 	  DBParams.frameCount = 2;
 
     PageId pageId = new PageId(2, 3);
-    PageId pageId1 = new PageId(1, 0);
+    PageId pageId1 = new PageId(0, 3);
     ByteBuffer buff = ByteBuffer.wrap("test".getBytes());
 
     try {
@@ -88,10 +96,13 @@ public class TestDiskManager {
 
     TestAllocPage();
     TestDeallocPage(pageId);
+
     TestEcriturePage(pageId, buff);
-    TestEcriturePage(pageId1, buff);
     TestLecturePage(pageId);
+
+    TestEcriturePage(pageId1, buff);
     TestLecturePage(pageId1);
+    TestDeallocPage(new PageId(0, 2));
   }
 
 
