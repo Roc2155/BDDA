@@ -10,34 +10,31 @@ public class DiskManager {
     private static File save = new File(path_name);
     private static File savePNA = new File(DBParams.DBPath+"/savePNA.data");
     private static File savePA = new File(DBParams.DBPath+"/savePA.data");
-    private static ArrayList<PageId> listeDePagesNonAlloue;// = new ArrayList<PageId>();
-    private static ArrayList<PageId> listeDePagesAlloue;// = new ArrayList<PageId>();
+    private static ArrayList<PageId> listeDePagesNonAlloue = new ArrayList<PageId>();
+    private static ArrayList<PageId> listeDePagesAlloue = new ArrayList<PageId>();
     private static DiskManager leDiskManager = new DiskManager();
 
     private DiskManager() {
-			listeDePagesAlloue = new ArrayList<PageId>();
-			listeDePagesNonAlloue = new ArrayList<PageId>();
     }
 
     public static DiskManager getLeDiskManager() {
         return leDiskManager;
     }
 
-		public ArrayList<PageId> getListeDePagesNonAlloue() throws IOException{
-      if (savePNA.length() != 0)
-	            inSavePNA();
-			return listeDePagesNonAlloue;
-		}
+    public ArrayList<PageId> getListeDePagesNonAlloue() throws IOException{
+        if (savePNA.length() != 0)
+            inSavePNA();
+        return listeDePagesNonAlloue;
+    }
 
-		public ArrayList<PageId> getListeDePagesAlloue() throws IOException{
-      if (savePA.length() != 0)
-	            inSavePA();
-			return listeDePagesAlloue;
-		}
-
+    public ArrayList<PageId> getListeDePagesAlloue() throws IOException{
+        if (savePA.length() != 0)
+            inSavePA();
+        return listeDePagesAlloue;
+    }
     public PageId allocPage() throws IOException{
         rempTabs();
-        System.out.println("Taille de la liste des pages allouée : " + listeDePagesAlloue.size());
+        System.out.println(listeDePagesAlloue.size());
         Fichier nomFDisp = fIsDisp();
         if (listF.isEmpty()) {
             nomFDisp = creerF();
@@ -68,43 +65,66 @@ public class DiskManager {
         return pageId;
     }
 
-    public void ReadPage (PageId pageId) {
-        String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
-        try {
-            String n = "F"+fichier+".bdda";
-            File file = new File(DBParams.DBPath+"/"+n);
-            RandomAccessFile randomaccessfile = new RandomAccessFile(file, "r");
-            randomaccessfile.seek((long) pageId.getPageIdx() *DBParams.pageSize);
-            byte[] tableaudebyte = new byte[DBParams.pageSize];
-            randomaccessfile.read(tableaudebyte);
-            ByteBuffer buff = ByteBuffer.wrap(tableaudebyte);
-            buff.rewind();
-            System.out.println(buff.toString());
-            randomaccessfile.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    public void ReadPage (PageId pageId) throws IOException {
+        if (savePA.length() != 0)
+            inSavePA();
+        if (verifPageId(pageId)) {
+            String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
+            try {
+                String n = "F" + fichier + ".bdda";
+                File file = new File(DBParams.DBPath + "/" + n);
+                RandomAccessFile randomaccessfile = new RandomAccessFile(file, "r");
+                randomaccessfile.seek((long) pageId.getPageIdx() * DBParams.pageSize);
+                byte[] tableaudebyte = new byte[DBParams.pageSize];
+                randomaccessfile.read(tableaudebyte);
+                ByteBuffer buff = ByteBuffer.wrap(tableaudebyte);
+                buff.rewind();
+                System.out.println(buff.toString());
+                randomaccessfile.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
-
-
+        else
+            System.out.println("ERREUR : La page ("+pageId.getFileIdx()+", "+ pageId.getPageIdx()+") n'est pas encore allouée");
     }
 
-    public void WritePage (PageId pageId, ByteBuffer buff) {
-        String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
-        try {
-            String n = "F"+fichier+".bdda";
-            File file = new File(DBParams.DBPath+"/"+n);
-            RandomAccessFile randomaccessfile = new RandomAccessFile(file, "rw");
-            randomaccessfile.seek(pageId.getPageIdx());
-            randomaccessfile.write(buff.array());
-
-
-
-            randomaccessfile.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    private Boolean verifPageId(PageId pageId){
+        boolean bul = false;
+        int i = 0;
+        for (PageId pageId1 : listeDePagesAlloue)
+        {
+            if (pageId1.compareTo(pageId)) {
+                bul = true;
+                break;
+            }
+            i++;
         }
+        return bul;
+    }
+
+    public void WritePage (PageId pageId, ByteBuffer buff) throws IOException {
+        if (savePA.length() != 0)
+            inSavePA();
+        if (verifPageId(pageId)) {
+            String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
+            try {
+                String n = "F" + fichier + ".bdda";
+                File file = new File(DBParams.DBPath + "/" + n);
+                RandomAccessFile randomaccessfile = new RandomAccessFile(file, "w");
+                randomaccessfile.seek(pageId.getPageIdx());
+                randomaccessfile.write(buff.array());
+
+
+                randomaccessfile.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+            System.out.println("ERREUR : La page ("+pageId.getFileIdx()+", "+ pageId.getPageIdx()+") n'est pas encore allouée");
     }
 
     public void DeallocPage (PageId pageId ) throws IOException {
@@ -116,13 +136,13 @@ public class DiskManager {
         for (PageId pageId1 : listeDePagesAlloue)
         {
             if (pageId1.compareTo(pageId)) {
-                bul = true;
+                //bul = true;
                 break;
             }
             i++;
         }
         System.out.println(bul);
-        if (bul) {
+        if (verifPageId(pageId)) {
             listeDePagesAlloue.remove(i);
             listeDePagesNonAlloue.add(pageId);
             outSavePNA();
