@@ -24,8 +24,8 @@ public class DiskManager {
     }
 
 		public ArrayList<PageId> getListeDePagesNonAlloue() throws IOException{
-      if (savePA.length() != 0)
-	            inSavePA();
+      if (savePNA.length() != 0)
+	            inSavePNA();
 			return listeDePagesNonAlloue;
 		}
 
