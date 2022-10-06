@@ -89,7 +89,7 @@ public class TestDiskManager {
     TestAllocPage();
     TestDeallocPage(pageId);
     TestEcriturePage(pageId, buff);
-    TestLecturePage(pageId1);
+    TestLecturePage(pageId);
   }
 
 
