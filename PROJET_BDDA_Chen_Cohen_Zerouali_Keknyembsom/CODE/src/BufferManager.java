@@ -100,6 +100,9 @@ public ByteBuffer getPage(PageId PID) throws IOException {
 			}
 		}
 	}
+	public Frame[] getFrame() {
+		return listeDesFrames;
+	}
 	
 	
 }
