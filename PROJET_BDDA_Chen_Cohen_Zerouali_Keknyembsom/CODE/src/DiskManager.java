@@ -23,11 +23,15 @@ public class DiskManager {
         return leDiskManager;
     }
 
-		public static ArrayList<PageId> getListeDePagesNonAlloue() {
+		public ArrayList<PageId> getListeDePagesNonAlloue() throws IOException{
+      if (savePA.length() != 0)
+	            inSavePA();
 			return listeDePagesNonAlloue;
 		}
 
-		public static ArrayList<PageId> getListeDePagesAlloue() {
+		public ArrayList<PageId> getListeDePagesAlloue() throws IOException{
+      if (savePA.length() != 0)
+	            inSavePA();
 			return listeDePagesAlloue;
 		}
 

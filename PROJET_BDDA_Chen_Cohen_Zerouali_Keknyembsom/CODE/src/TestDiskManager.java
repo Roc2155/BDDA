@@ -21,8 +21,11 @@ public class TestDiskManager {
   }
 
   public static void TestAllocPage() {
-	  System.out.println("Etat initial de la liste des pages non allouées : " + DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
-
+	  try {
+      System.out.println("Etat initial de la liste des pages non allouées : " + DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
+    } catch(IOException e) {
+      e.printStackTrace();
+    }
     //C'est sensé creer un nouveau fichier selon ceux qui sont déja dans le repertoire
     try {
       DiskManager.getLeDiskManager().allocPage();
@@ -56,10 +59,14 @@ public class TestDiskManager {
     } catch(IOException e) {
         e.printStackTrace();
     }
-    if(DiskManager.getLeDiskManager().getListeDePagesNonAlloue().contains(pageId)) {
-      System.out.println("Page désallouée avec succès");
+    try {
+      if(DiskManager.getLeDiskManager().getListeDePagesNonAlloue().contains(pageId)) {
+        System.out.println("Page désallouée avec succès");
+      }
+      System.out.println(DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
+    } catch(IOException e) {
+      e.printStackTrace();
     }
-    System.out.println(DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
   }
 
 
@@ -72,6 +79,12 @@ public class TestDiskManager {
     PageId pageId = new PageId(2, 3);
     PageId pageId1 = new PageId(1, 0);
     ByteBuffer buff = ByteBuffer.wrap("test".getBytes());
+
+    try {
+		    System.out.println("Etat de la liste de pages allouées après allocation des pages: " + DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
+	  } catch (IOException e) {
+		   e.printStackTrace();
+	  }
 
     TestAllocPage();
     TestDeallocPage(pageId);
