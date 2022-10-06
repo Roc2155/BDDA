@@ -5,6 +5,9 @@ public class Catalogue {
 		 public static Catalogue getLeCatalogue() {
 		        return leCatalogue;
 		    }
+		 public void Init() {
+			 
+		 }
 	
 
 }
