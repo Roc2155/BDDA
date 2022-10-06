@@ -85,7 +85,7 @@ public class TestDiskManager {
 	  DBParams.frameCount = 2;
 
     PageId pageId = new PageId(2, 3);
-    PageId pageId1 = new PageId(0, 3);
+    PageId pageId1 = new PageId(0, 1);
     ByteBuffer buff = ByteBuffer.wrap("test".getBytes());
 
     try {
