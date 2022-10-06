@@ -70,12 +70,13 @@ public class TestDiskManager {
 	  DBParams.frameCount = 2;
 
     PageId pageId = new PageId(2, 3);
+    PageId pageId1 = new PageId(1, 0);
     ByteBuffer buff = ByteBuffer.wrap("test".getBytes());
 
     TestAllocPage();
     TestDeallocPage(pageId);
-    TestEcriturePage(pageId, buff);
-    TestLecturePage(pageId);
+    TestEcriturePage(pageId1, buff);
+    TestLecturePage(pageId1);
   }
 
 
