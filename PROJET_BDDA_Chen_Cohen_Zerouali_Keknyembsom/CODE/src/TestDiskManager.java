@@ -26,7 +26,7 @@ public class TestDiskManager {
     } catch(IOException e) {
       e.printStackTrace();
     }
-    //C'est sensé creer un nouveau fichier selon ceux qui sont déja dans le repertoire
+    //C'est censé créer un nouveau fichier selon ceux qui sont déja dans le repertoire
     try {
       DiskManager.getLeDiskManager().allocPage();
       System.out.println("Etat de la liste de pages allouées après allocation des pages: " + DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
