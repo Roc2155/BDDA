@@ -31,9 +31,9 @@ public class Catalog {
 		}
 	}
 	public RelationInfo getRelationInfo(String nom) {
-		RelationInfo relatInfo = new RelationInfo();
+		RelationInfo relatInfo = null;
 		for(RelationInfo r : listeRelatInfo) {
-			if(r.nom.equals(nom)) {
+			if(r.getName().equals(nom)) {
 				relatInfo = r;
 			}
 		}
