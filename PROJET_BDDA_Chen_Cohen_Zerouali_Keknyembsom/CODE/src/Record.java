@@ -2,62 +2,62 @@ import java.nio.ByteBuffer;
 
 
 public class Record {
-	
+
 	private RelationInfo relInfo;
 	private String[] values;
-	
-	
+
+
 	public Record(RelationInfo rel) {
 		this.setRelInfo(rel);
 	}
-	
-	
+
+
 	public void writeToBuffer(ByteBuffer buff, int position) {
 		buff.position(position);
-		for(int i=0;i<=relInfo.getNbr_col();i++) {
-			String values_type = relInfo.getCol()[i].getCol_type();
+		for(int i=0;i<=relInfo.getNbrCol();i++) {
+			String values_type = relInfo.getList().get(i).getType();
 			String[] tab_check = values_type.split("VARCHAR");
 
 			if(values_type == "INTEGER") {
 				buff.putInt(Integer.parseInt(values[i]));
 			}
-			
+
 			if(values_type == "REAL") {
 				buff.putFloat(Float.parseFloat(values[i]));
 			}
-			
+
 			if(tab_check[0] == "VARCHAR") {
 				for(int j=0;j<= Integer.parseInt(tab_check[1]);j++ ) {//On convertit en int la parenthese de varchar pour savoir le nombre de repet
 					String[] sp = values[i].split("");
 					for(int z=0;z<=sp.length;z++) {
 						buff.putChar(sp[z].charAt(0));
 					}
-					
+
 				}
 			}
-				
+
 		}
 
 	}
-	
-	
+
+
 	public void readFromBuffer(ByteBuffer buff,int position) {
 		buff.position(position);
-		for(int i=0;i<=relInfo.getNbr_col();i++) {
-			String values_type = relInfo.getCol()[i].getCol_type();
+		for(int i=0;i<=relInfo.getNbrCol();i++) {
+			String values_type = relInfo.getList().get(i).getType();
 			String[] tab_check = values_type.split("VARCHAR");
 
 			if(values_type == "INTEGER") {
 				values[i] = String.valueOf(buff.getInt());
-				
+
 			}
-			
+
 			if(values_type == "REAL") {
 				values[i] = String.valueOf(buff.getFloat());
-				
-				
+
+
 			}
-			
+
 			if(tab_check[0] == "VARCHAR") {
 				StringBuffer sb = new StringBuffer();
 				for(int j=0;j<= Integer.parseInt(tab_check[1]);j++ ) {
@@ -67,13 +67,13 @@ public class Record {
 				values[i] = sb.toString();
 			}
 		}
-		
+
 	}
 
-	
-	
-	
-	
+
+
+
+
 
 	public RelationInfo getRelInfo() {
 		return relInfo;
