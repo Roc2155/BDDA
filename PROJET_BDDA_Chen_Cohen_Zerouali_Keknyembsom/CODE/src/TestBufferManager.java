@@ -3,7 +3,7 @@ import java.io.IOException;
 
 
 public class TestBufferManager {
-	public void TestBuffer() {
+	public static void TestBuffer() {
 		PageId pid = new PageId(0, 1);
 		PageId pid2 = new PageId(0, 2);
 		PageId pid3 = new PageId(0, 3);
@@ -27,7 +27,12 @@ public class TestBufferManager {
 		}		
 	}	
 	public static void main(String [] args) {
-		
+		DBParams.DBPath = args[0];
+        DBParams.pageSize = 4;
+        DBParams.maxPagesPerFile = 4;
+        DBParams.frameCount = 2;
+		BufferManager.getInstance().init();
+		TestBufferManager.TestBuffer();
 	}
 		
 	
