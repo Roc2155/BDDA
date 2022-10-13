@@ -12,13 +12,15 @@ public class DiskManager {
     private static File savePA = new File(DBParams.DBPath+"/savePA.data");
     private static ArrayList<PageId> listeDePagesNonAlloue = new ArrayList<PageId>();
     private static ArrayList<PageId> listeDePagesAlloue = new ArrayList<PageId>();
-    private static DiskManager leDiskManager = new DiskManager();
+    private static DiskManager leDiskManager;
 
     private DiskManager() {
     }
 
     public static DiskManager getLeDiskManager() {
-        return leDiskManager;
+    	if (leDiskManager==null)
+    		leDiskManager=new DiskManager();
+    	return leDiskManager;
     }
 
     public ArrayList<PageId> getListeDePagesNonAlloue() throws IOException{
