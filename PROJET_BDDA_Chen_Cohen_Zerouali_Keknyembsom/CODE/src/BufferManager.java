@@ -2,24 +2,24 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class BufferManager {
-	private static BufferManager INSTANCE;
-	private Frame[] listeDesFrames;
+	private static BufferManager instance; 
 	private int time;
+	private Frame[] listeDesFrames;
 	public static BufferManager getInstance() {
-		if(INSTANCE == null) {
-			INSTANCE = new BufferManager();
-			
+		if(instance == null) {
+			instance = new BufferManager();
 		}
-		
-		return INSTANCE;
+		return instance;
 	}
 	
-	private BufferManager() {
+	public void init () {
 		listeDesFrames = new Frame[DBParams.frameCount];
-		time =0;
+		time =0;  
 		for(int i=0;i<DBParams.frameCount;i++) {
 			listeDesFrames[i] = new Frame();
 		}
+	}
+	private BufferManager() {
 	}
 public ByteBuffer getPage(PageId PID) throws IOException {
 		
