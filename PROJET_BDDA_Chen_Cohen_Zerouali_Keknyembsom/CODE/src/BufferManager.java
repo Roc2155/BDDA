@@ -21,6 +21,11 @@ public class BufferManager {
 	}
 	private BufferManager() {
 	}
+	
+	 public void finish() { //pas util pour l'instant
+		   
+	   }
+	 
 public ByteBuffer getPage(PageId PID) throws IOException {
 		
 		ByteBuffer b = ByteBuffer.allocate(DBParams.pageSize);
@@ -103,6 +108,9 @@ public ByteBuffer getPage(PageId PID) throws IOException {
 	public Frame[] getFrame() {
 		return listeDesFrames;
 	}
+	
+	
+	
 	
 	
 }
