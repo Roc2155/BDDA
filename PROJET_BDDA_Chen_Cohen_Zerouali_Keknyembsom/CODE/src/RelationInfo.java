@@ -7,12 +7,14 @@ public class RelationInfo implements Serializable
     private String nomRelation;
     private int nbrCol;
     private List<ColInfo> list;
+    private PageId headerPageId;
 
-    public RelationInfo(String nomRelation, int nbrCol)
+    public RelationInfo(String nomRelation, int nbrCol, PageId headerPageId)
     {
         this.nomRelation = nomRelation.toLowerCase();
         this.nbrCol = nbrCol;
         this.list = new ArrayList<>(this.nbrCol);
+        this.setHeaderPageId(headerPageId);;
     }
 
     public void addRelaInfo(String nomType,String nomCol)
@@ -89,4 +91,12 @@ public class RelationInfo implements Serializable
     public List<ColInfo> getList(){
         return list;
     }
+
+	public PageId getHeaderPageId() {
+		return headerPageId;
+	}
+
+	public void setHeaderPageId(PageId headerPageId) {
+		this.headerPageId = headerPageId;
+	}
 }

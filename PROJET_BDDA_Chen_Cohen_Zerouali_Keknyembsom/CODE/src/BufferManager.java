@@ -34,7 +34,7 @@ public ByteBuffer getPage(PageId PID) throws IOException {
 		DiskManager disk = DiskManager.getLeDiskManager();
 		for (int i = 0; i < cases; i++) {
 			if (listeDesFrames[i].getPID() != null) {
-				if (listeDesFrames[i].getPID() == PID) {
+				if (listeDesFrames[i].getPID().compareTo(PID)) {
 					listeDesFrames[i].setPin_count(listeDesFrames[i].getPin_count() + 1);
 
 					return listeDesFrames[i].getBuff();
