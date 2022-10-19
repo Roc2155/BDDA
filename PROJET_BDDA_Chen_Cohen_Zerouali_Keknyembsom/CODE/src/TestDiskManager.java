@@ -80,8 +80,8 @@ public class TestDiskManager {
 
   public static void main (String [] args){
 	  DBParams.DBPath = args[0];
-	  DBParams.pageSize = 2; //On aura 3 pages : 0, 1, 2
-	  DBParams.maxPagesPerFile = 4;
+	  DBParams.pageSize = 5;
+	  DBParams.maxPagesPerFile = 5; //On aura max 5 pages : 0, 1, 2, 3, 4
 	  DBParams.frameCount = 2;
 
     PageId pageId = new PageId(2, 1);
