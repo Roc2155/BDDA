@@ -50,7 +50,7 @@ public ByteBuffer getPage(PageId PID) throws IOException {
 				return listeDesFrames[i].getBuff();
 			}
 		}
-		
+		//A partir de làà on considère la liste comme pleine
 		int cpt = listeDesFrames[0].getTemps_free();
 		
 		
