@@ -64,6 +64,7 @@ public ByteBuffer getPage(PageId PID) throws IOException {
 			listeDesFrames[j].setPin_count(listeDesFrames[j].getPin_count() + 1);
 			disk.ReadPage(PID);
 			listeDesFrames[j].setBuff(b);
+			listeDesFrames[j].setPID(PID);
 			return listeDesFrames[j].getBuff();
 
 		}
@@ -72,6 +73,7 @@ public ByteBuffer getPage(PageId PID) throws IOException {
 			listeDesFrames[j].setPin_count(listeDesFrames[j].getPin_count() + 1);
 			disk.ReadPage(PID);
 			listeDesFrames[j].setBuff(b);
+			listeDesFrames[j].setPID(PID);
 			return listeDesFrames[j].getBuff();
 		}
 		System.out.println("fin");
