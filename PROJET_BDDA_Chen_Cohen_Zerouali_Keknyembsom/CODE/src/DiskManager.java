@@ -115,7 +115,7 @@ public class DiskManager {
                 String n = "F" + fichier + ".bdda";
                 File file = new File(DBParams.DBPath + "/" + n);
                 RandomAccessFile randomaccessfile = new RandomAccessFile(file, "rw");
-                randomaccessfile.seek(pageId.getPageIdx());
+                randomaccessfile.seek(pageId.getPageIdx()*DBParams.pageSize);
                 randomaccessfile.write(buff.array());
 
 

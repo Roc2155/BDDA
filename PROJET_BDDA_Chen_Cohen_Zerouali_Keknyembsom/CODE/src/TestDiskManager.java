@@ -86,6 +86,7 @@ public class TestDiskManager {
 
     PageId pageId = new PageId(2, 1);
     PageId pageId1 = new PageId(0, 1);
+    PageId pageId2 = new PageId(0, 2);
     ByteBuffer buff = ByteBuffer.wrap("test".getBytes()); //On convertie la chaine de caractère en tableau binaire qu'on met dans un tampon
 
     try {
@@ -107,7 +108,11 @@ public class TestDiskManager {
     //Résultat attendu : écriture avec succès car 1er fichier créé avec les pages 0, 1, 2
     TestLecturePage(pageId1);//Test : lecture sur la page 1 du fichier 0
     //Résultat attendu : lecture avec succès
-    TestDeallocPage(new PageId(0, 2));
+
+    TestEcriturePage(pageId2, buff); //Test : écriture du mot 'test' sur la page 1 du fichier 0
+    //Résultat attendu : écriture avec succès car 1er fichier créé avec les pages 0, 1, 2
+
+    //TestDeallocPage(new PageId(0, 2));
   }
 
 
