@@ -36,7 +36,7 @@ public ByteBuffer getPage(PageId PID) throws IOException {
 			if (listeDesFrames[i].getPID() != null) {
 				if (listeDesFrames[i].getPID().compareTo(PID)) {
 					listeDesFrames[i].setPin_count(listeDesFrames[i].getPin_count() + 1);
-					System.out.print(listeDesFrames[i].getBuff());
+					System.out.print(listeDesFrames[i].getBuff());//Special test
 					return listeDesFrames[i].getBuff();
 				}
 			}
