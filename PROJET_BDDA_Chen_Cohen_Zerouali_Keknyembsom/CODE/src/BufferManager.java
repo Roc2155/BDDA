@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class BufferManager {
-	private static BufferManager instance; 
+	private static BufferManager instance;
 	private int time;
 	private Frame[] listeDesFrames;
 	public static BufferManager getInstance() {
@@ -11,23 +11,23 @@ public class BufferManager {
 		}
 		return instance;
 	}
-	
+
 	public void init () {
 		listeDesFrames = new Frame[DBParams.frameCount];
-		time =0;  
+		time =0;
 		for(int i=0;i<DBParams.frameCount;i++) {
 			listeDesFrames[i] = new Frame();
 		}
 	}
 	private BufferManager() {
 	}
-	
+
 	 public void finish() { //pas util pour l'instant
-		   
+
 	   }
-	 
+
 public ByteBuffer getPage(PageId PID) throws IOException {
-		
+
 		ByteBuffer b = ByteBuffer.allocate(DBParams.pageSize);
 		int cases = DBParams.frameCount;
 		int j = 0;
@@ -52,14 +52,15 @@ public ByteBuffer getPage(PageId PID) throws IOException {
 		}
 		//A partir de làà on considère la liste comme pleine
 		int cpt = listeDesFrames[0].getTemps_free();
-		
-		
+
+
 		for (int i = 1; i < cases; i++) {
 			if (cpt > listeDesFrames[i].getTemps_free()) {
 				cpt = listeDesFrames[i].getTemps_free();
 				j=i;
 			}
 		}
+		j-=1;
 		if(listeDesFrames[j].getPin_count()==0 && listeDesFrames[j].getDirty()==0) {
 			listeDesFrames[j].setPin_count(listeDesFrames[j].getPin_count() + 1);
 			disk.ReadPage(PID);
@@ -111,9 +112,9 @@ public ByteBuffer getPage(PageId PID) throws IOException {
 	public Frame[] getFrame() {
 		return listeDesFrames;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }

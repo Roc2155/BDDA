@@ -57,12 +57,6 @@ public class TestBufferManager {
 			BufferManager.getInstance().getPage(new PageId(0, 4));
 			System.out.println("dirty flag de la page (0, 4) : " + BufferManager.getInstance().getFrame()[4].getDirty());
 			System.out.println("pin_count de la page (0, 4) : " + BufferManager.getInstance().getFrame()[4].getPin_count());
-			/*
-			System.out.print("GET(1, 0) : ");
-			BufferManager.getInstance().getPage(new PageId(1, 0));
-			System.out.println("dirty flag de la page (1, 0) : " + BufferManager.getInstance().getFrame()[5].getDirty());
-			System.out.println("pin_count de la page (1, 0) : " + BufferManager.getInstance().getFrame()[5].getPin_count());
-			*/
 
 			System.out.println("[1] : " + BufferManager.getInstance().getFrame()[1].getPID());
 			System.out.println(BufferManager.getInstance().getFrame().length);
