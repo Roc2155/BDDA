@@ -51,7 +51,7 @@ public class TestBufferManager {
 		}
 	}
 	public static void main(String [] args) {
-		DBParams.DBPath = args[0];
+	DBParams.DBPath = args[0];
     DBParams.pageSize = 5;
     DBParams.maxPagesPerFile = 5;
     DBParams.frameCount = 5;
