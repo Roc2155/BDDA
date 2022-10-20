@@ -74,6 +74,7 @@ public ByteBuffer getPage(PageId PID) throws IOException {
 			listeDesFrames[j].setBuff(b);
 			return listeDesFrames[j].getBuff();
 		}
+		System.out.println("fin");
 		return null;
 
 	}
