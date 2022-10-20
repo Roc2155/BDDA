@@ -26,4 +26,7 @@ public class PageId implements Serializable
         else
             return false;
     }
+    public String toString() {
+    	return ""+this.getFileIdx()+"FileID"+this.getPageIdx()+"PID";
+    }
 }
