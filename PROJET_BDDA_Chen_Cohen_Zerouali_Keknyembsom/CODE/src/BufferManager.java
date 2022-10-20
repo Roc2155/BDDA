@@ -60,7 +60,9 @@ public ByteBuffer getPage(PageId PID) throws IOException {
 				j=i;
 			}
 		}
-		j-=1;
+		if(j!=0) {
+			j-=1;
+		}
 		if(listeDesFrames[j].getPin_count()==0 && listeDesFrames[j].getDirty()==0) {
 			listeDesFrames[j].setPin_count(listeDesFrames[j].getPin_count() + 1);
 			disk.ReadPage(PID);
