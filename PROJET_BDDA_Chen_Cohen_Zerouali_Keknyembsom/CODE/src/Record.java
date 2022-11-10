@@ -70,11 +70,6 @@ public class Record {
 
 	}
 
-
-
-
-
-
 	public RelationInfo getRelInfo() {
 		return relInfo;
 	}
@@ -92,5 +87,14 @@ public class Record {
 
 	public void setValues(String[] values) {
 		this.values = values;
+	}
+
+	public String toString() {
+		StringBuilder chaine = new StringBuilder("[");
+		for(int i=0; i<values.length; i++) {
+			chaine.append(values[i]+" ");
+		}
+		chaine.replace(chaine.length()-1, chaine.length(), "]");
+		return chaine.toString();
 	}
 }

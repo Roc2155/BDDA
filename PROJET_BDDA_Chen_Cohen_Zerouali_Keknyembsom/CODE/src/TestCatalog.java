@@ -4,6 +4,8 @@ public class TestCatalog {
 	public static RelationInfo createRelationInfo(PageId page) {
 		RelationInfo rel1 = new RelationInfo("Etudiant", 3, page);
 		rel1.addRelaInfo("VARCHAR", 15, "Nom");
+    rel1.addRelaInfo("VARCHAR", 15, "Prenom");
+    rel1.addRelaInfo("INTEGER", "Age");
 		return rel1;
 	}
 
@@ -27,10 +29,18 @@ public class TestCatalog {
 			System.out.println("HeaderPage de la relation " + rel1.getNomRelation() + " : " + rel1.getHeaderPageId());
 			System.out.println("Nombre de colonne de la relation " + rel1.getNomRelation() + " : " + rel1.getNbrCol());
 
-			BufferManager.getInstance().getPage(page);
+      System.out.println("Liste : " + rel1.getList());
 
-			Record r1 = createRecord(rel1);
+      System.out.println("Info de la page : ");
+      BufferManager.getInstance().getPage(page);
 
+      Record r1 = createRecord(rel1);
+      System.out.println("Info du record : " + r1.getRelInfo());
+      System.out.println("Valeur du record : " + r1.getValues());
+      String[] tuple1 = {"Cohen", "Rahel", "20"};
+      r1.setValues(tuple1);
+      System.out.println("Valeur du record après définition du record: ");
+      System.out.println(r1.toString());
 
 		}catch(IOException e) {
 			e.printStackTrace();
