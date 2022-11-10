@@ -38,16 +38,9 @@ public class TestCatalog {
 			System.out.println("HeaderPage de la relation " + rel1.getNomRelation() + " : " + rel1.getHeaderPageId());
 			System.out.println("Nombre de colonne de la relation " + rel1.getNomRelation() + " : " + rel1.getNbrCol());
 
-<<<<<<< HEAD
+
       System.out.println("Liste : " + rel1.getInfoCol());
-=======
-      System.out.println("Liste des caractéristiques des colonnes : ");
-      for(int i=0; i<rel1.getNbrCol(); i++) {
-        System.out.print(rel1.getList().get(i).getNom() + ": ");
-        System.out.print(rel1.getList().get(i).getType() + " ");
-        System.out.println("(" + rel1.getList().get(i).getTaille() + ")");
-      }
->>>>>>> 869c12f3dae8617e70ff328cd6574c41f91ee759
+
 
       System.out.println("Info de la page : ");
       BufferManager.getInstance().getPage(page);
@@ -66,10 +59,10 @@ public class TestCatalog {
       ByteBuffer buffNom = ByteBuffer.wrap("Zerouali".getBytes());
       ByteBuffer buffPre = ByteBuffer.wrap("Faycal".getBytes());
       ByteBuffer buffNum = ByteBuffer.wrap("1".getBytes());
+      
       r1.writeToBuffer(buffNom, 1);
       r1.writeToBuffer(buffPre, 1+buffNom.capacity());
       r1.writeToBuffer(buffNum, 1+buffNom.capacity()+buffPre.capacity());
-      r1.readFromBuffer(buffPre, buffNom.capacity());
 
 		}catch(IOException e) {
 			e.printStackTrace();
