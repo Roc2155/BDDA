@@ -1,12 +1,20 @@
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 public class TestCatalog {
 	public static RelationInfo createRelationInfo(PageId page) {
-		RelationInfo rel1 = new RelationInfo("Etudiant", 3, page);
-		rel1.addRelaInfo("VARCHAR", 15, "Nom");
-    rel1.addRelaInfo("VARCHAR", 15, "Prenom");
-    rel1.addRelaInfo("INTEGER", "Age");
+		
+		ColInfo col1 = new ColInfo("Nom","VARCHAR");
+		ColInfo col2 = new ColInfo("Prenom","VARCHAR");
+		ColInfo col3 = new ColInfo("Age","INTEGER");
+		ArrayList<ColInfo> listeCollones = new ArrayList<ColInfo>();
+		listeCollones.add(col1);
+		listeCollones.add(col2);
+		listeCollones.add(col3);
+		
+		RelationInfo rel1 = new RelationInfo("Etudiant", 3, listeCollones, page);
+		
 		return rel1;
 	}
 
@@ -30,7 +38,7 @@ public class TestCatalog {
 			System.out.println("HeaderPage de la relation " + rel1.getNomRelation() + " : " + rel1.getHeaderPageId());
 			System.out.println("Nombre de colonne de la relation " + rel1.getNomRelation() + " : " + rel1.getNbrCol());
 
-      System.out.println("Liste : " + rel1.getList());
+      System.out.println("Liste : " + rel1.getInfoCol());
 
       System.out.println("Info de la page : ");
       BufferManager.getInstance().getPage(page);
@@ -38,8 +46,10 @@ public class TestCatalog {
       Record r1 = createRecord(rel1);
       System.out.println("Info du record : " + r1.getRelInfo());
       System.out.println("Valeur du record : " + r1.getValues());
-      String[] tuple1 = {"Cohen", "Rahel", "20"};
-      r1.setValues(tuple1);
+      
+      r1.getValues().add("Cohen");
+      r1.getValues().add("Rahel");
+      r1.getValues().add("20");
       System.out.println("Valeur du record après définition du record: ");
       System.out.println(r1.toString());
 

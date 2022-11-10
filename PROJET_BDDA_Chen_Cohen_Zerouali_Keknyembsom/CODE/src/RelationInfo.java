@@ -1,102 +1,63 @@
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
-public class RelationInfo implements Serializable
-{
-    private String nomRelation;
-    private int nbrCol;
-    private List<ColInfo> list;
+public class RelationInfo implements Serializable {
+    
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String nomRelation;
+    private int nbColonnes;
+    private ArrayList<ColInfo> infoColonne;
     private PageId headerPageId;
 
-    public RelationInfo(String nomRelation, int nbrCol, PageId headerPageId)
-    {
-        this.nomRelation = nomRelation.toLowerCase();
-        this.nbrCol = nbrCol;
-        this.list = new ArrayList<>(this.nbrCol);
-        this.setHeaderPageId(headerPageId);;
+    public String toString() {
+        
+        StringBuffer sb = new StringBuffer("nom relation : " + this.nomRelation +  "\nnbColonnes " + this.nbColonnes +"\n"+ getInfoCol());
+        return sb.toString();
     }
-
-    public void addRelaInfo(String nomType,String nomCol)
-    {
-        if (list.size() < nbrCol) {
-            Type type = null;
-            String nom = nomType.toUpperCase();
-            if (nom.equals("INTEGER"))
-                type = new Type("INTEGER", 4);
-            else if (nom.equals("REAL"))
-                type = new Type("REAL", 4);
-            try {
-                if (type != null)
-                    list.add(new ColInfo(type , nomCol));
-                else
-                    throw new RuntimeException("Erreur initialisation coloneInfo");
-            } catch (Exception e) {
-                System.out.println("Erreur initialisation coloneInfo");
-
-            }
-        }
-        else
-            System.out.println("Limite de colone atteint dans la relation");
+    public ArrayList<ColInfo> getInfoColonne() {
+        return infoColonne;
     }
-    public void addRelaInfo(String nomType,int taille ,String nomCol)
-    {
-        if (list.size() < nbrCol) {
-            Type type = null;
-            String nom = nomType.toUpperCase();
-            if (nom.equals("VARCHAR"))
-                type = new Type("VARCHAR", taille);
-            else if ((nom.equals("REAL"))||(nom.equals("INTEGER")))
-            {
-                addRelaInfo(nomType, nomCol);
-                System.out.println("Mauvaise configuration mais élément ajouté avec succès");
-                return;
-            }
-            try {
-                if (type != null)
-                    list.add(new ColInfo(type, nomCol));
-                else
-                    throw new RuntimeException("Erreur initialisation coloneInfo");
-            } catch (Exception e) {
-                System.out.println("Erreur initialisation coloneInfo");
-            }
-        }
-        else
-            System.out.println("Limite de colonne atteint dans la relation. la colonne "+nomCol+" ne peut pas être ajouté");
+    public RelationInfo(String nomRelation, int nbColonnes, ArrayList<ColInfo> a){
+        this.nomRelation= nomRelation;
+        this.nbColonnes= nbColonnes;
+        this.infoColonne= a;
     }
-
-    public void removeColRelaInfo(String nomCol)
-    {
-        int i = list.size();
-        for (ColInfo colInfo : list)
-        {
-            if (colInfo.getNom().equals(nomCol)) {
-                list.remove(colInfo);
-                break;
-            }
+    public void setInfoColonne(ArrayList<ColInfo> infoColonne) {
+        this.infoColonne = infoColonne;
+    }
+    public RelationInfo(String nomRelation, int nbColonnes, ArrayList<ColInfo> a, PageId pId){
+        this.nomRelation= nomRelation;
+        this.nbColonnes= nbColonnes;
+        this.infoColonne= a;
+        this.headerPageId=pId;
+    }
+   public String getInfoCol() {
+        StringBuffer cI = new StringBuffer();
+      
+        for(ColInfo c : infoColonne) {
+            cI.append("\nLe nom de la relation " + nomRelation + " Type: " + c.getType() + " Nom : " + c.getNom()) ;
         }
-        if (i != list.size())
-            System.out.println("Colonne "+nomCol+" retiré avec succès.");
-        else
-            System.out.println(nomCol+" n'existe pas dans la liste.");
+        return cI.toString();
+    }
+    
+    public void afficher() {
+        System.out.println(toString());
     }
     public String getNomRelation() {
         return nomRelation;
     }
-
     public int getNbrCol() {
-        return nbrCol;
+        return nbColonnes;
     }
-
-    public List<ColInfo> getList(){
-        return list;
+    public PageId getHeaderPageId() {
+        return headerPageId;
     }
+    
+    
 
-	public PageId getHeaderPageId() {
-		return headerPageId;
-	}
 
-	public void setHeaderPageId(PageId headerPageId) {
-		this.headerPageId = headerPageId;
-	}
 }

@@ -1,100 +1,152 @@
 import java.nio.ByteBuffer;
-
+import java.util.ArrayList;
 
 public class Record {
+    private RelationInfo relInfo;
+    public ArrayList<String> values;
+    public int sizeValeur;
+    public RecordId rid;
 
-	private RelationInfo relInfo;
-	private String[] values;
+    public ArrayList<String> getValues() {
+    	return this.values;
+    }
+    public Record(RelationInfo relation, ArrayList<String> values){
+        this.relInfo=relation;
+        this.values=values;
+    }
+    public Record(RelationInfo relation) {
+        this.relInfo = relation;
+        values = new ArrayList<>();
+        sizeValeur=0;
+    }
 
+    public void setRelInfo(RelationInfo relInfo) {
+        this.relInfo = relInfo;
+    }
 
-	public Record(RelationInfo rel) {
-		this.setRelInfo(rel);
-	}
-
-
-	public void writeToBuffer(ByteBuffer buff, int position) {
-		buff.position(position);
-		for(int i=0;i<=relInfo.getNbrCol();i++) {
-			String values_type = relInfo.getList().get(i).getType();
-			String[] tab_check = values_type.split("VARCHAR");
-
-			if(values_type == "INTEGER") {
-				buff.putInt(Integer.parseInt(values[i]));
-			}
-
-			if(values_type == "REAL") {
-				buff.putFloat(Float.parseFloat(values[i]));
-			}
-
-			if(tab_check[0] == "VARCHAR") {
-				for(int j=0;j<= Integer.parseInt(tab_check[1]);j++ ) {//On convertit en int la parenthese de varchar pour savoir le nombre de repet
-					String[] sp = values[i].split("");
-					for(int z=0;z<=sp.length;z++) {
-						buff.putChar(sp[z].charAt(0));
-					}
-
-				}
-			}
-
-		}
-
-	}
-
-
-	public void readFromBuffer(ByteBuffer buff,int position) {
-		buff.position(position);
-		for(int i=0;i<=relInfo.getNbrCol();i++) {
-			String values_type = relInfo.getList().get(i).getType();
-			String[] tab_check = values_type.split("VARCHAR");
-
-			if(values_type == "INTEGER") {
-				values[i] = String.valueOf(buff.getInt());
-
-			}
-
-			if(values_type == "REAL") {
-				values[i] = String.valueOf(buff.getFloat());
+    public String toString() {
+    	StringBuffer sb = new StringBuffer();
+    	
+    	for(int i=0; i<values.size()/relInfo.getNbrCol();i++) {
+    		int tmp=0;
+    		for(int j=0; j<this.relInfo.getNbrCol();j++) {
+    			sb.append(values.get(tmp)+" ");
+    			tmp++;
+    		}
+    		sb.append("\n");
+    	}
+    	return sb.toString();
+    }
+    public RelationInfo getRelInfo() {
+        return relInfo;
+    }
 
 
-			}
+   
+    public void writeToBuffer(ByteBuffer buff, int pos) {
+        String type;
+        int tmpInt;
+        float tmpFloat;
+        int  k = 0;
 
-			if(tab_check[0] == "VARCHAR") {
-				StringBuffer sb = new StringBuffer();
-				for(int j=0;j<= Integer.parseInt(tab_check[1]);j++ ) {
-					buff.getChar();
-					sb.append(buff.getChar());
-				}
-				values[i] = sb.toString();
-			}
-		}
+        for (int i = 0; i < values.size() && k <= relInfo.getNbrCol() * 4; i++, k += 4) {
+            type = relInfo.getInfoColonne().get(i).getType();
+            buff.position(k);
+            buff.putInt((1+relInfo.getNbrCol()) * 4  + sizeValeur);
+            buff.position(pos + sizeValeur);
+            switch (type) {
+                case "INTEGER":
+                    tmpInt = Integer.parseInt(values.get(i));
+                    buff.putInt(tmpInt);
+                    sizeValeur += 4;
+                    break;
 
-	}
+                case "REAL":
+                    tmpFloat = Float.parseFloat(values.get(i));
+                    buff.putFloat(tmpFloat);
+                    sizeValeur += 4;
+                    break;
+                default:
+                    for (int j = 0;   j < values.get(i).length() ; j++) {
+                        buff.putChar(values.get(i).charAt(j));
+                    }
+                    sizeValeur += 2 * values.get(i).length();
+                    break;
+            }
 
-	public RelationInfo getRelInfo() {
-		return relInfo;
-	}
+        }
+        buff.position(k);
+        buff.putInt((1+relInfo.getNbrCol()) * 4  + sizeValeur);
+        sizeValeur += (relInfo.getNbrCol()+1)*4;
+    }
+    public int getWrittenSize(){
+        return sizeValeur;
+    }
+
+    public void readFromBuffer(ByteBuffer buff, int pos) {
+        String type;
+        int tmpInt, tailleChaine, i, j,k;
+        float tmpFloat;
+        char[] tmpVarchar;
+        String chaine;
+        values.clear();
+        
+        
+        
+        for (k = 0; k < relInfo.getNbrCol(); k++) {
+            type = relInfo.getInfoColonne().get(k).getType();
+            buff.position(pos+recordSizeFromValues());
+            switch (type) {
+                case "INTEGER":
+                    tmpInt = buff.getInt();
+                    values.add(String.valueOf(tmpInt));
+                    break;
+
+                case "REAL":
+                    tmpFloat = buff.getFloat();
+                    values.add(String.valueOf(tmpFloat));
+                    break;
+
+                default:
+                    tailleChaine = buff.getInt((k+1)*4) - buff.getInt(k*4);
+                    tmpVarchar = new char[tailleChaine/2];
+                    for (i = pos+recordSizeFromValues(), j = 0; i < pos+recordSizeFromValues()+ tailleChaine ; i+=2, j++) {
+                        
+                        tmpVarchar[j] = buff.getChar(i);
+                    }
+                    chaine = new String(tmpVarchar);
+                    values.add(chaine);
+                    System.out.println(values.get(k).length());
+
+                    break;
+            }
 
 
-	public void setRelInfo(RelationInfo relInfo) {
-		this.relInfo = relInfo;
-	}
+        }
+
+    }
 
 
-	public String[] getValues() {
-		return values;
-	}
+   
+    public int recordSizeFromValues(){
+        String type;
+        int tailleChaine, writtenSize=0;
+        for(int i=0 ; i<values.size() ; i++){
+            type = relInfo.getInfoColonne().get(i).getType();
+            switch (type) {
+                case "INTEGER":
+                    writtenSize += 4;
+                    break;
+                case "REAL":
+                    writtenSize += 4;
+                    break;
+                default:
+                    tailleChaine = values.get(i).length();
+                    writtenSize +=  tailleChaine*2;
+                    break;
 
-
-	public void setValues(String[] values) {
-		this.values = values;
-	}
-
-	public String toString() {
-		StringBuilder chaine = new StringBuilder("[");
-		for(int i=0; i<values.length; i++) {
-			chaine.append(values[i]+" ");
-		}
-		chaine.replace(chaine.length()-1, chaine.length(), "]");
-		return chaine.toString();
-	}
+            }
+        }
+        return writtenSize;
+    }
 }
