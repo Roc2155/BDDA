@@ -4,12 +4,15 @@ import java.util.List;
 
 public class Catalog
 {
-    private static Catalog catalog = new Catalog();
+    private static Catalog catalog;
     private File svCatalog = new File(DBParams.DBPath+File.separator+"catalog.sv");
     private List<RelationInfo> list = new ArrayList<>();
     private Catalog(){
     }
     public static Catalog getCatalog(){
+        if (catalog==null){
+            catalog=new Catalog();
+        }
         return catalog;
     }
 
