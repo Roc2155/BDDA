@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public class TestCatalog {
 	public static RelationInfo createRelationInfo(PageId page) {
@@ -41,6 +42,15 @@ public class TestCatalog {
       r1.setValues(tuple1);
       System.out.println("Valeur du record après définition du record: ");
       System.out.println(r1.toString());
+
+      //Avec un buffer
+      ByteBuffer buffNom = ByteBuffer.wrap("Zerouali".getBytes());
+      ByteBuffer buffPre = ByteBuffer.wrap("Faycal".getBytes());
+      ByteBuffer buffNum = ByteBuffer.wrap("1".getBytes());
+      r1.writeToBuffer(buffNom, 0);
+      r1.writeToBuffer(buffPre, 0+buffNom.capacity());
+      r1.writeToBuffer(buffNum, 0+buffNom.capacity()+buffPre.capacity());
+      r1.readFromBuffer(buffPre, buffNom.capacity());
 
 		}catch(IOException e) {
 			e.printStackTrace();
