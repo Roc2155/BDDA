@@ -47,9 +47,9 @@ public class TestCatalog {
       ByteBuffer buffNom = ByteBuffer.wrap("Zerouali".getBytes());
       ByteBuffer buffPre = ByteBuffer.wrap("Faycal".getBytes());
       ByteBuffer buffNum = ByteBuffer.wrap("1".getBytes());
-      r1.writeToBuffer(buffNom, 0);
-      r1.writeToBuffer(buffPre, 0+buffNom.capacity());
-      r1.writeToBuffer(buffNum, 0+buffNom.capacity()+buffPre.capacity());
+      r1.writeToBuffer(buffNom, 1);
+      r1.writeToBuffer(buffPre, 1+buffNom.capacity());
+      r1.writeToBuffer(buffNum, 1+buffNom.capacity()+buffPre.capacity());
       r1.readFromBuffer(buffPre, buffNom.capacity());
 
 		}catch(IOException e) {
