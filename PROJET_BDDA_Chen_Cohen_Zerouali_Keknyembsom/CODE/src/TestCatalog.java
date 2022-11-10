@@ -30,7 +30,12 @@ public class TestCatalog {
 			System.out.println("HeaderPage de la relation " + rel1.getNomRelation() + " : " + rel1.getHeaderPageId());
 			System.out.println("Nombre de colonne de la relation " + rel1.getNomRelation() + " : " + rel1.getNbrCol());
 
-      System.out.println("Liste : " + rel1.getList());
+      System.out.println("Liste des caractéristiques des colonnes : ");
+      for(int i=0; i<rel1.getNbrCol(); i++) {
+        System.out.print(rel1.getList().get(i).getNom() + ": ");
+        System.out.print(rel1.getList().get(i).getType() + " ");
+        System.out.println("(" + rel1.getList().get(i).getTaille() + ")");
+      }
 
       System.out.println("Info de la page : ");
       BufferManager.getInstance().getPage(page);
