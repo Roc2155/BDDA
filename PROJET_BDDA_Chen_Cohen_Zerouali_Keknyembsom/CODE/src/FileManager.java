@@ -4,7 +4,10 @@ import java.nio.ByteBuffer;
 import java.util.EmptyStackException;
 
 public class FileManager {
+
     private static FileManager instance = null;
+    private int slotIdcpt = 0;
+
     public static final FileManager getInstance()
 	{
 		if (instance == null)
@@ -67,6 +70,7 @@ public class FileManager {
 
   public RecordId writeRecordToDataPage(Record record, PageId pageId) throws IOException {
     BufferManager bm = BufferManager.getInstance();
+    RecordId recordID = null;
     //Accès à la page
     //=> pin_count++
     try {
@@ -83,12 +87,15 @@ public class FileManager {
           randomaccessfile.write(buff.array());
         }
         randomaccessfile.close();
+        recordID = new RecordId(pageId, slotIdcpt);
+        slotIdcpt++;
       }catch (IOException e) {
         e.printStackTrace();
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
+    return recordID;
   }
 
     public void EcrirePageIdToBuff(PageId pageId, ByteBuffer buf, boolean first)
