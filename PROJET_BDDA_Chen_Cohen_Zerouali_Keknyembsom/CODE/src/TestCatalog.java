@@ -59,6 +59,7 @@ public class TestCatalog {
       ByteBuffer buffNom = ByteBuffer.wrap("Zerouali".getBytes());
       ByteBuffer buffPre = ByteBuffer.wrap("Faycal".getBytes());
       ByteBuffer buffNum = ByteBuffer.wrap("1".getBytes());
+      
 
       r1.writeToBuffer(buffNom, 1);
       r1.writeToBuffer(buffPre, 1+buffNom.capacity());
