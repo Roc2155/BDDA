@@ -54,14 +54,21 @@ public class TestCatalog {
       r1.getValues().add("20");
       System.out.println("Valeur du record après définition du record: ");
       System.out.println(r1.toString());
-
+      System.out.println("taille du record : "+r1.getWrittenSize());
+      ByteBuffer bb = ByteBuffer.allocate(r1.getWrittenSize());
+      r1.writeToBuffer(bb, 0);
+      System.out.println("yyyy");
+      for (int i = 0;i< r1.getWrittenSize();i++) {
+			System.out.print(bb.get()+" ");
+		}
+      
       //Avec un buffer
       ByteBuffer buffNom = ByteBuffer.wrap("Zerouali".getBytes());
       ByteBuffer buffPre = ByteBuffer.wrap("Faycal".getBytes());
       ByteBuffer buffNum = ByteBuffer.wrap("1".getBytes());
       
 
-      r1.writeToBuffer(buffNom, 1);
+      r1.writeToBuffer(buffNom, 0);
       r1.writeToBuffer(buffPre, 1+buffNom.capacity());
       r1.writeToBuffer(buffNum, 1+buffNom.capacity()+buffPre.capacity());
 

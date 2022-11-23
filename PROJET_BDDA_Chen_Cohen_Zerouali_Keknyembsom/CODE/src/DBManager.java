@@ -3,7 +3,7 @@ import java.util.List;
 import java.io.*;
 import java.util.StringTokenizer;
 
-//Point d'entrée du SGBD
+//Point d'entrÃ©e du SGBD
 public class DBManager {
     private static DBManager leDBManager; 
 	
@@ -16,31 +16,31 @@ public class DBManager {
 	}
 	
     public void Init(){
-    	//Appel à la méthode init de catalog + gestion des exceptions
+    	//Appel Ã  la mÃ©thode init de catalog + gestion des exceptions
         try {
         	Catalog.getCatalog().init();
         } catch (FileNotFoundException e){
-        	System.out.println(" Le fichier n'a pas été trouvé ");
+        	System.out.println(" Le fichier n'a pas Ã©tÃ© trouvÃ© ");
 			e.printStackTrace();
         }catch (IOException e) {
         	System.out.println(" Erreur E/S ");
 			e.printStackTrace();
         }
    
-        //Appel de la méthode init de BufferManager
+        //Appel de la mÃ©thode init de BufferManager
         BufferManager.getInstance().init();
        
     }
    
     public void Finish() {
-    	//Appel de la méthode finish de DiskManager
+    	//Appel de la mÃ©thode finish de DiskManager
     	try {
     		Catalog.getCatalog().finish();
     	}catch(IOException e) {
     		e.printStackTrace();
     	}
 
-    	//Appel de la méthode FlushAll de BufferManager
+    	//Appel de la mÃ©thode FlushAll de BufferManager
     	
     	try {
         	BufferManager.getInstance().FlushAll();
@@ -50,7 +50,7 @@ public class DBManager {
     }
     
     
-    //A compléter + ajouter la gestion des exceptions
+    //A complÃ©ter + ajouter la gestion des exceptions
     public void ProcessCommand(String ch){
         StringTokenizer st =new StringTokenizer(ch);
         String deb=st.nextToken();
