@@ -22,8 +22,8 @@ public class RelationInfo {
 		return this.nbcolonnes;
 	}
 
-	public String getHeaderPageId() {
-		return headerPage.toString();
+	public PageId getHeaderPageId() {
+		return headerPage;
 	}
 
 	public ArrayList<ColInfo> getListe() {

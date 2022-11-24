@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.EmptyStackException;
+import java.util.List;
+import java.util.ArrayList;
 
 public class FileManager {
 
@@ -26,7 +28,7 @@ public class FileManager {
 		ByteBuffer buf = bm.getPage(pageId);
 
 		EcrirePageIdToBuff(new PageId(-1, 0), buf, true);
-		EcrirePageIdToBuff(new PageId(-1, 0), buf, false);
+		//EcrirePageIdToBuff(new PageId(-1, 0), buf, false);
 
 		bm.FreePage(pageId, 1);
 
@@ -98,6 +100,31 @@ public class FileManager {
       e.printStackTrace();
     }
     return recordID;
+  }
+
+  public List<PageId> getAllDataPages(RelationInfo relInfo) {
+	  List<PageId> listeDePageIds = new ArrayList<PageId>();
+	  PageId headerPageId = relInfo.getHeaderPageId();
+	  BufferManager bufferManager = BufferManager.getInstance();
+	  bufferManager.init();
+	  ByteBuffer buff;
+	  System.out.println(headerPageId.toString());
+	  try {
+
+		  buff = bufferManager.getPage(headerPageId);
+		  for(int i=0; i<buff.array().length; i++) {
+			  System.out.println(buff.array()[i]);
+		  }
+
+		 //System.out.println("f");
+		 //System.out.println(bufferManager.getPage(headerPageId));
+	  }
+	  catch(IOException e) {
+		  e.printStackTrace();
+	  }
+	  bufferManager.FreePage(headerPageId, 0);
+
+	  return listeDePageIds;
   }
 
     public void EcrirePageIdToBuff(PageId pageId, ByteBuffer buf, boolean first)
