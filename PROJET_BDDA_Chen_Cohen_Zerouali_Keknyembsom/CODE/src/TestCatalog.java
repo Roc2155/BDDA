@@ -7,7 +7,7 @@ public class TestCatalog {
 
 		ColInfo col1 = new ColInfo("Nom","VARCHAR");
 		ColInfo col2 = new ColInfo("Prenom","VARCHAR");
-		ColInfo col3 = new ColInfo("Age","INTEGER");
+		ColInfo col3 = new ColInfo("N°","INTEGER");
 		ArrayList<ColInfo> listeColonnes = new ArrayList<ColInfo>();
 		listeColonnes.add(col1);
 		listeColonnes.add(col2);
@@ -51,7 +51,7 @@ public class TestCatalog {
 
       r1.getValues().add("Cohen");
       r1.getValues().add("Rahel");
-      r1.getValues().add("20");
+      r1.getValues().add("1");
       System.out.println("Valeur du record après définition du record: ");
       System.out.println(r1.toString());
       System.out.println("taille du record : "+r1.getWrittenSize());
@@ -65,7 +65,7 @@ public class TestCatalog {
       //Avec un buffer
       ByteBuffer buffNom = ByteBuffer.wrap("Zerouali".getBytes());
       ByteBuffer buffPre = ByteBuffer.wrap("Faycal".getBytes());
-      ByteBuffer buffNum = ByteBuffer.wrap("1".getBytes());
+      ByteBuffer buffNum = ByteBuffer.wrap("2".getBytes());
 
 
       r1.writeToBuffer(buffNom, 0);
