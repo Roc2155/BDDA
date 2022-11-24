@@ -46,7 +46,7 @@ public class TestCatalog {
       BufferManager.getInstance().getPage(page);
 
       Record r1 = createRecord(rel1);
-      System.out.println("Info du record : " + r1.getListe());
+      System.out.println("Info du record : " + r1.getRelInfo());
       System.out.println("Valeur du record : " + r1.getValues());
 
       r1.getValues().add("Cohen");
