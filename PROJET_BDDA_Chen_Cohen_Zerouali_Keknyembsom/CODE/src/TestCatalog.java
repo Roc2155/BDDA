@@ -13,7 +13,7 @@ public class TestCatalog {
 		listeColonnes.add(col2);
 		listeColonnes.add(col3);
 
-		RelationInfo rel1 = new RelationInfo("Etudiant", 3, listeColonnes, page);
+		RelationInfo rel1 = new RelationInfo("Etudiant", listeColonnes, page);
 
 		return rel1;
 	}
@@ -35,18 +35,18 @@ public class TestCatalog {
 		try {
 			Catalog.getCatalog().init();
 			RelationInfo rel1 = createRelationInfo(page);
-			System.out.println("HeaderPage de la relation " + rel1.getNomRelation() + " : " + rel1.getHeaderPageId());
-			System.out.println("Nombre de colonne de la relation " + rel1.getNomRelation() + " : " + rel1.getNbrCol());
+			System.out.println("HeaderPage de la relation " + rel1.getNom() + " : " + rel1.getHeaderPageId());
+			System.out.println("Nombre de colonne de la relation " + rel1.getNom() + " : " + rel1.getNb());
 
 
-      System.out.println("Liste : " + rel1.getInfoCol());
+      System.out.println("Liste : " + rel1.getListe());
 
 
       System.out.println("Info de la page : ");
       BufferManager.getInstance().getPage(page);
 
       Record r1 = createRecord(rel1);
-      System.out.println("Info du record : " + r1.getRelInfo());
+      System.out.println("Info du record : " + r1.getListe());
       System.out.println("Valeur du record : " + r1.getValues());
 
       r1.getValues().add("Cohen");
@@ -61,12 +61,12 @@ public class TestCatalog {
       for (int i = 0;i< r1.getWrittenSize();i++) {
 			System.out.print(bb.get()+" ");
 		}
-      
+
       //Avec un buffer
       ByteBuffer buffNom = ByteBuffer.wrap("Zerouali".getBytes());
       ByteBuffer buffPre = ByteBuffer.wrap("Faycal".getBytes());
       ByteBuffer buffNum = ByteBuffer.wrap("1".getBytes());
-      
+
 
       r1.writeToBuffer(buffNom, 0);
       r1.writeToBuffer(buffPre, 1+buffNom.capacity());

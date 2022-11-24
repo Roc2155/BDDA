@@ -61,7 +61,7 @@ public class Catalog
 
     public RelationInfo getRelationInfo(String nom) {
         for (RelationInfo relationInfo : list) {
-            if (relationInfo.getNomRelation().equals(nom))
+            if (relationInfo.getNom().equals(nom))
                 return relationInfo;
         }
         System.out.println("La relatation " + nom + " n'existe pas.");
