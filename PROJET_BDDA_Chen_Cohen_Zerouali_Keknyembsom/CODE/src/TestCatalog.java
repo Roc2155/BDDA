@@ -3,17 +3,17 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 public class TestCatalog {
-	public static RelationInfo createRelationInfo(PageId page) {
+	public static RelationInfo createRelationInfo(PageId headerPage) {
 
-		ColInfo col1 = new ColInfo("Nom","VARCHAR");
-		ColInfo col2 = new ColInfo("Prenom","VARCHAR");
+		ColInfo col1 = new ColInfo("Nom","VARCHAR(15)");
+		ColInfo col2 = new ColInfo("Prenom","VARCHAR(15)");
 		ColInfo col3 = new ColInfo("N°","INTEGER");
 		ArrayList<ColInfo> listeColonnes = new ArrayList<ColInfo>();
 		listeColonnes.add(col1);
 		listeColonnes.add(col2);
 		listeColonnes.add(col3);
 
-		RelationInfo rel1 = new RelationInfo("Etudiant", listeColonnes, page);
+		RelationInfo rel1 = new RelationInfo("Etudiant", listeColonnes, headerPage);
 
 		return rel1;
 	}
@@ -30,31 +30,29 @@ public class TestCatalog {
 
 		BufferManager.getInstance().init();
 
-		PageId page = new PageId(0, 3);
+		PageId headerPage = new PageId(0, 3);
 
 		try {
 			Catalog.getCatalog().init();
-			RelationInfo rel1 = createRelationInfo(page);
+			RelationInfo rel1 = createRelationInfo(headerPage);
 			System.out.println("HeaderPage de la relation " + rel1.getNom() + " : " + rel1.getHeaderPageId());
 			System.out.println("Nombre de colonne de la relation " + rel1.getNom() + " : " + rel1.getNb());
 
-
       System.out.println("Liste : " + rel1.getListe());
 
-
       System.out.println("Info de la page : ");
-      BufferManager.getInstance().getPage(page);
+      BufferManager.getInstance().getPage(headerPage);
 
       Record r1 = createRecord(rel1);
       System.out.println("Info du record : " + r1.getRelInfo());
       System.out.println("Valeur du record : " + r1.getValues());
 
-      r1.getValues().add("Cohen");
-      r1.getValues().add("Rahel");
-      r1.getValues().add("1");
+      r1.add("Cohen");
+      r1.add("Rahel");
+      r1.add("45");
       System.out.println("Valeur du record après définition du record: ");
       System.out.println(r1.getValues());
-			
+
       System.out.println("taille du record : "+r1.getWrittenSize());
       ByteBuffer bb = ByteBuffer.allocate(r1.getWrittenSize());
       r1.writeToBuffer(bb, 0);
@@ -62,7 +60,7 @@ public class TestCatalog {
       for (int i = 0;i< r1.getWrittenSize();i++) {
 			System.out.print(bb.get()+" ");
 		}
-
+/*
       //Avec un buffer
       ByteBuffer buffNom = ByteBuffer.wrap("Zerouali".getBytes());
       ByteBuffer buffPre = ByteBuffer.wrap("Faycal".getBytes());
@@ -72,7 +70,7 @@ public class TestCatalog {
       r1.writeToBuffer(buffNom, 0);
       r1.writeToBuffer(buffPre, 1+buffNom.capacity());
       r1.writeToBuffer(buffNum, 1+buffNom.capacity()+buffPre.capacity());
-
+*/
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
