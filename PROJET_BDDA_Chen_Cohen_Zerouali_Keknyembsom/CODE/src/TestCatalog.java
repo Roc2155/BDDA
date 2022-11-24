@@ -53,7 +53,8 @@ public class TestCatalog {
       r1.getValues().add("Rahel");
       r1.getValues().add("1");
       System.out.println("Valeur du record après définition du record: ");
-      System.out.println(r1.toString());
+      System.out.println(r1.getValues());
+			
       System.out.println("taille du record : "+r1.getWrittenSize());
       ByteBuffer bb = ByteBuffer.allocate(r1.getWrittenSize());
       r1.writeToBuffer(bb, 0);
