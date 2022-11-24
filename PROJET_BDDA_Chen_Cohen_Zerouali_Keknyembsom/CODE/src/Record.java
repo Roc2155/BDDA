@@ -5,13 +5,13 @@ import java.util.List;
 public class Record {
 	 private RelationInfo relInfo;
 	 private List<String> values;
-	 
+
 	 public Record(RelationInfo relInfo) {
 		 this.relInfo=relInfo;
 		 this.values=new ArrayList<String>();
 	 }
-	 
-	 
+
+
 	 public int getWrittenSize() {
 		 int res=0;
 		 ArrayList<ColInfo> colinf = relInfo.getListe();
@@ -30,40 +30,40 @@ public class Record {
 		 res+=4;
 		 return res;
 	 }
-	 
+
 	 public void writeToBuffer(ByteBuffer buff,int pos) {
-		 buff.position(pos); 										
+		 buff.position(pos);
 		 List<ColInfo> colinf = relInfo.getListe();
-		 int adresVal=pos+(relInfo.getNb()+1)*4;					
-		 int tmpPos=pos;										
-		 for (int i=0; i< values.size();i++) {						
+		 int adresVal=pos+(relInfo.getNb()+1)*4;
+		 int tmpPos=pos;
+		 for (int i=0; i< values.size();i++) {
 			 String type =colinf.get(i).getType();
 			 switch(colinf.get(i).getType()) {
-			 	case("INTEGER"):									
-			 		buff.putInt(tmpPos,adresVal);				
-			 		
-			 		tmpPos+=4;									
-			 		int valeur=Integer.parseInt(values.get(i));		
-			 		buff.putInt(adresVal,valeur);					
-			 		adresVal+=4;								
-			 		break;
-			 		
-			 	case("REAL"):									
+			 	case("INTEGER"):
 			 		buff.putInt(tmpPos,adresVal);
-			 		
+
+			 		tmpPos+=4;
+			 		int valeur=Integer.parseInt(values.get(i));
+			 		buff.putInt(adresVal,valeur);
+			 		adresVal+=4;
+			 		break;
+
+			 	case("REAL"):
+			 		buff.putInt(tmpPos,adresVal);
+
 			 		tmpPos+=4;
 		 			float val=Float.parseFloat(values.get(i));
 		 			buff.putFloat(adresVal, val);
 		 			adresVal+=4;
 		 			break;
-		 			
-			 	default:											
+
+			 	default:
 			 		int taillemem= Integer.parseInt(type.substring(8,type.length()-1));
 			 		buff.putInt(tmpPos,adresVal);
 			 		tmpPos+=4;
 			 		String mot =values.get(i);
-			 		int taillemot =mot.length();						
-			 		for(int y=0;y<taillemem;y++) {						
+			 		int taillemot =mot.length();
+			 		for(int y=0;y<taillemem;y++) {
 			 			if(taillemot>y) {
 			 				buff.putChar(adresVal,mot.charAt(y));
 			 			}else {
@@ -71,34 +71,34 @@ public class Record {
 			 			}
 			 			adresVal+=2;
 			 		}
-			 	
+
 			 }
 		 }
-		 buff.putInt(tmpPos,adresVal);							
+		 buff.putInt(tmpPos,adresVal);
 	 }
-	 
+
 	 public void readFromBuffer(ByteBuffer buff,int pos) {
 		 values.clear();
-		 buff.position(pos); 										
+		 buff.position(pos);
 		 ArrayList<ColInfo> colinf = relInfo.getListe();
-		 int tmpPos=pos;										
-		 
+		 int tmpPos=pos;
+
 		 for (int i=0; i< colinf.size();i++) {
 			 String type =colinf.get(i).getType();
 			 switch(type) {
-			 	case("INTEGER"):									
+			 	case("INTEGER"):
 			 		Integer valeur =buff.getInt(tmpPos);
 			 		values.add(valeur.toString());
 			 		tmpPos+=4;
 			 		break;
-			 		
-			 	case("REAL"):										
+
+			 	case("REAL"):
 		 			Float val=buff.getFloat(tmpPos);
 		 			values.add(val.toString());
 		 			tmpPos+=4;
 		 			break;
-		 			
-			 	default:										
+
+			 	default:
 			 		int adressdebut = buff.getInt(tmpPos);
 			 		int adressfin = buff.getInt(tmpPos+4);
 			 		int taille =adressfin - adressdebut;
@@ -108,13 +108,20 @@ public class Record {
 			 		}
 			 		values.add(sb.toString());
 			 		tmpPos+=4;
-			 		
+
 			 }
 		 }
 	 }
+
 	 public void add(String val) {
 		 values.add(val);
 	 }
-	 
-	 
+
+	 public RelationInfo getRelInfo() {
+	        return relInfo;
+	 }
+
+	 public List<String> getValues() {
+		 return values;
+	 }
 }
