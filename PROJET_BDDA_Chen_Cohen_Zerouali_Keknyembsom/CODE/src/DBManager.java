@@ -55,7 +55,7 @@ public class DBManager {
         StringTokenizer st =new StringTokenizer(ch);
         String deb=st.nextToken();
         switch (deb) {
-            case "CREATE":
+            case "CREATE ":
                 CreateTableCommand createTable = new CreateTableCommand(ch);
                 createTable.Execute();
                 break;
