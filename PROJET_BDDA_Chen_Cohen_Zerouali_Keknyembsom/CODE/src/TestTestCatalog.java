@@ -34,7 +34,7 @@ public class TestTestCatalog {
 		for (int i = 0;i< r.getWrittenSize();i++) {
 			System.out.print(bb.get()+" ");
 		}
-		
+		System.out.println();
 		r.readFromBuffer(bb, 0);
 		for (int i = 0;i< r.getWrittenSize();i++) {
 			System.out.print(bb.get()+" ");
@@ -44,6 +44,7 @@ public class TestTestCatalog {
 		for (int i=0;i<10;i++) {
 			System.out.print(bb.getChar(20+i*2));
 		}
+		
 		System.out.println();
 		for (int i=0;i<10;i++) {
 			System.out.print(bb.getChar(40+i*2));
