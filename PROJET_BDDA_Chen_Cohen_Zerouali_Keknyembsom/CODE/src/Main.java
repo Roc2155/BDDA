@@ -25,7 +25,8 @@ public class Main
 		sc.close();
     }
     private static void menu () {
-    	System.out.println("Entrez CREATE TABLE pour créer une table");
+    	System.out.println("Entrez la commande CREATE TABLE de la forme suivance : CREATE TABLE NomRelation (NomCol_1:TypeCol_1,NomCol_2:TypeCol_2, ...\n"
+    			+ "NomCol_NbCol:TypeCol_NbCol)");
     	//to do
     	
     }
