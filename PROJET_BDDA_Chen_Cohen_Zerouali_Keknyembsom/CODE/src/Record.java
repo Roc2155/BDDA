@@ -112,7 +112,27 @@ public class Record {
 			 }
 		 }
 	 }
+	 public int recordSizeFromValues(){
+	        String type;
+	        int tailleChaine, writtenSize=0;
+	        for(int i=0 ; i<values.size() ; i++){
+	            type = relInfo.getListe().get(i).getType();
+	            switch (type) {
+	                case "INTEGER":
+	                    writtenSize += 4;
+	                    break;
+	                case "REAL":
+	                    writtenSize += 4;
+	                    break;
+	                default:
+	                    tailleChaine = values.get(i).length();
+	                    writtenSize +=  tailleChaine*2;
+	                    break;
 
+	            }
+	        }
+	        return writtenSize+(1+relInfo.getNb()) * 4;
+	    }
 	 public void add(String val) {
 		 values.add(val);
 	 }

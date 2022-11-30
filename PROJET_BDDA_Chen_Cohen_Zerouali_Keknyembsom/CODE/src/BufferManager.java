@@ -115,6 +115,17 @@ public ByteBuffer getPage(PageId PID) throws IOException {
 		return listeDesFrames;
 	}
 
+	public void FreePage(PageId pageIdFile, boolean b) {
+		if(b) {
+			FreePage(pageIdFile,1);
+		}
+		else {
+			FreePage(pageIdFile,0);
+		}
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 

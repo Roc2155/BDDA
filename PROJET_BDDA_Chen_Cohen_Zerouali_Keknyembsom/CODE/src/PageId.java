@@ -11,7 +11,17 @@ public class PageId implements Serializable
         this.pageIdx = pageIdx;
     }
 
-    public int getFileIdx() {
+    public PageId() {
+		// TODO Auto-generated constructor stub
+	}
+    public void setFileIdx(int fileIdx) {
+    	this.fileIdx=fileIdx;
+    }
+    public void setPageIdx(int pageIdx) {
+    	this.fileIdx=pageIdx;
+    }
+
+	public int getFileIdx() {
         return this.fileIdx;
     }
 

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class FileManager {
 
     private static FileManager instance = null;
-    private int slotIdcpt = 0;
+    
 
     public static final FileManager getInstance()
 	{
@@ -18,136 +18,179 @@ public class FileManager {
 			instance = new FileManager();
 		return instance;
 	}
-    public PageId createNewHeaderPage() throws IOException
+    public PageId createNewHeaderPage() throws IOException {
+        PageId pageIdFile = DiskManager.getLeDiskManager().allocPage();
+        System.out.println("header page id "+pageIdFile.toString());
+        BufferManager.getInstance().init();
+        ByteBuffer bufferHeaderPage = BufferManager.getInstance().getPage(pageIdFile);
+        bufferHeaderPage.putInt(0, 0);
+        BufferManager.getInstance().FreePage(pageIdFile, true);
+        return pageIdFile;
+      }
+    public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws FileNotFoundException, EmptyStackException, IOException
 	{
-		DiskManager dm = DiskManager.getLeDiskManager();
-		BufferManager  bm = BufferManager.getInstance();
+    	PageId pageId = new PageId();
+        int j = 0;        
+        ByteBuffer bufferHeaderPage = BufferManager.getInstance().getPage(relInfo.getHeaderPageId());
+        
+      
+          for (int i = 12; i < bufferHeaderPage.capacity(); i += 12) {
+            if (bufferHeaderPage.getInt(i) >= sizeRecord) {
+              System.out.println("im here");
+              j = i - 8;
+              pageId.setFileIdx(bufferHeaderPage.getInt(j));
+              
+              j = i - 4;
+              pageId.setPageIdx(bufferHeaderPage.getInt(j));
+              BufferManager.getInstance().FreePage(relInfo.getHeaderPageId(), false);
+              return pageId;
+            }
+          }
+          BufferManager.getInstance().FreePage(relInfo.getHeaderPageId(), false);
+          
+          return FileManager.getInstance().addDataPage(relInfo);        
+       
+      }
+    public PageId addDataPage(RelationInfo relInfo) throws IOException {
+        
+        PageId pageId = DiskManager.getLeDiskManager().allocPage();
 
-		PageId pageId = dm.allocPage();
+        ByteBuffer bufferDataPage = BufferManager.getInstance().getPage(pageId);  
+        bufferDataPage.putInt((DBParams.pageSize) - 8, 0);
+        bufferDataPage.putInt((DBParams.pageSize) - 4, 0);
 
-		ByteBuffer buf = bm.getPage(pageId);
+        BufferManager.getInstance().FreePage(pageId, true);
 
-		EcrirePageIdToBuff(new PageId(-1, 0), buf, true);
-		//EcrirePageIdToBuff(new PageId(-1, 0), buf, false);
+      
 
-		bm.FreePage(pageId, 1);
-
-		return pageId;
-	}
-
-    public PageId addDataPage(RelationInfo relInfo) throws IOException
-	{
-		DiskManager dm = DiskManager.getLeDiskManager();
-		BufferManager bm = BufferManager.getInstance();
-
-		PageId pageId = dm.allocPage();
-
-		ByteBuffer bufHeaderPage = bm.getPage(relInfo.getHeaderPageId());
-		ByteBuffer buf = bm.getPage(pageId);
-		PageId nextPageId = LirePageIdToBuff(bufHeaderPage, true);
-
-		EcrirePageIdToBuff(pageId, bufHeaderPage, true);
-		EcrirePageIdToBuff(relInfo.getHeaderPageId(), buf, true);
-		EcrirePageIdToBuff(nextPageId, buf, false);
-
-		bm.FreePage(pageId, 1);
-		bm.FreePage(relInfo.getHeaderPageId(), 1);
-
-		return pageId;
-	}
-    public PageId getFreeDataPageId(RelationInfo relInfo) throws FileNotFoundException, EmptyStackException, IOException
-	{
-		BufferManager bm = BufferManager.getInstance();
-		PageId pageIdHeaderPage = relInfo.getHeaderPageId();
-		ByteBuffer bufHp = bm.getPage(pageIdHeaderPage);
-		PageId pageId = LirePageIdToBuff(bufHp, true);
-
-		if(pageId.getFileIdx() == -1){
-			return this.addDataPage(relInfo);
-		}
+   
+        ByteBuffer bufferHeaderPage = BufferManager.getInstance().getPage(relInfo.getHeaderPageId());
+        int dataPage = bufferHeaderPage.getInt(0);
+        int espaceDispo = (dataPage * 12 + 4);
 
 
-		bm.FreePage(pageIdHeaderPage, 0);
+        bufferHeaderPage.putInt(espaceDispo, pageId.getFileIdx());
+        bufferHeaderPage.putInt(espaceDispo + 4, pageId.getPageIdx());
+        bufferHeaderPage.putInt(espaceDispo+8,DBParams.pageSize - 8);
 
-		return pageId;
-	}
+       
+        dataPage++;
+        bufferHeaderPage.putInt(0, dataPage);
+
+
+
+
+        BufferManager.getInstance().FreePage(relInfo.getHeaderPageId(), true);
+
+        return pageId;
+      }
+    
+    public ArrayList<PageId> getAllDataPages(RelationInfo relInfo) throws IOException {
+	    ByteBuffer bufferHeaderPage = BufferManager.getInstance().getPage(relInfo.getHeaderPageId());	   
+	    int nbDataPage = bufferHeaderPage.getInt(0), positionDataPage = 4;
+	    ArrayList<PageId> listeDataPage = new ArrayList<>();
+	    PageId pidTemp = new PageId();
+
+	    
+	    for (int i = 0; i < nbDataPage; i++) {
+	      pidTemp = new PageId(bufferHeaderPage.getInt(positionDataPage),bufferHeaderPage.getInt(positionDataPage+4));
+	      listeDataPage.add(pidTemp);
+	      positionDataPage += 12;
+	    }
+	    BufferManager.getInstance().FreePage(relInfo.getHeaderPageId(), true);
+	    return listeDataPage;
+	  }
 
   public RecordId writeRecordToDataPage(Record record, PageId pageId) throws IOException {
-    BufferManager bm = BufferManager.getInstance();
-    RecordId recordID = null;
-    //Accès à la page
-    //=> pin_count++
-    try {
-      ByteBuffer laPage = bm.getPage(pageId);
-      String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
-      try {
-        String n = "F" + fichier + ".bdda";
-        File file = new File(DBParams.DBPath + "/" + n);
-        RandomAccessFile randomaccessfile = new RandomAccessFile(file, "rw");
-        randomaccessfile.seek(pageId.getPageIdx()*DBParams.pageSize);
-        ByteBuffer buff;
-        for(int i=0; i<record.getValues().size(); i++) {
-          buff = ByteBuffer.wrap(record.getValues().get(1).getBytes());
-          randomaccessfile.write(buff.array());
-        }
-        randomaccessfile.close();
-        recordID = new RecordId(pageId, slotIdcpt);
-        slotIdcpt++;
-      }catch (IOException e) {
-        e.printStackTrace();
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return recordID;
-  }
+	  System.out.println("pageId = "+pageId.toString());
+	    ByteBuffer bufferDataPage = BufferManager.getInstance().getPage(pageId);
+	    
+	
+	    int positionDispo = bufferDataPage.getInt(DBParams.pageSize - 4);
+	    record.writeToBuffer(bufferDataPage, positionDispo);
+	   
 
-  public List<PageId> getAllDataPages(RelationInfo relInfo) {
-	  List<PageId> listeDePageIds = new ArrayList<PageId>();
-	  PageId headerPageId = relInfo.getHeaderPageId();
-	  BufferManager bufferManager = BufferManager.getInstance();
-	  bufferManager.init();
-	  ByteBuffer buff;
-	  System.out.println(headerPageId.toString());
-	  try {
 
-		  buff = bufferManager.getPage(headerPageId);
-		  for(int i=0; i<buff.array().length; i++) {
-			  System.out.println(buff.array()[i]);
-		  }
+	    int nbSlot = bufferDataPage.getInt(DBParams.pageSize - 8);
+	    int positionInsertionSlot = (DBParams.pageSize - 8) - ((nbSlot+1) * 8);
+	    bufferDataPage.putInt(positionInsertionSlot, positionDispo);
+	    bufferDataPage.putInt(positionInsertionSlot + 4, record.getWrittenSize());
 
-		 //System.out.println("f");
-		 //System.out.println(bufferManager.getPage(headerPageId));
+	    
+	    bufferDataPage.putInt(DBParams.pageSize - 8, nbSlot + 1);
+
+
+
+	    
+	    positionDispo = positionDispo + record.getWrittenSize();
+	    bufferDataPage.putInt(DBParams.pageSize - 4, positionDispo);
+
+
+
+	    BufferManager.getInstance().FreePage(pageId, true);
+
+	    
+	    ByteBuffer bufferHeaderPage = BufferManager.getInstance().getPage(record.getRelInfo().getHeaderPageId());
+	    int posNbOctetsLibreDP = bufferHeaderPage.getInt(0) * 12;
+	    bufferHeaderPage.getInt(posNbOctetsLibreDP);
+	    int newOctetsLibre = bufferHeaderPage.getInt(posNbOctetsLibreDP)-record.getWrittenSize()-8;
+	    bufferHeaderPage.putInt(posNbOctetsLibreDP, newOctetsLibre);
+	    
+	    BufferManager.getInstance().FreePage(record.getRelInfo().getHeaderPageId(),true);
+	    return new RecordId(pageId, nbSlot);
 	  }
-	  catch(IOException e) {
-		  e.printStackTrace();
+
+  
+
+  public ArrayList<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId) throws IOException {
+	    ByteBuffer bufferDataPage = BufferManager.getInstance().getPage(pageId);
+	    int posDebutRecord = 0;
+
+	    
+	    ArrayList <Record> listeRecords = new ArrayList<Record>();
+	    
+
+	    
+	    int nbSlot = bufferDataPage.getInt(DBParams.pageSize - 8);
+	    int posDebutSlot = DBParams.pageSize - 8 - nbSlot * 8;
+
+	    
+	    
+	    int idxPosDebutRecord=posDebutSlot;
+	    for (int i =0; i < nbSlot; i++) {
+	      Record recordTemp=new Record(relInfo);
+	      posDebutRecord = bufferDataPage.getInt(idxPosDebutRecord);
+	      recordTemp.readFromBuffer(bufferDataPage, posDebutRecord);
+	      listeRecords.add(recordTemp);
+	      idxPosDebutRecord+=8;
+
+
+	    }
+	    BufferManager.getInstance().FreePage(pageId, true);
+	    return listeRecords;
 	  }
-	  bufferManager.FreePage(headerPageId, 0);
+  public RecordId insertRecordIntoRelation(Record record) throws IOException {
 
-	  return listeDePageIds;
-  }
+	    return writeRecordToDataPage(record,getFreeDataPageId(record.getRelInfo(), record.recordSizeFromValues()));
+	  }
+  public ArrayList<Record> getAllRecords(RelationInfo relInfo) throws IOException {
+	    
+	  
+	    ArrayList<Record> listeRecords = new ArrayList<>();
+	    ArrayList<PageId> dataPage = getAllDataPages(relInfo);
+	    ArrayList<Record> listeTemp = new ArrayList<>();
 
-    public void EcrirePageIdToBuff(PageId pageId, ByteBuffer buf, boolean first)
-	{
-		String tmp = pageId.getFileIdx() + "" + pageId.getPageIdx();
+	    
+	    for (int i = 0; i < dataPage.size(); i++) {
+	      listeTemp = getRecordsInDataPage(relInfo, dataPage.get(i));
+	      for (int j = 0; j < listeTemp.size(); j++) {
+	        listeRecords.add(listeTemp.get(j));
+	      }
+	    }
+	    return listeRecords;
+	  }
+  
 
-		int pageIdInt = Integer.valueOf(tmp);
 
-		if(first)
-			buf.putInt(0, pageIdInt);
-		else
-			buf.putInt(8, pageIdInt);
-    }
-
-
-    public PageId LirePageIdToBuff(ByteBuffer buf, boolean first)
-   	{
-   		int pageIdint = first ? buf.getInt(0) : buf.getInt(3);
-
-   		int fileIdx = pageIdint / 10;
-   		int pageIdx = pageIdint % 10;
-   		PageId pageId = new PageId(fileIdx, pageIdx);
-
-   		return pageId;
-       }
+  
 }
