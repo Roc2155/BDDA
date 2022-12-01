@@ -25,7 +25,7 @@ public class BufferManager {
 	private BufferManager() {
 	}
 
-	 public void finish() { //pas util pour l'instant
+	public void finish() { //pas util pour l'instant
 
 	   }
 

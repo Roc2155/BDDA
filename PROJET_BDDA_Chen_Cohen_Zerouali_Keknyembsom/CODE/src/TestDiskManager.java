@@ -38,6 +38,10 @@ public class TestDiskManager {
     //C'est censé créer un nouveau fichier selon ceux qui sont déja dans le repertoire
     try {
       DiskManager.getLeDiskManager().allocPage();
+      DiskManager.getLeDiskManager().allocPage();
+
+      DiskManager.getLeDiskManager().allocPage();
+
       System.out.println("Etat de la liste de pages allouées après allocation des pages: " + DiskManager.getLeDiskManager().getListeDePagesAlloue().toString());
   	  System.out.println("Etat de la liste de pages non allouées : " + DiskManager.getLeDiskManager().getListeDePagesNonAlloue().toString());
     } catch(IOException e) {
@@ -84,7 +88,7 @@ public class TestDiskManager {
 	  DBParams.pageSize = 5;
 	  DBParams.maxPagesPerFile = 5; //On aura max 5 pages : 0, 1, 2, 3, 4
 	  DBParams.frameCount = 2;
-
+	  
     PageId pageId = new PageId(2, 1);
     PageId pageId1 = new PageId(0, 1);
     PageId pageId2 = new PageId(0, 2);

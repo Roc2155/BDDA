@@ -50,7 +50,6 @@ public class DiskManager {
         System.out.println(nomFDisp.getNumF());
         PageId pageId = null;
         if (listeDePagesNonAlloue.isEmpty()) {
-            System.out.println("HEYYYY3");
             pageId = new PageId(nomFDisp.getNumF(), nomFDisp.getSize());
             ecriture(nomFDisp, nomFDisp.getSize());
             listeDePagesAlloue.add(pageId);
