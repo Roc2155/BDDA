@@ -19,9 +19,10 @@ public class TestDiskManager {
 
   public static void TestLecturePage(PageId pageId) {
     try {
-      DiskManager.getLeDiskManager().ReadPage(pageId);
+    	ByteBuffer bf = ByteBuffer.allocate(DBParams.pageSize);
+    	DiskManager.getLeDiskManager().readPage(pageId, bf);
     } catch(IOException e) {
-      e.printStackTrace();
+    	e.printStackTrace();
     }
     finally {
       System.out.println("Fermeture du fichier");
