@@ -8,4 +8,5 @@
     <libraryInfo home="C:\Users\zerou\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_19.0.1.v20221102-1007\jre" version="19.0.1"/>
     <libraryInfo home="/usr/lib/jvm/java-17-openjdk-amd64" version="17.0.4"/>
     <libraryInfo home="/opt/eclipse/java-2022-06/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_17.0.3.v20220515-1416" version="17.0.3"/>
+    <libraryInfo home="/home/endorsi/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_17.0.5.v20221102-0933" version="17.0.5"/>
 </libraryInfos>

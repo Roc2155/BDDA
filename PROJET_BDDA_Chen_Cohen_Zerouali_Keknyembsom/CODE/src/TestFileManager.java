@@ -24,14 +24,15 @@ public class TestFileManager {
 			Record r1 = new Record(rel1);
 		    r1.add("Cohen");
 		    r1.add("Rahel");
-
-			//fm.getAllDataPages(rel1);
+		    System.out.println("G");
+			fm.getAllDataPages(rel1);
 
 			List<PageId> listPage = new ArrayList<PageId>();
 
 			listPage = fm.getAllDataPages(rel1);
+		    System.out.println("G");
 
-			//System.out.println(listPage.size());
+			System.out.println(listPage.size());
 		}
 		catch(IOException e) {
 			e.printStackTrace();
