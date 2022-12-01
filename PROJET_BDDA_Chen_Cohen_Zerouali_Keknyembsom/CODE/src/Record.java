@@ -31,6 +31,9 @@ public class Record {
 		 return res;
 	 }
 
+	
+	//Méthode qui prend en paramètre un buffer (alloué par l’appelant) et un entier pos correspondant à une position dans le buffer. 
+	//Elle écrit les valeurs du Record dans le buffer en partant de la position pos
 	 public void writeToBuffer(ByteBuffer buff,int pos) {
 		 buff.position(pos);
 		 List<ColInfo> colinf = relInfo.getListe();
@@ -77,6 +80,8 @@ public class Record {
 		 buff.putInt(tmpPos,adresVal);
 	 }
 
+	//Méthode qui prend en paramètre un buffer (alloué par l’appelant) et un entier pos correspondant à une position dans le buffer. 
+	//Elle lit les valeurs du Record depuis le buffer à partir de pos.
 	 public void readFromBuffer(ByteBuffer buff,int pos) {
 		 values.clear();
 		 buff.position(pos);
@@ -112,6 +117,8 @@ public class Record {
 			 }
 		 }
 	 }
+	
+	
 	 public int recordSizeFromValues(){
 	        String type;
 	        int tailleChaine, writtenSize=0;

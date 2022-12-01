@@ -34,6 +34,10 @@ public class DiskManager {
             inSavePA();
         return listeDePagesAlloue;
     }
+    
+   
+    //Cette méthode alloue une page, c’est à dire réserver une nouvelle page à la demande d’une des couches au-dessus.
+    
     public PageId allocPage() throws IOException{
         rempTabs();
         System.out.println(listeDePagesAlloue.size());
