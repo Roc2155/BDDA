@@ -53,7 +53,7 @@ public class DiskManager {
         }
         else
         {
-            System.out.println("HEYYYY4");
+            
             ecriture(nomFDisp, listeDePagesNonAlloue.get(0).getFileIdx());
             pageId = new PageId(nomFDisp.getNumF(), listeDePagesNonAlloue.get(0).getPageIdx());
             listeDePagesAlloue.add(pageId);
@@ -67,30 +67,20 @@ public class DiskManager {
         return pageId;
     }
 
-    public void ReadPage (PageId pageId) throws IOException {
-        if (savePA.length() != 0)
-            inSavePA();
-        if (verifPageId(pageId)) {
-            String fichier = Integer.toString(pageId.getFileIdx());//Transformation du file name en String
-            try {
-                String n = "F" + fichier + ".bdda";
-                File file = new File(DBParams.DBPath + "/" + n);
-                RandomAccessFile randomaccessfile = new RandomAccessFile(file, "r");
-                randomaccessfile.seek((long) pageId.getPageIdx() * DBParams.pageSize);
-                byte[] tableaudebyte = new byte[DBParams.pageSize];
-                randomaccessfile.read(tableaudebyte);
-                ByteBuffer buff = ByteBuffer.wrap(tableaudebyte);
-                buff.rewind();
-                System.out.println(buff.toString());
-                randomaccessfile.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        else
-            System.out.println("ERREUR : La page ("+pageId.getFileIdx()+", "+ pageId.getPageIdx()+") n'est pas encore allouée");
-    }
+    public void readPage(PageId pid, ByteBuffer buff) throws IOException{
+		RandomAccessFile f = new RandomAccessFile(DBParams.DBPath+""+File.separator+"F"+pid.getFileIdx()+".bdda", "r");
+		int start = pid.getPageIdx()*DBParams.pageSize;
+		f.seek(start);
+		if(buff.array().length == DBParams.pageSize){
+			f.read(buff.array());
+		}else{
+			for(int i=0; i< DBParams.pageSize; i++){
+				buff.put(i,f.readByte());
+			}
+
+		}
+		f.close(); 
+	}
 
     private Boolean verifPageId(PageId pageId){
         boolean bul = false;

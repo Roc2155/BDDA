@@ -24,7 +24,7 @@ public class TestFileManager {
 			Record r1 = new Record(rel1);
 		    r1.add("Cohen");
 		    r1.add("Rahel");
-		    System.out.println("G");
+		    System.out.println(r1.toString());
 			fm.getAllDataPages(rel1);
 
 			List<PageId> listPage = new ArrayList<PageId>();

@@ -1,9 +1,11 @@
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 public class BufferManager {
 	private static BufferManager instance;
 	private int time;
+	private Frame tmp = new Frame();
 	private Frame[] listeDesFrames;
 	public static BufferManager getInstance() {
 		if(instance == null) {
@@ -11,9 +13,10 @@ public class BufferManager {
 		}
 		return instance;
 	}
-
+	ArrayList<Frame> lru = new ArrayList();
 	public void init () {
 		listeDesFrames = new Frame[DBParams.frameCount];
+		System.out.println(listeDesFrames.length);
 		time =0;
 		for(int i=0;i<DBParams.frameCount;i++) {
 			listeDesFrames[i] = new Frame();
@@ -26,63 +29,60 @@ public class BufferManager {
 
 	   }
 
-public ByteBuffer getPage(PageId PID) throws IOException {
-
-		ByteBuffer b = ByteBuffer.allocate(DBParams.pageSize);
-		int cases = DBParams.frameCount;
-		int j = 0;
-		DiskManager disk = DiskManager.getLeDiskManager();
-		for (int i = 0; i < cases; i++) {
-			if (listeDesFrames[i].getPID() != null) {
-				if (listeDesFrames[i].getPID().compareTo(PID)) {
-					listeDesFrames[i].setPin_count(listeDesFrames[i].getPin_count() + 1);
-					System.out.print(listeDesFrames[i].getBuff());//Special test
-					return listeDesFrames[i].getBuff();
-				}
-			}
-		}
-		for (int i = 0; i < cases; i++) {
-			if (listeDesFrames[i].getPID() == null) {
-				listeDesFrames[i].setPin_count(listeDesFrames[i].getPin_count() + 1);
-				disk.ReadPage(PID);
-				listeDesFrames[i].setBuff(b);
-				listeDesFrames[i].setPID(PID);
-				return listeDesFrames[i].getBuff();
-			}
-		}
-		//A partir de làà on considère la liste comme pleine
-		int cpt = listeDesFrames[0].getTemps_free();
-
-
-		for (int i = 1; i < cases; i++) {
-			if (cpt > listeDesFrames[i].getTemps_free()) {
-				cpt = listeDesFrames[i].getTemps_free();
-				j=i;
-			}
-		}
-		if(j!=0) {
-			j-=1;
-		}
-		if(listeDesFrames[j].getPin_count()==0 && listeDesFrames[j].getDirty()==0) {
-			listeDesFrames[j].setPin_count(listeDesFrames[j].getPin_count() + 1);
-			disk.ReadPage(PID);
-			listeDesFrames[j].setBuff(b);
-			listeDesFrames[j].setPID(PID);
-			return listeDesFrames[j].getBuff();
-
-		}
-		if(listeDesFrames[j].getPin_count()==0 && listeDesFrames[j].getDirty()!=0) {
-			disk.WritePage(listeDesFrames[j].getPID(), listeDesFrames[j].getBuff());
-			listeDesFrames[j].setPin_count(listeDesFrames[j].getPin_count() + 1);
-			disk.ReadPage(PID);
-			listeDesFrames[j].setBuff(b);
-			listeDesFrames[j].setPID(PID);
-			return listeDesFrames[j].getBuff();
-		}
-		System.out.println("fin");
-		return null;
-
-	}
+	 public ByteBuffer getPage(PageId pageId) throws IOException {
+	        //Si on trouve la page dans la liste, on return
+	        for (int i = 0; i < listeDesFrames.length; i++) {
+	            System.out.println(listeDesFrames[i].getPID());
+	        	if (listeDesFrames[i].getPID().getFileIdx()==pageId.getFileIdx() && listeDesFrames[i].getPID().getPageIdx()==pageId.getPageIdx()) {
+	                listeDesFrames[i].setPin_count(listeDesFrames[i].getPin_count()+1);;
+	                return listeDesFrames[i].getBuff();
+	            }
+	        }
+	        for (int i = 0; i < listeDesFrames.length; i++) {
+	            //Si on a une frame vide, on retourne
+	        	if (listeDesFrames[i].estVide()) {
+	                listeDesFrames[i].setPID(pageId);
+	                listeDesFrames[i].setPin_count(1);
+	                listeDesFrames[i].setDirty(0);
+	                DiskManager.getLeDiskManager().readPage(pageId, listeDesFrames[i].getBuff());
+	                listeDesFrames[i].toString();
+	                return listeDesFrames[i].getBuff();
+	            }
+	        }
+	        //On selectionne pour lru
+	        for (int i = 0; i < listeDesFrames.length; i++) {
+	            if (listeDesFrames[i].getPin_count() == 0) {
+	                lru.add(listeDesFrames[i]);
+	            }
+	        }
+	        
+	        //Lru
+	        int min = lru.get(0).getTemps_free();
+	        tmp=lru.get(0);
+	        for (int j = 1; j < lru.size(); j++) {
+	            if (min > lru.get(j).getTemps_free()) {
+	                min = lru.get(j).getTemps_free();
+	                tmp = lru.get(j);
+	            }
+	        }
+	        if (tmp.getDirty() == 1) {
+	            DiskManager.getLeDiskManager().WritePage(tmp.getPID(), tmp.getBuff());
+	        }
+	        int i=0;
+	        boolean trouvee=false;
+	        while(i<listeDesFrames.length && !trouvee){
+	            if(listeDesFrames[i].getTemps_free()==tmp.getTemps_free()){
+	                listeDesFrames[i].setPID(pageId);
+	                listeDesFrames[i].setPin_count(1);
+	                listeDesFrames[i].setDirty(0);
+	                DiskManager.getLeDiskManager().readPage(pageId, listeDesFrames[i].getBuff());  
+	                listeDesFrames[i].toString();
+	                trouvee=true; 
+	            }
+	            i++;
+	        }
+	        return listeDesFrames[i-1].getBuff();
+	    }
 	public void FreePage(PageId PID, int valdirty) {
 		int cases = DBParams.frameCount;
 		for (int i = 0; i < cases; i++) {

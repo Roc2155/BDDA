@@ -86,8 +86,10 @@ public class FileManager {
       }
     
     public ArrayList<PageId> getAllDataPages(RelationInfo relInfo) throws IOException {
+    	System.out.println(relInfo.getHeaderPageId());
 	    ByteBuffer bufferHeaderPage = BufferManager.getInstance().getPage(relInfo.getHeaderPageId());	   
 	    int nbDataPage = bufferHeaderPage.getInt(0), positionDataPage = 4;
+	    System.out.println(nbDataPage);
 	    ArrayList<PageId> listeDataPage = new ArrayList<>();
 	    PageId pidTemp = new PageId();
 

@@ -8,9 +8,13 @@ public class Frame {
 	private int dirty;
 	private int temps_free;
 	
-	public Frame() {
-	
-	}
+	public Frame(){
+        this.PID= new PageId(-1, 0);
+        this.pin_count=0;
+        this.dirty=0;
+        buff= ByteBuffer.allocate(DBParams.pageSize);
+        this.temps_free=-1;
+    }
 	
 	public PageId getPID() {
 		return PID;
@@ -48,6 +52,12 @@ public class Frame {
 	public void setTemps_free(int temps_free) {
 		this.temps_free = temps_free;
 	}
+	public boolean estVide(){
+        if(PID.getFileIdx()==-1){
+            return true;
+        }
+        return false;
+    }
 
 	
 }
