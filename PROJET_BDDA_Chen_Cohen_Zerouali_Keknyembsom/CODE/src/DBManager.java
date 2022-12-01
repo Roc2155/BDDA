@@ -60,7 +60,7 @@ public class DBManager {
                 createTable.Execute();
                 break;
             case "DROPDB":
-                DROPDBCommand drop=new DROPDBCommand(ch);
+                DropDBCommand drop=new DropDBCommand(ch);
                 drop.Execute(); 
                 break;
             case "INSERT":
