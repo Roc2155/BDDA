@@ -22,7 +22,7 @@ public class TestFileManager {
 			ArrayList<ColInfo> listeColonne = new ArrayList<ColInfo>();
 			listeColonne.add(col1);
 			listeColonne.add(col2);
-			RelationInfo rel1 = new RelationInfo("Personne", listeColonne, page);
+			RelationInfo rel1 = new RelationInfo("Personne", listeColonne, headerPage);
 
 			Record r1 = new Record(rel1);
 		    r1.add("Cohen");
