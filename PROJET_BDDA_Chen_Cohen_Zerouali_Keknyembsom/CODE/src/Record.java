@@ -12,7 +12,14 @@ public class Record {
 	 }
 
 
-	 public int getWrittenSize() {
+	 public Record(RelationInfo relInfo, ArrayList<String> valeursRecords) {
+		// TODO Auto-generated constructor stub
+		 this.relInfo=relInfo;
+		 this.values=valeursRecords;
+	}
+
+
+	public int getWrittenSize() {
 		 int res=0;
 		 ArrayList<ColInfo> colinf = relInfo.getListe();
 		 for(int i=0;i<colinf.size();i++) {

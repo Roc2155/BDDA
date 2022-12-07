@@ -13,7 +13,7 @@ public class BufferManager {
 		}
 		return instance;
 	}
-	ArrayList<Frame> lru = new ArrayList();
+	ArrayList<Frame> lru = new ArrayList<Frame>();
 	public void init () {
 		listeDesFrames = new Frame[DBParams.frameCount];
 		System.out.println(listeDesFrames.length);
@@ -125,6 +125,16 @@ public class BufferManager {
 		// TODO Auto-generated method stub
 		
 	}
+	public void reset(){
+        init();
+        for(Frame frame: listeDesFrames){
+            frame.setPID(new PageId(-1,0));            
+            frame.setBuff(ByteBuffer.allocate(DBParams.pageSize));
+            frame.setTemps_free(-1);
+            frame.setPin_count(0);
+            frame.setDirty(false);
+        }
+    }
 
 
 

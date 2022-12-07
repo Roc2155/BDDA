@@ -59,5 +59,16 @@ public class Frame {
         return false;
     }
 
+	public void setDirty(boolean b) {
+		if(b) {
+			this.setDirty(1);
+		}
+		else {
+			this.setDirty(0);
+		}
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }
