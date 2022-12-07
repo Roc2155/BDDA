@@ -36,9 +36,8 @@ public class TestFileManager {
 			List<PageId> listPage = new ArrayList<PageId>();
 
 			listPage = fm.getAllDataPages(rel1);
-		  System.out.println("G");
 
-			System.out.println(listPage.size());
+			System.out.println("Nombre de page : " + listPage.size());
 		}
 		catch(IOException e) {
 			e.printStackTrace();
