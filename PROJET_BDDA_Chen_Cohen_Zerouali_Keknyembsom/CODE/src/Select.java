@@ -10,8 +10,10 @@ public class Select{
     private  String[] commande;
     
     public Select(String saisie){
-        recordResultat=new ArrayList<>();
-        parse(saisie);
+    	parse(saisie);
+    	
+    	recordResultat=new ArrayList<>();
+        
     }
     
 
@@ -42,21 +44,23 @@ public class Select{
         if(commande.length == 2){
             
         	
-            ArrayList<SelectCondition> criteres = listeCriteres();
+            ArrayList<SelectCondition> critere = listeCriteres();
             ArrayList<Record> allRecords= FileManager.getInstance().getAllRecords(Catalog.getCatalog().getRelationInfo(nomRelation));
             for (Record record : allRecords) {
                 int i=0;
                 boolean result=true;
-                while(i<criteres.size() && result){
+                while(i<critere.size() && result){
                     int indiceColumn= listeCriteres().get(i).getIndiceColonne();
                     String type = record.getRelInfo().getListe().get(indiceColumn).getType();
                     switch (type) {
+                    	case "REAL":
+                    		result= listeCriteres().get(i).verifConditionReal(Float.valueOf(record.getValues().get(indiceColumn)));
+                    		break;
                         case "INTEGER":
                             result= listeCriteres().get(i).verifConditionInt(Integer.valueOf(record.getValues().get(indiceColumn)));
                             break;
-                        case "REAL":
-                            result= listeCriteres().get(i).verifConditionReal(Float.valueOf(record.getValues().get(indiceColumn)));
-                            break;
+                        
+                       
                         default:
                             result= listeCriteres().get(i).verifConditionString(record.getValues().get(indiceColumn));
                             break;
@@ -78,15 +82,17 @@ public class Select{
 
   
     private ArrayList<SelectCondition> listeCriteres(){
-        String[] criteres = commande[1].split("AND");
+        String[] critere = commande[1].split("AND");
         
         ArrayList<SelectCondition>  sc = new ArrayList<>();
-        if(criteres.length <= MAX_CRITERES){
-            for(int i=0 ; i< criteres.length ; i++){
-                sc.add(parseCmd(criteres[i]));
+        
+        if(critere.length <= MAX_CRITERES){
+            
+        	for(int i=0 ; i< critere.length ; i++){
+                sc.add(parseCmd(critere[i]));
             }
         }else{
-            System.out.println("Plus de 20 criteres");
+            System.out.println("Plus de 20 critères");
             System.exit(1);
         }
         
