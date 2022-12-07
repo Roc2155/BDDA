@@ -42,6 +42,9 @@ public class Catalog
             }
         }
     }
+    public void reset(){
+        list.clear();
+    }
     
     //sauvegarde les informations du Catalog dans un fichier nommé catalog.sv
     public void finish() throws IOException {

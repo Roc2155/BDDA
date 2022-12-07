@@ -295,5 +295,10 @@ public class DiskManager {
             System.out.println(pageId.getFileIdx()+", "+ pageId.getPageIdx());
         return listeDePagesAlloue.size();
     }
+    public void vide(){
+    	listeDePagesAlloue.clear();
+    	listeDePagesNonAlloue.clear();
+		currentCountAllocPages=0;
+	}
 
 }
