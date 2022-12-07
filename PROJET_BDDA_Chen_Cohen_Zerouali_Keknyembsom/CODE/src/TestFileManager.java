@@ -5,7 +5,7 @@ import java.util.List;
 public class TestFileManager {
 	public static void main(String[] args) {
 		DBParams.DBPath = args[0];
-		DBParams.pageSize = 5;
+		DBParams.pageSize = 500;
 		DBParams.maxPagesPerFile = 4;
 		DBParams.frameCount = 5;
 
