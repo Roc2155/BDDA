@@ -13,7 +13,10 @@ public class TestFileManager {
 		BufferManager.getInstance().init();
 
 		try {
-			PageId page = fm.createNewHeaderPage();
+			PageId headerPage = fm.createNewHeaderPage(); //Page allouée par le bufferManager
+
+			Catalog.getCatalog().init();
+
 			ColInfo col1 = new ColInfo("Nom", "VARCHAR(15)");
 			ColInfo col2 = new ColInfo("Prenom", "VARCHAR(15)");
 			ArrayList<ColInfo> listeColonne = new ArrayList<ColInfo>();
@@ -24,13 +27,16 @@ public class TestFileManager {
 			Record r1 = new Record(rel1);
 		    r1.add("Cohen");
 		    r1.add("Rahel");
-		    System.out.println(r1.toString());
+		  System.out.println(r1.toString());
+
+			RecordId recordID = fm.writeRecordToDataPage(r1, headerPage);
+
 			fm.getAllDataPages(rel1);
 
 			List<PageId> listPage = new ArrayList<PageId>();
 
 			listPage = fm.getAllDataPages(rel1);
-		    System.out.println("G");
+		  System.out.println("G");
 
 			System.out.println(listPage.size());
 		}
