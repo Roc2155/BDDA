@@ -68,12 +68,12 @@ public class FileManager {
 	       int enTete = 4; //4 octets qu'on réserve pour indiquer le nombre de pages indéxées
 			   int idDataPage = 8; //8 octets car 2 entiers : fileIdx et pageIdx
          int espaceDispoDataPage = 4;
-			   int nextDataPageId = enTete +(nbDataPageIndexee*(idDataPage + espaceDispoDataPage));
+			   int nextSlotDispo = enTete +(nbDataPageIndexee*(idDataPage + espaceDispoDataPage));
 			   int tailleDataPage = DBParams.pageSize - 8; //DataPage encore vide => Ne contient pas encore de record
 
-			   buffHeaderPage.putInt(nextPageId, pageId.getFileIdx()); //Ecrit 4 octets fileIdx à l'indice nextPageId dans le HeaderPage
-			   buffHeaderPage.putInt(nextPageId + 4, pageId.getPageIdx()); //Ecrit 4 octets pageIdx à l'indice nextPageId + 4 dans le HeaderPage
-			   buffHeaderPage.putInt(nextPageId + 8, tailleDataPage); //Ecrit 4 octets la taille de la DataPage à l'indice après les 8 octets écrits dans le HeaderPage
+			   buffHeaderPage.putInt(nextSlotDispo, pageId.getFileIdx()); //Ecrit 4 octets fileIdx à l'indice nextPageId dans le HeaderPage
+			   buffHeaderPage.putInt(nextSlotDispo + 4, pageId.getPageIdx()); //Ecrit 4 octets pageIdx à l'indice nextPageId + 4 dans le HeaderPage
+			   buffHeaderPage.putInt(nextSlotDispo + 8, tailleDataPage); //Ecrit 4 octets la taille de la DataPage à l'indice après les 8 octets écrits dans le HeaderPage
 
 			   nbPageIndexee++;
 			   buffHeaderPage.putInt(0, nbPageIndexee); //Màj du nombre de DataPage dans le HeaderPage
