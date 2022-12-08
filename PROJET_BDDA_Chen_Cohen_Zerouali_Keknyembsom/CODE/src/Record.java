@@ -20,7 +20,7 @@ public class Record {
 
 
 	public int getWrittenSize() {
-		 return null;
+		 return 0;
 	 }
 
 
@@ -38,7 +38,7 @@ public class Record {
 
 
 	 public int recordSizeFromValues(){
-		 return null;
+		 return 0;
 	 }
 
 	 public void add(String val) {
