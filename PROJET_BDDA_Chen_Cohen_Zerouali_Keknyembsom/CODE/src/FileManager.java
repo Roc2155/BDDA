@@ -66,9 +66,9 @@ public class FileManager {
          ByteBuffer buffHeaderPage = bm.getPage(relInfo.getHeaderPageId());
 	       int nbDataPageIndexee = buffHeaderPage.getInt(0); //On récupère les 4 octets en début de la page
 	       int enTete = 4; //4 octets qu'on réserve pour indiquer le nombre de pages indéxées
-			   int tailleIdDataPage = 8; //8 octets car 2 entiers : fileIdx et pageIdx
-         int nbEspaceDispoDataPage = 4;
-			   int nextDataPageId = enTete +(nbDataPageIndexee*(tailleIdPage + nbEspaceDispoDataPage));
+			   int idDataPage = 8; //8 octets car 2 entiers : fileIdx et pageIdx
+         int espaceDispoDataPage = 4;
+			   int nextDataPageId = enTete +(nbDataPageIndexee*(idDataPage + espaceDispoDataPage));
 			   int tailleDataPage = DBParams.pageSize - 8; //DataPage encore vide => Ne contient pas encore de record
 
 			   buffHeaderPage.putInt(nextPageId, pageId.getFileIdx()); //Ecrit 4 octets fileIdx à l'indice nextPageId dans le HeaderPage
