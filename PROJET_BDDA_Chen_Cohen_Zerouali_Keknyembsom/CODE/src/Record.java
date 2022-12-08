@@ -20,32 +20,33 @@ public class Record {
 
 
 	public int getWrittenSize() {
-		 
+		 return null;
 	 }
 
-	
-	//Méthode qui prend en paramètre un buffer (alloué par l’appelant) et un entier pos correspondant à une position dans le buffer. 
+
+	//Méthode qui prend en paramètre un buffer (alloué par l’appelant) et un entier pos correspondant à une position dans le buffer.
 	//Elle écrit les valeurs du Record dans le buffer en partant de la position pos
 	 public void writeToBuffer(ByteBuffer buff,int pos) {
-		 
+
 	 }
 
-	//Méthode qui prend en paramètre un buffer (alloué par l’appelant) et un entier pos correspondant à une position dans le buffer. 
+	//Méthode qui prend en paramètre un buffer (alloué par l’appelant) et un entier pos correspondant à une position dans le buffer.
 	//Elle lit les valeurs du Record depuis le buffer à partir de pos.
 	 public void readFromBuffer(ByteBuffer buff,int pos) {
-		 
+
 	 }
-	
-	
+
+
 	 public int recordSizeFromValues(){
-	        
-	    }
+		 return null;
+	 }
+
 	 public void add(String val) {
 		 values.add(val);
 	 }
 
 	 public RelationInfo getRelInfo() {
-	        return relInfo;
+	   return relInfo;
 	 }
 
 	 public List<String> getValues() {
