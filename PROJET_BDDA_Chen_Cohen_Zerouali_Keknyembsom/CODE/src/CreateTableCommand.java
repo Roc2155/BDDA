@@ -44,7 +44,17 @@ public class CreateTableCommand {
 
 	public void Execute() {
 
+		try {
+			PageId pageid=FileManager.getInstance().createNewHeaderPage() ;
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		RelationInfo rel=new RelationInfo( nomRelation, nombreCol, nomColonne, PageId);
+		
 
+	}
 	}
 
 }
