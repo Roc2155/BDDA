@@ -19,23 +19,23 @@ public class FileManager {
 		return instance;
 	}
 
-  public PageId createNewHeaderPage() throws IOException {
-    DiskManager dm = DiskManager.getLeDiskManager();
-    BufferManager  bm = BufferManager.getInstance();
-    bm.init();
+    public PageId createNewHeaderPage() throws IOException {
+      DiskManager dm = DiskManager.getLeDiskManager();
+      BufferManager  bm = BufferManager.getInstance();
+      bm.init();
 
-    PageId headerPageId = dm.allocPage();
-    System.out.println("HeaderPage alloué : " + headerPageId.toString());
+      PageId headerPageId = dm.allocPage();
+      System.out.println("HeaderPage alloué : " + headerPageId.toString());
 
-    ByteBuffer buf = bm.getPage(headerPageId);
-    buf.putInt(0, 0);
+      ByteBuffer buf = bm.getPage(headerPageId);
+      buf.putInt(0, 0);
 
-    bm.FreePage(headerPageId, 1);
-    return headerPageId;
-  }
-    public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws FileNotFoundException, IOException, EmptyStackException
-	{
+      bm.FreePage(headerPageId, 1);
+      return headerPageId;
+    }
 
+    public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws FileNotFoundException, IOException, EmptyStackException {
+      return null;
     }
 
     public PageId addDataPage(RelationInfo relInfo) throws IOException {
@@ -87,29 +87,24 @@ public class FileManager {
     }
 
     public ArrayList<PageId> getAllDataPages(RelationInfo relInfo) throws IOException {
-
+      return null;
 	  }
 
-  public RecordId writeRecordToDataPage(Record record, PageId pageId) throws IOException {
-
+    public RecordId writeRecordToDataPage(Record record, PageId pageId) throws IOException {
+      return null;
 	  }
 
 
 
-  public ArrayList<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId) throws IOException {
-
+    public ArrayList<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId) throws IOException {
+      return null;
 	  }
-  public RecordId insertRecordIntoRelation(Record record) throws IOException {
 
+    public RecordId insertRecordIntoRelation(Record record) throws IOException {
 	    return writeRecordToDataPage(record,getFreeDataPageId(record.getRelInfo(), record.recordSizeFromValues()));
 	  }
-  public ArrayList<Record> getAllRecords(RelationInfo relInfo) throws IOException {
 
-
-
+    public ArrayList<Record> getAllRecords(RelationInfo relInfo) throws IOException {
+      return null;
 	  }
-
-
-
-
 }
