@@ -59,22 +59,11 @@ public class Catalog
 
     //méthode qui prend en argument une RelationInfo et qui la rajoute à la liste 
     public void addRelationInfo(RelationInfo r) {
-        if(!list.contains(r)) {
-            list.add(r);
-            System.out.println("Ajout de la relation dans la liste avec succès!");
-        }
-        else {
-            System.out.println("Relation existante dans la liste de relation");
-        }
+        
     }
  //méthode qui prend en argument le nom d’une relation et retourne la RelationInfo associée.
     public RelationInfo getRelationInfo(String nom) {
-        for (RelationInfo relationInfo : list) {
-            if (relationInfo.getNom().equals(nom))
-                return relationInfo;
-        }
-        System.out.println("La relatation " + nom + " n'existe pas.");
-        return null;
+        
     }
 
     //getteurs
