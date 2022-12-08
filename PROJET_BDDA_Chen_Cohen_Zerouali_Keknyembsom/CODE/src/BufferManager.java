@@ -30,13 +30,13 @@ public class BufferManager {
 	   }
 
 	 public ByteBuffer getPage(PageId pageId) throws IOException {
-	        
+	     return null;
 	    }
 	public void FreePage(PageId PID, int valdirty) {
 		
 	}
 	public void FlushAll() throws IOException {
-		
+
 	}
 	public Frame[] getFrame() {
 		return listeDesFrames;
@@ -50,12 +50,12 @@ public class BufferManager {
 			FreePage(pageIdFile,0);
 		}
 		// TODO Auto-generated method stub
-		
+
 	}
 	public void reset(){
         init();
         for(Frame frame: listeDesFrames){
-            frame.setPID(new PageId(-1,0));            
+            frame.setPID(new PageId(-1,0));
             frame.setBuff(ByteBuffer.allocate(DBParams.pageSize));
             frame.setTemps_free(-1);
             frame.setPin_count(0);
