@@ -21,10 +21,9 @@ public class CreateTableCommand {
 
 		String schemaRel= st.nextToken();
 		//on retire les parenthèses
-		schemaRel.charAt(0);
-		schemaRel.charAt(schemaRel.length()-1);
-
-		StringTokenizer stBis=new StringTokenizer(schemaRel, ",");
+		String res=schemaRel.substring(0,schemaRel.length()-1);
+		
+		StringTokenizer stBis=new StringTokenizer(res, ",");
 		this.nombreCol=stBis.countTokens();
 
 		String chaineCourante;
