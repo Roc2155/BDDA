@@ -50,34 +50,34 @@ public class DBManager {
     }
     
     
-    //A compléter + ajouter la gestion des exceptions
-    public void ProcessCommand(String ch){
-        StringTokenizer st =new StringTokenizer(ch);
-        String deb=st.nextToken();
-        switch (deb) {
-            case "CREATE ":
-                CreateTableCommand createTable = new CreateTableCommand(ch);
-                createTable.Execute();
+    public void processCommand(String  commande){
+        String cmd[] = commande.split(" ");
+
+        try{
+            switch(cmd[0]){
+                case "CREATE":
+                    CreateTableCommand c = new CreateTableCommand(commande);
+                    c.execute();
                 break;
-            case "DROPDB":
-                DropDBCommand drop=new DropDBCommand(ch);
-                drop.Execute(); 
+                case "DROPDB":
+                    DropDb.execute();
                 break;
-            case "INSERT":
-                InsertCommand insert=new InsertCommand(ch);
-                insert.Execute();
+                case "INSERT":
+                    if(commande.contains("FILECONTENTS")){
+                        InsertionFile insert= new InsertionFile(commande);
+                        insert.insererFichier();
+                    }else{
+                        Insert i = new Insert(commande);
+                        i.execute();
+                    }
                 break;
-            case "SELECT":
-            	 SelectCommande select= new SelectCommand(ch);
-            	 select.Execute();
-            
-            case "DELETE":
-            	DeleteCommand delete = new DeleteCommand(ch);
-            	delete.Execute();
-            	break;
-  
-            default:
-            	System.out.println("Veuillez entrer une commande valide.");
+                case "SELECT":
+                    Select s = new Select(commande);
+                    s.execute();
+                break;
+            }
+        }catch(IOException e){
+            e.printStackTrace();
         }
     }
 

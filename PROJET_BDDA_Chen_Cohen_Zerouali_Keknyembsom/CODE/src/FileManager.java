@@ -27,30 +27,10 @@ public class FileManager {
         BufferManager.getInstance().FreePage(pageIdFile, true);
         return pageIdFile;
       }
-    public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws FileNotFoundException, EmptyStackException, IOException
+    public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws FileNotFoundException, IOException, EmptyStackException 
 	{
-    	PageId pageId = new PageId();
-        int j = 0;        
-        ByteBuffer bufferHeaderPage = BufferManager.getInstance().getPage(relInfo.getHeaderPageId());
-        
-      
-          for (int i = 12; i < bufferHeaderPage.capacity(); i += 12) {
-            if (bufferHeaderPage.getInt(i) >= sizeRecord) {
-              System.out.println("im here");
-              j = i - 8;
-              pageId.setFileIdx(bufferHeaderPage.getInt(j));
-              
-              j = i - 4;
-              pageId.setPageIdx(bufferHeaderPage.getInt(j));
-              BufferManager.getInstance().FreePage(relInfo.getHeaderPageId(), false);
-              return pageId;
-            }
-          }
-          BufferManager.getInstance().FreePage(relInfo.getHeaderPageId(), false);
-          
-          return FileManager.getInstance().addDataPage(relInfo);        
-       
-      }
+    	
+    }
     public PageId addDataPage(RelationInfo relInfo) throws IOException {
         
         PageId pageId = DiskManager.getLeDiskManager().allocPage();

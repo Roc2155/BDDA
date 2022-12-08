@@ -11,18 +11,22 @@ public class Main
         
         DBManager.getLeDBManager().Init();
 		Scanner sc=new Scanner(System.in);
-		String chaine;
-		while (true){
-			System.out.println("Veuillez choisir une commande :");
+		String cmd;
+		do{
 			menu();
-			chaine=sc.nextLine();
-			if (chaine.equals("EXIT")){
-				DBManager.getLeDBManager().Finish();
-				break;
-			} else 
-				DBManager.getLeDBManager().ProcessCommand(chaine);
-		}
-		sc.close();
+            System.out.println("Entrez une commande");
+            cmd= sc.nextLine();
+            switch (cmd){
+                case "EXIT": DBManager.getLeDBManager().Finish();
+                break;
+                default: DBManager.getLeDBManager().processCommand(cmd);
+                break;
+            }
+        }while (!cmd.equals("EXIT"));
+        DBManager.getLeDBManager().Finish();
+
+
+        sc.close();
     }
     private static void menu () {
     	System.out.println("Entrez la commande CREATE TABLE de la forme suivance : CREATE TABLE NomRelation (NomCol_1:TypeCol_1,NomCol_2:TypeCol_2, ...\n"

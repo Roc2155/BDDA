@@ -5,7 +5,7 @@ import java.util.List;
 public class TestFileManager {
 	public static void main(String[] args) {
 		DBParams.DBPath = args[0];
-		DBParams.pageSize = 5;
+		DBParams.pageSize = 500;
 		DBParams.maxPagesPerFile = 4;
 		DBParams.frameCount = 5;
 
@@ -22,7 +22,7 @@ public class TestFileManager {
 			ArrayList<ColInfo> listeColonne = new ArrayList<ColInfo>();
 			listeColonne.add(col1);
 			listeColonne.add(col2);
-			RelationInfo rel1 = new RelationInfo("Personne", listeColonne, page);
+			RelationInfo rel1 = new RelationInfo("Personne", listeColonne, headerPage);
 
 			Record r1 = new Record(rel1);
 		    r1.add("Cohen");
@@ -36,9 +36,8 @@ public class TestFileManager {
 			List<PageId> listPage = new ArrayList<PageId>();
 
 			listPage = fm.getAllDataPages(rel1);
-		  System.out.println("G");
 
-			System.out.println(listPage.size());
+			System.out.println("Nombre de page : " + listPage.size());
 		}
 		catch(IOException e) {
 			e.printStackTrace();
