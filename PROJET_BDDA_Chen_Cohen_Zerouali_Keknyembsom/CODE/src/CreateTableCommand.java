@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.io.IOException;
 
 public class CreateTableCommand {
 	private String nomRelation;
@@ -22,7 +23,7 @@ public class CreateTableCommand {
 		String schemaRel= st.nextToken();
 		//on retire les parenthèses
 		String res=schemaRel.substring(0,schemaRel.length()-1);
-		
+
 		StringTokenizer stBis=new StringTokenizer(res, ",");
 		this.nombreCol=stBis.countTokens();
 
@@ -44,16 +45,12 @@ public class CreateTableCommand {
 	public void Execute() {
 
 		try {
-			PageId pageid=FileManager.getInstance().createNewHeaderPage() ;
+			PageId pageId = FileManager.getInstance().createNewHeaderPage() ;
+			RelationInfo rel = new RelationInfo(nomRelation, nombreCol, nomColonne, pageId);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		RelationInfo rel=new RelationInfo( nomRelation, nombreCol, nomColonne, PageId);
-		
-
-	}
 	}
 
 }
