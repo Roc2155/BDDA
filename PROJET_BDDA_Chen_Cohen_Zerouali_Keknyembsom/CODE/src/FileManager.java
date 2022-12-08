@@ -21,7 +21,7 @@ public class FileManager {
 
     public PageId createNewHeaderPage() throws IOException {
       DiskManager dm = DiskManager.getLeDiskManager();
-      BufferManager  bm = BufferManager.getInstance();
+      BufferManager bm = BufferManager.getInstance();
       bm.init();
 
       PageId headerPageId = dm.allocPage();

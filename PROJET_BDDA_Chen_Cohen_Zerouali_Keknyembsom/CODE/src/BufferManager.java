@@ -7,13 +7,16 @@ public class BufferManager {
 	private int time;
 	private Frame tmp = new Frame();
 	private Frame[] listeDesFrames;
+
 	public static BufferManager getInstance() {
 		if(instance == null) {
 			instance = new BufferManager();
 		}
 		return instance;
 	}
+
 	ArrayList<Frame> lru = new ArrayList<Frame>();
+
 	public void init () {
 		listeDesFrames = new Frame[DBParams.frameCount];
 		System.out.println(listeDesFrames.length);
@@ -22,6 +25,7 @@ public class BufferManager {
 			listeDesFrames[i] = new Frame();
 		}
 	}
+
 	private BufferManager() {
 	}
 
@@ -31,9 +35,10 @@ public class BufferManager {
 
 	 public ByteBuffer getPage(PageId pageId) throws IOException {
 	     return null;
-	    }
-	public void FreePage(PageId PID, int valdirty) {
+	  }
 		
+	public void FreePage(PageId PID, int valdirty) {
+
 	}
 	public void FlushAll() throws IOException {
 
