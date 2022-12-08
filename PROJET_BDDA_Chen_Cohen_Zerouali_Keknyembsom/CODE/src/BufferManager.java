@@ -27,16 +27,17 @@ public class BufferManager {
 	}
 
 	private BufferManager() {
+		
 	}
 
 	public void finish() { //pas util pour l'instant
 
-	   }
+	 }
 
 	 public ByteBuffer getPage(PageId pageId) throws IOException {
 	     return null;
 	  }
-		
+
 	public void FreePage(PageId PID, int valdirty) {
 
 	}
