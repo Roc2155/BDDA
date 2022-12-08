@@ -59,7 +59,6 @@ public class FileManager {
     }
 
     private void initHeaderPage(RelationInfo relInfo, PageId pageId) {
-    	 DiskManager dm = DiskManager.getLeDiskManager();
 		   BufferManager bm = BufferManager.getInstance();
 		   bm.init();
 
