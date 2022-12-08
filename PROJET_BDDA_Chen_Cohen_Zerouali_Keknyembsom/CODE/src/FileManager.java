@@ -54,29 +54,29 @@ public class FileManager {
 
     		bm.FreePage(pageId, 1); //dirty = 1 car écriture de 8 octets 0 en fin de la page
 
-    		initHeaderPage(relInfo, pageId); //Ajouter la nouvelle DataPage au HeaderPage de la relationInfo
+    		addDataPageToHeaderPage(relInfo, pageId); //Ajouter la nouvelle DataPage au HeaderPage de la relationInfo
 	      return pageId; //DataPage initialisée
     }
 
-    private void initHeaderPage(RelationInfo relInfo, PageId pageId) {
+    private void addDataPageToHeaderPage(RelationInfo relInfo, PageId pageId) {
 		   BufferManager bm = BufferManager.getInstance();
 		   bm.init();
 
 		   try {
          ByteBuffer buffHeaderPage = bm.getPage(relInfo.getHeaderPageId());
-	       int nbPageIndexee = buffHeaderPage.getInt(0); //On récupère les 4 octets en début de la page
+	       int nbDataPageIndexee = buffHeaderPage.getInt(0); //On récupère les 4 octets en début de la page
 	       int enTete = 4; //4 octets qu'on réserve pour indiquer le nombre de pages indéxées
-			   int tailleIdPage = 8, nbEspaceDispoPage = 4;
-			   int nextPageId = enTete + tailleIdPage + nbEspaceDispoPage;
+			   int tailleIdDataPage = 8; //8 octets car 2 entiers : fileIdx et pageIdx
+         int nbEspaceDispoDataPage = 4;
+			   int nextDataPageId = enTete +(nbDataPageIndexee*(tailleIdPage + nbEspaceDispoDataPage));
 			   int tailleDataPage = DBParams.pageSize - 8; //DataPage encore vide => Ne contient pas encore de record
 
-			   buffHeaderPage.putInt(nextPageId, pageId.getFileIdx());
-			   buffHeaderPage.putInt(nextPageId + 4, pageId.getPageIdx());
-			   buffHeaderPage.putInt(nextPageId + 8, tailleDataPage);
-
+			   buffHeaderPage.putInt(nextPageId, pageId.getFileIdx()); //Ecrit 4 octets fileIdx à l'indice nextPageId dans le HeaderPage
+			   buffHeaderPage.putInt(nextPageId + 4, pageId.getPageIdx()); //Ecrit 4 octets pageIdx à l'indice nextPageId + 4 dans le HeaderPage
+			   buffHeaderPage.putInt(nextPageId + 8, tailleDataPage); //Ecrit 4 octets la taille de la DataPage à l'indice après les 8 octets écrits dans le HeaderPage
 
 			   nbPageIndexee++;
-			   buffHeaderPage.putInt(0, nbPageIndexee);
+			   buffHeaderPage.putInt(0, nbPageIndexee); //Màj du nombre de DataPage dans le HeaderPage
 
 			   bm.FreePage(relInfo.getHeaderPageId(), 1);
 		   }
