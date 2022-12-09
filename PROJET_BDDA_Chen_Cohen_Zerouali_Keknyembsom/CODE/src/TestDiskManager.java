@@ -19,8 +19,9 @@ public class TestDiskManager {
 
   public static void TestLecturePage(PageId pageId) {
     try {
-    	ByteBuffer bf = ByteBuffer.allocate(DBParams.pageSize);
+    	ByteBuffer bf = ByteBuffer.allocate(DBParams.pageSize); //Buffer qu'on va écrire du contenu de la page lu
     	DiskManager.getLeDiskManager().readPage(pageId, bf);
+
       System.out.println("buff : "+ Arrays.toString(bf.array()));
     } catch(IOException e) {
     	e.printStackTrace();
@@ -113,7 +114,7 @@ public class TestDiskManager {
     TestEcriturePage(pageId1, buff); //Test : écriture du mot 'test' sur la page 1 du fichier 0
     //Résultat attendu : écriture avec succès car 1er fichier créé avec les pages 0, 1, 2
     TestLecturePage(pageId1);//Test : lecture sur la page 1 du fichier 0
-    //Résultat attendu : lecture avec succès
+    //Résultat attendu : lecture avec succès et affichage d'un tableau de buffer contenant les données écrit dans la page pageId1
 
     TestEcriturePage(pageId2, buff); //Test : écriture du mot 'test' sur la page 1 du fichier 0
     //Résultat attendu : écriture avec succès car 1er fichier créé avec les pages 0, 1, 2
