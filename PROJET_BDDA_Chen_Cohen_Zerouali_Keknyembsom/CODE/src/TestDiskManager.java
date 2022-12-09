@@ -21,6 +21,7 @@ public class TestDiskManager {
     try {
     	ByteBuffer bf = ByteBuffer.allocate(DBParams.pageSize);
     	DiskManager.getLeDiskManager().readPage(pageId, bf);
+      System.out.println("buff : "+ Arrays.toString(bf.array()));
     } catch(IOException e) {
     	e.printStackTrace();
     }
@@ -88,7 +89,7 @@ public class TestDiskManager {
 	  DBParams.pageSize = 5;
 	  DBParams.maxPagesPerFile = 5; //On aura max 5 pages : 0, 1, 2, 3, 4
 	  DBParams.frameCount = 2;
-	  
+
     PageId pageId = new PageId(2, 1);
     PageId pageId1 = new PageId(0, 1);
     PageId pageId2 = new PageId(0, 2);
