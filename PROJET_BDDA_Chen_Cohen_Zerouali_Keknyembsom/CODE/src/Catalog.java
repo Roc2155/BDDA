@@ -85,6 +85,6 @@ public class Catalog
     //getteurs
     public int getNbreRelation()
     {
-        return list.size();
+        return listRelatInfo.size();
     }
 }
