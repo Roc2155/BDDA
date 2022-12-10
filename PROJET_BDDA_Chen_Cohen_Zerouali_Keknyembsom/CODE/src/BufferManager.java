@@ -144,11 +144,11 @@ public class BufferManager {
 				PageId page = listeFrames[i].getPageId();
 				ByteBuffer buff = listeFrames[i].getBuff();
 				DiskManager.getLeDiskManager().WritePage(page, buff);
-				listeFrames[i].setPin_count()=0;
-				listeFrames[i].setDirty()=0;
+				listeFrames[i].setPin_count(0);
+				listeFrames[i].setDirty(0);
 				listeFrames[i].setBuff(ByteBuffer.allocate(DBParams.pageSize));
-				listeFrames[i].setTemps_free()=-1;
-				listeFrames[i].getPageId()=null;
+				listeFrames[i].setTemps_free(-1);
+				listeFrames[i].getPageId(null);
 			}
 			else {
 				reset();
