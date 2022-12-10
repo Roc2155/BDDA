@@ -135,6 +135,7 @@ public class BufferManager {
 			}
 		}
 	}
+
 	public void FlushAll() throws IOException {
 		int nbCases = listeFrames.length;
 		DiskManager.getLeDiskManager();
@@ -168,9 +169,4 @@ public class BufferManager {
         frame.setDirty(0);
     }
   }
-
-
-
-
-
 }
