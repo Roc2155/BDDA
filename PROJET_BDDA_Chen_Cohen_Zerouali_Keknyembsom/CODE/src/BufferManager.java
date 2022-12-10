@@ -136,32 +136,38 @@ public class BufferManager {
 		}
 	}
 	public void FlushAll() throws IOException {
-
+		int nbCases = listeFrames.length;
+		DiskManager.getLeDiskManager();
+		for(int i=0; i<nbCases; i++) {
+			if(listeFrames[i].getDirty()==1) {
+				PageId page = listeFrames[i].getPageId();
+				ByteBuffer buff = listeFrames[i].getBuff();
+				DiskManager.getLeDiskManager().WritePage(page, buff);
+				listeFrames[i].setPin_count()=0;
+				listeFrames[i].setDirty()=0;
+				listeFrames[i].setBuff(ByteBuffer.allocate(DBParams.pageSize));
+				listeFrames[i].setTemps_free()=-1;
+				listeFrames[i].getPageId()=null;
+			}
+			else {
+				reset();
+			}
+		}
 	}
 	public Frame[] getFrame() {
 		return listeFrames;
 	}
 
-	public void FreePage(PageId pageIdFile, boolean b) {
-		if(b) {
-			FreePage(pageIdFile,1);
-		}
-		else {
-			FreePage(pageIdFile,0);
-		}
-		// TODO Auto-generated method stub
-
-	}
 	public void reset(){
-        init();
-        for(Frame frame: listeFrames){
-            frame.setPageId(null);
-            frame.setBuff(ByteBuffer.allocate(DBParams.pageSize));
-            frame.setTemps_free(-1);
-            frame.setPin_count(0);
-            frame.setDirty(0);
-        }
+    init();
+    for(Frame frame: listeFrames){
+        frame.setPageId(null);
+        frame.setBuff(ByteBuffer.allocate(DBParams.pageSize));
+        frame.setTemps_free(-1);
+        frame.setPin_count(0);
+        frame.setDirty(0);
     }
+  }
 
 
 
