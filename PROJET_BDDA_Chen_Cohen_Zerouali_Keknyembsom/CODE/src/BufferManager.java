@@ -148,7 +148,7 @@ public class BufferManager {
 				listeFrames[i].setDirty(0);
 				listeFrames[i].setBuff(ByteBuffer.allocate(DBParams.pageSize));
 				listeFrames[i].setTemps_free(-1);
-				listeFrames[i].getPageId(null);
+				listeFrames[i].setPageId(null);
 			}
 			else {
 				reset();
