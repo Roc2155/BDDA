@@ -21,7 +21,7 @@ public class Frame {
 	}
 
 	public void setPageId(PageId pageId) {
-		pageId = pageId;
+		this.pageId = pageId;
 	}
 
 	public ByteBuffer getBuff() {
