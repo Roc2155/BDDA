@@ -174,9 +174,27 @@ public class FileManager {
       return listRecords;
     }
 
-    public ArrayList<PageId> getAllDataPages(RelationInfo relInfo) throws IOException {
-      return null;
-	  }
+    public List<PageId> getAllDataPages(RelationInfo relInfo) {
+    	BufferManager.getInstance().init();
+    	List<PageId> listePageId = new ArrayList<PageId>();
+    	PageId headerPage = relInfo.getHeaderPageId();
+    	int posDataPage = 4; //Position de la première data page dans le header page
+    	int infoDataPage = 12; //4 octets (fileIdx), 4 octets (pageIdx) et 4 octets (espace dispo dans la data page)
+    	try {
+    		ByteBuffer buffHeaderPage = BufferManager.getInstance().getPage(headerPage);
+    		int nbPagesIndexee = buffHeaderPage.getInt(0); //Nombre de data page indexees sur 4 octets
+    		for(int i=0; i<nbPagesIndexee; i++) {
+    			PageId pageId = new PageId(posDataPage, posDataPage+4);
+    			listePageId.add(pageId);
+    			posDataPage+=infoDataPage;
+    		}
+    		BufferManager.getInstance().FreePage(headerPage, 0);
+    	}
+    	catch(IOException e) {
+    		e.printStackTrace();
+    	}
+    	return listePageId;
+    }
 
     public RecordId insertRecordIntoRelation(Record record) throws IOException {
 	    return writeRecordToDataPage(record,getFreeDataPageId(record.getRelInfo(), record.recordSizeFromValues()));
