@@ -200,7 +200,18 @@ public class FileManager {
 	    return writeRecordToDataPage(record,getFreeDataPageId(record.getRelInfo(), record.recordSizeFromValues()));
 	  }
 
-    public ArrayList<Record> getAllRecords(RelationInfo relInfo) throws IOException {
-      return null;
-	  }
+    public List<Record> getAllRecords(RelationInfo relInfo) {
+    	BufferManager.getInstance().init();
+    	List<Record> allRecords = new ArrayList<Record>();
+    	List<PageId> allDataPages = getAllDataPages(relInfo);
+    	List<Record> listeRecordInDataPage = new ArrayList<Record>();
+    	int nbDataPage = allDataPages.size();
+    	for(int i=0; i<nbDataPage; i++) {
+    		listeRecordInDataPage = getRecordsInDataPage(relInfo, allDataPages.get(i)); //On récupère tous les records de chaque data page
+    		for(int j=0; j<listeRecordInDataPage.size(); i++) {
+    			allRecords.add(listeRecordInDataPage.get(j)); //Pour chaque record de chaque data page du header page, on ajoute le record
+    		}
+    	}
+    	return allRecords;
+    }
 }
