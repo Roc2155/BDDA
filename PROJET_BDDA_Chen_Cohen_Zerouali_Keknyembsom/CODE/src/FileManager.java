@@ -149,13 +149,32 @@ public class FileManager {
   		return recordId;
     }
 
+    public List<Record> getRecordsInDataPage(RelationInfo relInfo, PageId dataPageId) {
+      List<Record> listRecords = new ArrayList<Record>();
+      BufferManager.getInstance().init();
+      int posRecord = 0;
+      try {
+        ByteBuffer buffDataPage = BufferManager.getInstance().getPage(dataPageId);
+        int slotDirectory = DBParams.pageSize-4;
+        int posNSlots = slotDirectory-4;
+        int nSlots = buffDataPage.getInt(posNSlots); //Nombre de record indexé dans le directory
+        int debRecordSlot = posNSlots-(nSlots*8); //Chaque slot de record contient 8 octets (position et taille du record)
+        for(int i=0; i<nSlots; i++) {
+          Record record = new Record(relInfo);
+          posRecord = buffDataPage.getInt(debRecordSlot); //On récupère le record indexé dans le slot
+          record.readFromBuffer(buffDataPage, posRecord);
+          listRecords.add(record);
+          debRecordSlot+=8; //Next slot du record suivant
+        }
+        BufferManager.getInstance().FreePage(dataPageId, 0);
+      }
+      catch (IOException e) {
+        e.printStackTrace();
+      }
+      return listRecords;
+    }
+
     public ArrayList<PageId> getAllDataPages(RelationInfo relInfo) throws IOException {
-      return null;
-	  }
-
-
-
-    public ArrayList<Record> getRecordsInDataPage(RelationInfo relInfo, PageId pageId) throws IOException {
       return null;
 	  }
 
