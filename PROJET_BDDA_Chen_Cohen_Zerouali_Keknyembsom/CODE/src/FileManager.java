@@ -34,31 +34,6 @@ public class FileManager {
       return headerPageId;
     }
 
-    public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws FileNotFoundException, EmptyStackException, IOException {
-    	BufferManager bm = BufferManager.getInstance();
-    	PageId dataPageId = null;
-    	PageId headerPageId = relInfo.getHeaderPageId();
-    	ByteBuffer bufferHeaderPage = bm.getPage(headerPageId); //contient toutes les informations sur les data page
-    	Boolean dispo = false;
-    	int indEspaceDispoDataPage = 12; //à partir de 0 octet, tous les 12e on a les information sur l'espace disponible des data page
-    	int tailleHeaderPage = bufferHeaderPage.capacity();
-    	for(; indEspaceDispoDataPage<tailleHeaderPage && !dispo; indEspaceDispoDataPage+=12) {
-    		int espaceDispoDataPage = bufferHeaderPage.getInt(indEspaceDispoDataPage);
-    		//Si il reste encore de l'espace disponible
-    		if(espaceDispoDataPage>=sizeRecord) {
-    			//on récupère la page
-    			int fileIdx = espaceDispoDataPage-8;
-    			int pageIdx = fileIdx+4;
-    			dataPageId.setFileIdx(bufferHeaderPage.getInt(fileIdx));
-    			dataPageId.setPageIdx(bufferHeaderPage.getInt(pageIdx));
-    			dispo = true;
-    			bm.FreePage(headerPageId, 0);
-    		}
-    	}
-    	bm.FreePage(headerPageId, 0);
-		  return dataPageId;
-	 }
-
     public PageId addDataPage(RelationInfo relInfo) throws IOException {
 		    DiskManager dm = DiskManager.getLeDiskManager();
 		    BufferManager bm = BufferManager.getInstance();
@@ -105,6 +80,32 @@ public class FileManager {
 			    e.printStackTrace();
 		   }
     }
+
+    public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws FileNotFoundException, EmptyStackException, IOException {
+    	BufferManager bm = BufferManager.getInstance();
+      bm.init();
+    	PageId dataPageId = null;
+    	PageId headerPageId = relInfo.getHeaderPageId();
+    	ByteBuffer bufferHeaderPage = bm.getPage(headerPageId); //contient toutes les informations sur les data page
+    	Boolean dispo = false;
+    	int indEspaceDispoDataPage = 12; //à partir de 0 octet, tous les 12e on a les information sur l'espace disponible des data page
+    	int tailleHeaderPage = bufferHeaderPage.capacity();
+    	for(; indEspaceDispoDataPage<tailleHeaderPage && !dispo; indEspaceDispoDataPage+=12) {
+    		int espaceDispoDataPage = bufferHeaderPage.getInt(indEspaceDispoDataPage);
+    		//Si il reste encore de l'espace disponible
+    		if(espaceDispoDataPage>=sizeRecord) {
+    			//on récupère la page
+    			int fileIdx = espaceDispoDataPage-8;
+    			int pageIdx = fileIdx+4;
+    			dataPageId.setFileIdx(bufferHeaderPage.getInt(fileIdx));
+    			dataPageId.setPageIdx(bufferHeaderPage.getInt(pageIdx));
+    			dispo = true;
+    			bm.FreePage(headerPageId, 0);
+    		}
+    	}
+    	bm.FreePage(headerPageId, 0);
+		  return dataPageId;
+	 }
 
     public ArrayList<PageId> getAllDataPages(RelationInfo relInfo) throws IOException {
       return null;
