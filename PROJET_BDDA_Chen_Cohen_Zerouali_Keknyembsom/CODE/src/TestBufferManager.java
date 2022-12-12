@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Arrays;
 
 public class TestBufferManager {
 	public static void TestBuffer() {
@@ -17,7 +18,7 @@ public class TestBufferManager {
 
 			System.out.print("GET(0, 2) : ");
 			BufferManager.getInstance().getPage(pageId2);
-			System.out.println("[1] : " + BufferManager.getInstance().getFrame()[1].getpageId());
+			System.out.println("[1] : " + BufferManager.getInstance().getFrame()[1].getPageId());
 			System.out.println("pin_count de la page (0, 2) : " + BufferManager.getInstance().getFrame()[1].getPin_count());
 			System.out.println("dirty flag de la page (0, 2) : " + BufferManager.getInstance().getFrame()[1].getDirty());
 
@@ -58,18 +59,18 @@ public class TestBufferManager {
 
 			System.out.println("GET(1, 0)");
 			BufferManager.getInstance().getPage(new PageId(1, 0));
-			System.out.println("pin_count de la page (1, 0) : " + BufferManager.getInstance.getFrame()[0].getPin_count());
+			System.out.println("pin_count de la page (1, 0) : " + BufferManager.getInstance().getFrame()[0].getPin_count());
 			System.out.println("dirty flag de la page (1, 0) : " + BufferManager.getInstance().getFrame()[0].getDirty());
 
-			System.out.println("[1] : " + BufferManager.getInstance().getFrame()[1].getpageId());
+			System.out.println("[1] : " + BufferManager.getInstance().getFrame()[1].getPageId());
 			System.out.println(BufferManager.getInstance().getFrame().length);
 
 			for(int i=0; i<BufferManager.getInstance().getFrame().length; i++) {
-				System.out.println(BufferManager.getInstance().getFrame()[i].getpageId().toString());
+				System.out.println(BufferManager.getInstance().getFrame()[i].getPageId().toString());
 			}
 
 			Frame frame1 = BufferManager.getInstance().getFrame()[0];
-			if(pageId.getFileIdx()!=frame1.getpageId().getFileIdx()&&pageId.getPageIdx()!=frame1.getpageId().getPageIdx()){
+			if(pageId.getFileIdx()!=frame1.getPageId().getFileIdx()&&pageId.getPageIdx()!=frame1.getPageId().getPageIdx()){
 				System.out.println("Erreur");
 			}
 
