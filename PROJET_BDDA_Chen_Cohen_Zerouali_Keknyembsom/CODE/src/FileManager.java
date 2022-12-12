@@ -11,7 +11,6 @@ public class FileManager {
 
     private static FileManager instance = null;
 
-
     public static final FileManager getInstance()
 	{
 		if (instance == null)
@@ -107,11 +106,50 @@ public class FileManager {
 		  return dataPageId;
 	 }
 
-    public ArrayList<PageId> getAllDataPages(RelationInfo relInfo) throws IOException {
-      return null;
-	  }
+   public RecordId writeRecordToDataPage(Record record, PageId dataPageId) {
+    	BufferManager.getInstance().init();
+		  RecordId recordId = null;
+	    try {
+  		  ByteBuffer buffDataPage = BufferManager.getInstance().getPage(dataPageId);
+  	    int slotDirectory = DBParams.pageSize-4; //Donne la position de là où commence l'espace libre sur la data page
+  			int posEspaceDispo = buffDataPage.getInt(slotDirectory); //Les derniers 4 octets du slot directory qui se trouve en fin de page donne la position de l'espace disponible
+  			int posNSlots = slotDirectory -4; //Donne la position du nombre de slots dans le directory (4 octets à partir des 8 derniers octets de la page)
 
-    public RecordId writeRecordToDataPage(Record record, PageId pageId) throws IOException {
+  			record.writeToBuffer(buffDataPage, posEspaceDispo);
+
+  			//Ajout d'un record dans la data page => incrémenter le nombre de slots dans le directory
+  			int nSlots = buffDataPage.getInt(posNSlots);
+  			nSlots+=1;
+  			//Indexer la position du record dans la data page
+  			int nbRecordSlots = (nSlots)*8; //next slot pour indexe un record dont 4 octets donnant la position de début dand la page du ième record et 4 autres pour la taille du ième record
+  			int nextRecordSlot = (posNSlots) - nbRecordSlots;
+  			buffDataPage.putInt(nextRecordSlot, posEspaceDispo); //On insère dans le slot à l'indice indexeRecordSlot, l'indice où se trouvera le record (à posEspaceDispo)
+  			buffDataPage.putInt(nextRecordSlot+4, record.getWrittenSize()); //On insère la taille du record dans le slot suivant de 4 octets
+  			//Màj du directory
+  			buffDataPage.putInt(posNSlots, nSlots); //Mets à jour le nombre de slot dans la data page
+  			posEspaceDispo = posEspaceDispo+record.getWrittenSize();
+  			buffDataPage.putInt(slotDirectory, posEspaceDispo); //Mets à jour la position du début de l'espace libre après avoir écrit le record sur la data page
+
+  			BufferManager.getInstance().FreePage(dataPageId, 1);
+
+  			//Màj de l'espace dispo de la data page dans la headerPage de la relation
+  			PageId headerPage = record.getRelInfo().getHeaderPageId();
+  			ByteBuffer buffHeaderPage = BufferManager.getInstance().getPage(headerPage);
+  			int indEspaceDispoDataPage = buffHeaderPage.getInt(0)*12;
+  			int tailleNewRecord = record.getWrittenSize()-8; //8 octets pour les slots indiquants la position du record dans la data page ainsi que sa taille
+  			int espaceDispoDataPage = buffHeaderPage.getInt(indEspaceDispoDataPage)-tailleNewRecord;
+  			buffHeaderPage.putInt(buffHeaderPage.getInt(indEspaceDispoDataPage), espaceDispoDataPage); //Màj de l'espace dispo de la data page dans le header page
+
+  			BufferManager.getInstance().FreePage(dataPageId, 1);
+  			recordId = new RecordId(dataPageId, nSlots);
+  		}
+      catch (IOException e) {
+  			e.printStackTrace();
+  		}
+  		return recordId;
+    }
+
+    public ArrayList<PageId> getAllDataPages(RelationInfo relInfo) throws IOException {
       return null;
 	  }
 
