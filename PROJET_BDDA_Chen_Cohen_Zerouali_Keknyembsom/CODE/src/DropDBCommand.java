@@ -3,11 +3,11 @@ import java.io.File;
 public class DropDBCommand{
 
   
-    public static void execute(){
+	public DropDBCommand(String ch) {
+		
+	}
+    public void Execute(){
         
     }
   
-    public static void supprimerFichier(){
-        
-    }
 }

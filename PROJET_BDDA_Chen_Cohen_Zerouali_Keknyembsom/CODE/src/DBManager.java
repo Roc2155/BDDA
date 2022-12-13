@@ -63,7 +63,7 @@ public class DBManager {
                 createTable.Execute();
                 break;
             case "DROPDB":
-                DROPDBCommand drop=new DROPDBCommand(ch);
+                DropDBCommand drop=new DropDBCommand(ch);
                 drop.Execute(); 
                 break;
             case "INSERT":
@@ -71,7 +71,7 @@ public class DBManager {
                 insert.Execute();
                 break;
             case "SELECT":
-            	 SelectCommande select= new SelectCommand(ch);
+            	 SelectCommande select= new SelectCommande(ch);
             	 select.Execute();
 
             /*case "DELETE":
