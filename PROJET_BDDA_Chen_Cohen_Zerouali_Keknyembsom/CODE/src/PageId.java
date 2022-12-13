@@ -22,7 +22,7 @@ public class PageId implements Serializable
     }
 
     public void setPageIdx(int pageIdx) {
-    	this.fileIdx=pageIdx;
+    	this.pageIdx=pageIdx;
     }
 
 	  public int getFileIdx() {
