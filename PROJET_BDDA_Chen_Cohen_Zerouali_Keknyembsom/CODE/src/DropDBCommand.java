@@ -1,6 +1,6 @@
 import java.io.File;
 
-public class DropDb{
+public class DropDBCommand{
 
   
     public static void execute(){

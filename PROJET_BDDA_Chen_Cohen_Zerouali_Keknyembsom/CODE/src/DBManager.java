@@ -50,7 +50,10 @@ public class DBManager {
     }
 
 
-    //A complÃ©ter + ajouter la gestion des exceptions
+    /**
+     * 
+     * @param ch chaine de caratère correspondant à la commande, en fonction de laquelle, on appelle la méthode Execute() de la bonne classe
+     */
     public void ProcessCommand(String ch){
         StringTokenizer st =new StringTokenizer(ch);
         String deb=st.nextToken();
@@ -71,10 +74,10 @@ public class DBManager {
             	 SelectCommande select= new SelectCommand(ch);
             	 select.Execute();
 
-            case "DELETE":
+            /*case "DELETE":
             	DeleteCommand delete = new DeleteCommand(ch);
             	delete.Execute();
-            	break;
+            	break;*/
 
             default:
             	System.out.println("Veuillez entrer une commande valide.");
