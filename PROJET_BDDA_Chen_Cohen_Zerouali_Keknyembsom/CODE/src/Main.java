@@ -30,9 +30,9 @@ public class Main {
     	System.out.println("CREATE TABLE de la forme suivance : CREATE TABLE NomRelation (NomCol_1:TypeCol_1,NomCol_2:TypeCol_2,...,NomCol_NbCol:TypeCol_NbCol) \n");
     	System.out.println("INSERT de la forme suivante : INSERT INTO nomRelation VALUES (val1,val2,...,valn) \n");
     	System.out.println("SELECT de la forme suivante :  SELECT * FROM nomRelation WHERE nomColonne1OPvaleur1\r\n"
-    			+ " AND nomColonne2OPvaleur2\r\n"
-    			+ " ...\r\n"
-    			+ " AND nomColonnekOPvaleurk \n");
+    			+ "\t\t\t\t\t\t\t\tAND nomColonne2OPvaleur2\r\n"
+    			+ "\t\t\t\t\t\t\t\t...\r\n"
+    			+ "\t\t\t\t\t\t\t\tAND nomColonnekOPvaleurk \n");
     	System.out.println("EXIT \n");
     }
 
