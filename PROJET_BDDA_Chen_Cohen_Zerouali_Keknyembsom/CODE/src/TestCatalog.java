@@ -32,6 +32,8 @@ public class TestCatalog {
 		FileManager fm = FileManager.getInstance();
 		BufferManager.getInstance().init();
 
+		//PageId headerPage = new PageId(0, 3);
+
 		try {
 			PageId headerPage = fm.createNewHeaderPage();
 
@@ -74,10 +76,20 @@ public class TestCatalog {
 			for (int i = 0;i< r1.getValues().size() ;i++) {
 				System.out.print(r1.getValues().get(i));
 			}
+/*
+      		//Avec un buffer
+      		ByteBuffer buffNom = ByteBuffer.wrap("Zerouali".getBytes());
+      		ByteBuffer buffPre = ByteBuffer.wrap("Faycal".getBytes());
+      		ByteBuffer buffNum = ByteBuffer.wrap("2".getBytes());
 
-			}catch(IOException e) {
-				e.printStackTrace();
-			}
 
+      		r1.writeToBuffer(buffNom, 0);
+      		r1.writeToBuffer(buffPre, 1+buffNom.capacity());
+      		r1.writeToBuffer(buffNum, 1+buffNom.capacity()+buffPre.capacity());
+*/
+		}catch(IOException e) {
+			e.printStackTrace();
 		}
+
+	}
 }
