@@ -113,9 +113,22 @@ public class Record {
 			}
 	}
 
- 	public int getWrittenSize() {
- 		 return 0;
- 	 }
+	public int getWrittenSize() {
+		 int size=4; //Car dans le offsetDirectory, on met un entier (4 octets) indiquant la position de fin de la dernière valeur
+		 List<ColInfo> listColInfo = relInfo.getListe();
+		 for(int i=0; i<listColInfo.size(); i++) {
+			 String typeCol = listColInfo.get(i).getType();
+			 if(typeCol.equals("REAL") || typeCol.equals("INTEGER")) {
+				 size+=4*2; //Car pour indéxer l'élément il faut 4 octets dans le offsetDirectory donnant la position de l'entier/réel écrit dans le buffer (4 octets)
+			 }
+			 else {
+				 int sizeType = "VARCHAR(".length();
+				 int nbCarac = Integer.parseInt(typeCol.substring(sizeType, typeCol.length()-1)); //On met la taille max pour que les records de la même relation info soit de même taille et non variable
+				 size+=(nbCarac*2)+4; //Car un caractère vaut 2 octets et la position du début de la chaine de caractère sera dans le offsetDirectory où il vaut 4 octets aussi
+			 }
+		 }
+		 return size;
+	 }
 
 
 	 public int recordSizeFromValues(){
