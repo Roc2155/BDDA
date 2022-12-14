@@ -36,7 +36,6 @@ public class FileManager {
     public PageId addDataPage(RelationInfo relInfo) throws IOException {
 		    DiskManager dm = DiskManager.getLeDiskManager();
 		    BufferManager bm = BufferManager.getInstance();
-		    bm.init();
 
         PageId pageId = dm.allocPage(); //Page contenant les records
 
@@ -55,7 +54,6 @@ public class FileManager {
 
     private void addDataPageToHeaderPage(RelationInfo relInfo, PageId pageId) {
 		   BufferManager bm = BufferManager.getInstance();
-		   bm.init();
 
 		   try {
          ByteBuffer buffHeaderPage = bm.getPage(relInfo.getHeaderPageId());
@@ -82,7 +80,6 @@ public class FileManager {
 
     public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws FileNotFoundException, EmptyStackException, IOException {
     	BufferManager bm = BufferManager.getInstance();
-      bm.init();
     	PageId dataPageId = null;
     	PageId headerPageId = relInfo.getHeaderPageId();
     	ByteBuffer bufferHeaderPage = bm.getPage(headerPageId); //contient toutes les informations sur les data page
@@ -107,7 +104,6 @@ public class FileManager {
 	 }
 
    public RecordId writeRecordToDataPage(Record record, PageId dataPageId) {
-    	BufferManager.getInstance().init();
 		  RecordId recordId = null;
 	    try {
   		  ByteBuffer buffDataPage = BufferManager.getInstance().getPage(dataPageId);
@@ -151,7 +147,6 @@ public class FileManager {
 
     public List<Record> getRecordsInDataPage(RelationInfo relInfo, PageId dataPageId) {
       List<Record> listRecords = new ArrayList<Record>();
-      BufferManager.getInstance().init();
       int posRecord = 0;
       try {
         ByteBuffer buffDataPage = BufferManager.getInstance().getPage(dataPageId);
@@ -175,7 +170,6 @@ public class FileManager {
     }
 
     public List<PageId> getAllDataPages(RelationInfo relInfo) {
-    	BufferManager.getInstance().init();
     	List<PageId> listePageId = new ArrayList<PageId>();
     	PageId headerPage = relInfo.getHeaderPageId();
     	int posDataPage = 4; //Position de la première data page dans le header page
@@ -201,7 +195,6 @@ public class FileManager {
 	  }
 
     public List<Record> getAllRecords(RelationInfo relInfo) {
-    	BufferManager.getInstance().init();
     	List<Record> allRecords = new ArrayList<Record>();
     	List<PageId> allDataPages = getAllDataPages(relInfo);
     	List<Record> listeRecordInDataPage = new ArrayList<Record>();
