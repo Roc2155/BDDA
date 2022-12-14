@@ -9,9 +9,11 @@ public class SelectCommande {
 	private String nomRelation;
 	private StringBuffer conditions;
 	private StringTokenizer recordTokens;
+	private Boolean existCritere;
 
 	public SelectCommande(String ch) {
 		resultatRecord = new ArrayList<Record>();
+		existCritere = false;
 
 		//Parsing de la chaine saisie par l'utilisateur
 		StringTokenizer tokenizer = new StringTokenizer(ch, " *");
@@ -20,6 +22,7 @@ public class SelectCommande {
 		nomRelation = tokenizer.nextToken();
 		if(tokenizer.hasMoreElements()) {
 			tokenizer.nextToken(); //WHERE
+			existCritere = true;
 			if(tokenizer.countTokens()<=MAX_CRITERE) {
 				while(tokenizer.hasMoreElements()) {
 					String token = tokenizer.nextToken();
@@ -34,10 +37,24 @@ public class SelectCommande {
 				System.exit(1);
 			}
 		}
+		else {
+			RelationInfo rel = Catalog.getCatalog().getRelationInfo(nomRelation);
+			try {
+				List<Record> listRecords = FileManager.getInstance().getAllRecords(rel);
+				for(int i=0; i<listRecords.size(); i++) {
+					resultatRecord.add((listRecords).get(i));
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void Execute() {
-
+		if(existCritere) {
+			parseCritere();
+		}
+		printRecords();
 	}
 
 	public void parseCritere() {
@@ -225,4 +242,11 @@ public class SelectCommande {
 		}
 		return resultCritere;
 	}
+
+	public void printRecords(){
+        for(int i=0 ; i<resultatRecord.size();i++){
+            System.out.println(resultatRecord.get(i).toString());
+        }
+        System.out.println("Total records = "+resultatRecord.size());
+    }
 }
