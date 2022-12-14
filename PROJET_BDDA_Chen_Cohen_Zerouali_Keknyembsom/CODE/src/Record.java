@@ -129,9 +129,20 @@ public class Record {
 		 return size;
 	 }
 
-
 	 public int recordSizeFromValues(){
-		 return 0;
+		 List<ColInfo> listColInfo = relInfo.getListe();
+		 int size=(1+relInfo.getNb())*4; //taille du offsetDirectory
+		 for(int i=0; i<values.size(); i++) {
+			 String typeCol = listColInfo.get(i).getType();
+			 if(typeCol.equals("REAL") || typeCol.equals("INTEGER")) {
+				 size+=4; //Car chaque entier/réel vaut 4 octets
+			 }
+			 else {
+				 int chaineSize = values.get(i).length();
+				 size+=chaineSize*2; //Car chaque caractères vaut 2 octets
+			 }
+		 }
+		 return size;
 	 }
 
 	 public void add(String val) {

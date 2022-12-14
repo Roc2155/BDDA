@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 //Point d'entrÃ©e du SGBD
 public class DBManager {
-    private static DBManager leDBManager; 
+    private static DBManager leDBManager;
 
 	public static DBManager getLeDBManager() {
 
@@ -46,13 +46,13 @@ public class DBManager {
         	BufferManager.getInstance().FlushAll();
     	}catch (IOException e) {
     		e.printStackTrace();
-    	}	
+    	}
     }
 
 
     /**
-     * 
-     * @param ch chaine de caratère correspondant à la commande, en fonction de laquelle, on appelle la méthode Execute() de la bonne classe
+     *
+     * @param ch chaine de caratï¿½re correspondant ï¿½ la commande, en fonction de laquelle, on appelle la mï¿½thode Execute() de la bonne classe
      */
     public void ProcessCommand(String ch){
         StringTokenizer st =new StringTokenizer(ch);
@@ -64,7 +64,7 @@ public class DBManager {
                 break;
             case "DROPDB":
                 DropDBCommand drop=new DropDBCommand(ch);
-                drop.Execute(); 
+                drop.Execute();
                 break;
             case "INSERT":
                 InsertCommand insert=new InsertCommand(ch);
@@ -85,6 +85,4 @@ public class DBManager {
     }
 
 
-  } 
-
-
+  }
