@@ -102,14 +102,17 @@ public class SelectCommande {
 				typeCol = record.getRelInfo().getListe().get(colIndice).getType();
 				if(typeCol.equals("REAL")) {
 					Float val = Float.parseFloat(valeur);
-					verifConditionReal(operation, val, Float.valueOf(record.getValues().get(colIndice)), colIndice);
+					resultat = verifConditionReal(operation, val, Float.valueOf(record.getValues().get(colIndice)), colIndice);
 				}
 				else if(typeCol.equals("INTEGER")) {
 					int val = Integer.parseInt(valeur);
-					verifConditionInteger(operation, val, Integer.valueOf(record.getValues().get(colIndice)), colIndice);
+					resultat = verifConditionInteger(operation, val, Integer.valueOf(record.getValues().get(colIndice)), colIndice);
 				}
 				else {
-					verifConditionVarchar(operation, valeur, record.getValues().get(colIndice), colIndice);
+					resultat = verifConditionVarchar(operation, valeur, record.getValues().get(colIndice), colIndice);
+				}
+				if(resultat) {
+					resultatRecord.add(record);
 				}
 			}
 		}
