@@ -4,61 +4,66 @@ import java.io.IOException;
 
 public class DropDBCommand{
 
-  
+
 	public DropDBCommand(String ch) {
-		
+
 	}
     public void Execute(){
     	//suppression du dossier DB
     	deleteDB(DBParams.DBPath);
-    	
-    	//remise à zéro dans les classes inférieurs
+
+    	//remise ï¿½ zï¿½ro dans les classes infï¿½rieurs
     	try {
     		BufferManager.getInstance().FlushAll();
     	}catch(IOException e ) {
     		e.printStackTrace();
     	}
-    	
+
     	Catalog.getCatalog().reset();
-    	
-    	
+
+
     	//TODO    reset dans disk manager et file manager maybe !
     }
-    
+
   //suppression du dossier DB
     private void deleteDB(String path) {
+      System.out.println("Current repository : "+path);
     	File repDB= new File (path);
     	File[] liste = repDB.listFiles();
+      System.out.println("Liste des fichiers prÃ©sents dans le rÃ©pertoire : ");
+    	for(int i=0; i<liste.length; i++) {
+    		System.out.println(liste[i].getName());
+    	}
     	if (liste !=null) {
     		 for(File item : liste){
     		        if(item.isFile())
-    		        { 
+    		        {
     		        	//PAS SUR QUON PUISSE SUPPRIMER LES GITIGNORE ...QUI SONT DANS CE DOSSIER
     		        	//TODO
-    		        	//item.delete(); 
-          
-    		          //affichage des noms des fichiers/répertoires :
-    		          //System.out.format("Nom du fichier: %s%n", item.getName()); 
-    		        } 
+    		        	//item.delete();
+
+    		          //affichage des noms des fichiers/rï¿½pertoires :
+    		          //System.out.format("Nom du fichier: %s%n", item.getName());
+    		        }
     		        else if(item.isDirectory())
     		        {
-    		        	//appel recursif 
+    		        	//appel recursif
     		        	deleteDB(item.getPath());
-    		        	
-    		        	
-    		          //System.out.format("Nom du répertoire: %s%n", item.getName()); 
-    		        
+
+
+    		          //System.out.format("Nom du rï¿½pertoire: %s%n", item.getName());
+
     		      }
     		      //source : https://waytolearnx.com/2020/03/lister-le-contenu-dun-dossier-en-java.html
     	     }
-	     
-	    } 
 
-    
+	    }
+
+
   }
-    
-    
-    
-    
-  
+
+
+
+
+
 }
