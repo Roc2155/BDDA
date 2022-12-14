@@ -14,7 +14,7 @@ public class Main
 		Scanner sc=new Scanner(System.in);
 		String chaine;
 		while (true){
-			System.out.println("Veuillez choisir une commande :");
+			System.out.println("Veuillez choisir une commande : \n");
 			menu();
 			chaine=sc.nextLine();
 			if (chaine.equals("EXIT")){
@@ -27,10 +27,15 @@ public class Main
     }
         
     private static void menu () {
-    	System.out.println("Entrez la commande CREATE TABLE de la forme suivance : CREATE TABLE NomRelation (NomCol_1:TypeCol_1,NomCol_2:TypeCol_2, ...\n"
-    			+ "NomCol_NbCol:TypeCol_NbCol)");
-    	//to do
-    	
+    	System.out.println(" DROPDB de la forme suivante:  DROPDB \n");
+    	System.out.println("CREATE TABLE de la forme suivance : CREATE TABLE NomRelation (NomCol_1:TypeCol_1,NomCol_2:TypeCol_2, ...\n"
+    			+ "NomCol_NbCol:TypeCol_NbCol) \n");
+    	System.out.println("INSERT de la forme suivante : INSERT INTO nomRelation VALUES (val1,val2, … ,valn) \n");
+    	System.out.println("SELECT de la forme suivante :  SELECT * FROM nomRelation WHERE nomColonne1OPvaleur1\r\n"
+    			+ " AND nomColonne2OPvaleur2\r\n"
+    			+ " ...\r\n"
+    			+ " AND nomColonnekOPvaleurk \n");
+    	System.out.println("EXIT \n");
     }
 
 }

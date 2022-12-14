@@ -37,20 +37,31 @@ public class CreateTableCommand {
 
 		}
 
-		//System.out.println("nombre col"+nombreCol);
 
 
 }
 
 	public void Execute() {
 
-		try {
+		ArrayList<ColInfo> tab=new ArrayList<ColInfo>();
+		try {         
 			PageId pageId = FileManager.getInstance().createNewHeaderPage() ;
-			RelationInfo rel = new RelationInfo(nomRelation, nombreCol, nomColonne, pageId);
+			
+			//remplissage du tableau avec des objets ColInfo
+			for (int i=0; i<nomColonne.size(); i++) {
+				tab.add(new ColInfo(nomColonne.get(i),typeColonne.get(i)));
+			}
+			RelationInfo rel = new RelationInfo(nomRelation, nombreCol,tab , pageId);
+			
+			//ajoute RelationInfo au catalogue
+			Catalog.getCatalog().addRelationInfo(rel);
+			
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		
 	}
 
 }
