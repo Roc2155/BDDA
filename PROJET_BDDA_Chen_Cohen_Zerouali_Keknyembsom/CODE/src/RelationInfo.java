@@ -1,7 +1,7 @@
 import java.util.ArrayList;
+import java.io.Serializable;
 
-
-public class RelationInfo {
+public class RelationInfo implements Serializable {
 	private ArrayList<ColInfo> liste;
 	private String nomRelation;
 	private int nbcolonnes;
@@ -36,9 +36,9 @@ public class RelationInfo {
 		return this.liste;
 	}
 	public String toString() {
-	       
+
         StringBuffer sb = new StringBuffer("nom relation : " + this.nomRelation +  "\nnbColonnes " + this.nbColonnes +"\n");
         return sb.toString();
     }
-	
+
 }
