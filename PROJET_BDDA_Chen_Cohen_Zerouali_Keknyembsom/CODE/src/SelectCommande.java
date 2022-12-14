@@ -48,47 +48,170 @@ public class SelectCommande {
 			if(condition.contains("==")) {
 				String[] nomColEtValeur = condition.split("==");
 				operation = "==";
-				recordsSelected(nomColEtValeur, operation);
+				splitColetVal(nomColEtValeur, operation);
 			}
 			else if(condition.contains(">=")) {
 				String[] nomColEtValeur = condition.split(">=");
 				operation = ">=";
-				recordsSelected(nomColEtValeur, operation);
+				splitColetVal(nomColEtValeur, operation);
 			}
 			else if(condition.contains("<=")) {
 				String[] nomColEtValeur = condition.split("<=");
 				operation = "<=";
-				recordsSelected(nomColEtValeur, operation);
+				splitColetVal(nomColEtValeur, operation);
 			}
 			else if(condition.contains("<")) {
 				String[] nomColEtValeur = condition.split("<");
 				operation = "<";
-				recordsSelected(nomColEtValeur, operation);
+				splitColetVal(nomColEtValeur, operation);
 			}
 			else if(condition.contains(">")) {
 				String[] nomColEtValeur = condition.split(">");
 				operation = ">";
-				recordsSelected(nomColEtValeur, operation);
+				splitColetVal(nomColEtValeur, operation);
 			}
 			else if(condition.contains("<>")) {
 				String[] nomColEtValeur = condition.split("<>");
 				operation = "<>";
-				recordsSelected(nomColEtValeur, operation);
+				splitColetVal(nomColEtValeur, operation);
 			}
 		}
 	}
 
-	public void recordsSelected(String[] nomColEtValeur, String operation) {
+	public void splitColetVal(String[] nomColEtValeur, String operation) {
+		String nomCol = nomColEtValeur[0];
+		String valeur = nomColEtValeur[1];
+		int colIndice = -1;
 		RelationInfo rel = Catalog.getCatalog().getRelationInfo(nomRelation);
-		PageId headerPage = rel.getHeaderPageId();
+		List<ColInfo> listColInfo = rel.getListe();
+		for(int i=0; i<listColInfo.size(); i++) {
+			if(nomCol.equals(listColInfo.get(i).getNom())) {
+				colIndice = i;
+			}
+		}
+		RecordSelected(colIndice, valeur, operation);
+	}
+
+	public void RecordSelected(int colIndice, String valeur, String operation) {
+		RelationInfo rel = Catalog.getCatalog().getRelationInfo(nomRelation);
+		String typeCol;
+		Boolean resultat = false;
 		try {
 			List<Record> listAllRecords = FileManager.getInstance().getAllRecords(rel);
 			for(Record record : listAllRecords) {
-
+				typeCol = record.getRelInfo().getListe().get(colIndice).getType();
+				if(typeCol.equals("REAL")) {
+					Float val = Float.parseFloat(valeur);
+					verifConditionReal(operation, val, Float.valueOf(record.getValues().get(colIndice)), colIndice);
+				}
+				else if(typeCol.equals("INTEGER")) {
+					int val = Integer.parseInt(valeur);
+					verifConditionInteger(operation, val, Integer.valueOf(record.getValues().get(colIndice)), colIndice);
+				}
+				else {
+					verifConditionVarchar(operation, valeur, record.getValues().get(colIndice), colIndice);
+				}
 			}
 		}
 		catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Boolean verifConditionReal(String operation, float valeur, float recordVal, int colIndice) {
+		Boolean resultCritere = false;
+		if(operation.equals("=")) {
+			if(valeur==recordVal) {
+				resultCritere = true;
+			}
+		}
+		else if(operation.equals(">=")) {
+			if(valeur<=recordVal) {
+				resultCritere = true;
+			}
+		}
+		else if(operation.equals("<=")) {
+			if(valeur>=recordVal) {
+				resultCritere = true;
+			}
+		}
+		else if(operation.equals(">")) {
+			if(valeur<recordVal) {
+				resultCritere = true;
+			}
+		}
+		else if(operation.equals("<")) {
+			if(valeur>recordVal) {
+				resultCritere = true;
+			}
+		}
+		else if(operation.equals("<>")) {
+			if(valeur!=recordVal) {
+				resultCritere = true;
+			}
+		}
+		return resultCritere;
+	}
+
+	public Boolean verifConditionInteger(String operation, int valeur, int recordVal, int colIndice) {
+		Boolean resultCritere = false;
+		if(operation.equals("=")) {
+			if(valeur==recordVal) {
+				resultCritere = true;
+			}
+		}
+		else if(operation.equals(">=")) {
+			if(valeur<=recordVal) {
+				resultCritere = true;
+			}
+		}
+		else if(operation.equals("<=")) {
+			if(valeur>=recordVal) {
+				resultCritere = true;
+			}
+		}
+		else if(operation.equals(">")) {
+			if(valeur<recordVal) {
+				resultCritere = true;
+			}
+		}
+		else if(operation.equals("<")) {
+			if(valeur>recordVal) {
+				resultCritere = true;
+			}
+		}
+		else if(operation.equals("<>")) {
+			if(valeur!=recordVal) {
+				resultCritere = true;
+			}
+		}
+		return resultCritere;
+	}
+
+	public Boolean verifConditionVarchar(String operation, String valeur, String recordVal, int colIndice) {
+		Boolean resultCritere = false;
+		if(operation.equals("=")) {
+			if(valeur.equals(recordVal)) {
+				resultCritere = true;
+			}
+		}
+		else if(operation.equals(">=")) {
+
+		}
+		else if(operation.equals("<=")) {
+
+		}
+		else if(operation.equals(">")) {
+
+		}
+		else if(operation.equals("<")) {
+
+		}
+		else if(operation.equals("<>")) {
+			if(!valeur.equals(recordVal)) {
+				resultCritere = true;
+			}
+		}
+		return resultCritere;
 	}
 }
