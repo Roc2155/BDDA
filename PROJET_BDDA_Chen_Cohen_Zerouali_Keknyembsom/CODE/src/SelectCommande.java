@@ -9,11 +9,9 @@ public class SelectCommande {
 	private String nomRelation;
 	private StringBuffer conditions;
 	private StringTokenizer recordTokens;
-	private ArrayList<String> listRecords;
 
 	public SelectCommande(String ch) {
 		resultatRecord = new ArrayList<Record>();
-		listRecords = new ArrayList<String>();
 
 		//Parsing de la chaine saisie par l'utilisateur
 		StringTokenizer tokenizer = new StringTokenizer(ch, " *");
@@ -22,15 +20,20 @@ public class SelectCommande {
 		nomRelation = tokenizer.nextToken();
 		if(tokenizer.hasMoreElements()) {
 			tokenizer.nextToken(); //WHERE
-			while(tokenizer.hasMoreElements()) {
-				String token = tokenizer.nextToken();
-				conditions = new StringBuffer();
-				if(!token.equals("AND")) {
-					conditions.append(token+" ");
+			if(tokenizer.countTokens()<=MAX_CRITERE) {
+				while(tokenizer.hasMoreElements()) {
+					String token = tokenizer.nextToken();
+					conditions = new StringBuffer();
+					if(!token.equals("AND")) {
+						conditions.append(token+" ");
+					}
 				}
 			}
+			else {
+				System.out.println("Critères maximum 20 !!");
+				System.exit(1);
+			}
 		}
-		System.out.println(conditions.toString());
 	}
 
 	public void Execute() {
@@ -44,39 +47,33 @@ public class SelectCommande {
 			String condition = recordTokens.nextToken();
 			if(condition.contains("==")) {
 				String[] recordsCondition = condition.split("==");
-				listRecords.add(recordsCondition[0]);
-				listRecords.add(recordsCondition[1]);
 				operation = "==";
+				recordsSelected(recordsCondition, operation);
 			}
 			else if(condition.contains(">=")) {
 				String[] recordsCondition = condition.split(">=");
-				listRecords.add(recordsCondition[0]);
-				listRecords.add(recordsCondition[1]);
 				operation = ">=";
+				recordsSelected(recordsCondition, operation);
 			}
 			else if(condition.contains("<=")) {
 				String[] recordsCondition = condition.split("<=");
-				listRecords.add(recordsCondition[0]);
-				listRecords.add(recordsCondition[1]);
 				operation = "<=";
+				recordsSelected(recordsCondition, operation);
 			}
 			else if(condition.contains("<")) {
 				String[] recordsCondition = condition.split("<");
-				listRecords.add(recordsCondition[0]);
-				listRecords.add(recordsCondition[1]);
 				operation = "<";
+				recordsSelected(recordsCondition, operation);
 			}
 			else if(condition.contains(">")) {
 				String[] recordsCondition = condition.split(">");
-				listRecords.add(recordsCondition[0]);
-				listRecords.add(recordsCondition[1]);
 				operation = ">";
+				recordsSelected(recordsCondition, operation);
 			}
 			else if(condition.contains("<>")) {
 				String[] recordsCondition = condition.split("<>");
-				listRecords.add(recordsCondition[0]);
-				listRecords.add(recordsCondition[1]);
 				operation = "<>";
+				recordsSelected(recordsCondition, operation);
 			}
 		}
 	}
@@ -85,7 +82,10 @@ public class SelectCommande {
 		RelationInfo rel = Catalog.getCatalog().getRelationInfo(nomRelation);
 		PageId headerPage = rel.getHeaderPageId();
 		try {
-			FileManager.getInstance().getAllRecords(rel);
+			List<Record> listAllRecords = FileManager.getInstance().getAllRecords(rel);
+			for(Record record : listAllRecords) {
+
+			}
 		}
 		catch(IOException e) {
 			e.printStackTrace();
