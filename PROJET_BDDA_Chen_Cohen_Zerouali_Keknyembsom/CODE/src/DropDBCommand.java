@@ -40,13 +40,13 @@ public class DropDBCommand{
            System.out.println("\n*****************SUPPRESSION DES FICHIERS************************");
     		        if(item.isFile()) {
                   item.delete();
-    		        	System.out.format("Nom du fichier: ", item.getName());
+    		        	System.out.format("Nom du fichier: %s%n", item.getName());
     		        }
     		        else if(item.isDirectory())
     		        {
                   //appel recursif
     		        	deleteDB(item.getPath());
-    		        	System.out.format("Nom du répertoire: ", item.getName());
+    		        	System.out.format("Nom du répertoire: %s%n", item.getName());
 
     		      }
     		      //source : https://waytolearnx.com/2020/03/lister-le-contenu-dun-dossier-en-java.html
