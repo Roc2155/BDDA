@@ -35,10 +35,9 @@ public class FileManager {
 		return headerPageId;
 	}
 
-    public PageId addDataPage(RelationInfo relInfo) throws IOException {
+  public PageId addDataPage(RelationInfo relInfo) throws IOException {
 		DiskManager dm = DiskManager.getLeDiskManager();
 		BufferManager bm = BufferManager.getInstance();
-		//bm.init();
 
 		PageId pageId = dm.allocPage(); //Page contenant les records
 
@@ -50,7 +49,7 @@ public class FileManager {
 		System.out.println("GET(" + pageId.toString() + ") " + bm.getPage(pageId));
 
 		bm.FreePage(pageId, 1); //dirty = 1 car écriture de 8 octets 0 en fin de la page
-
+    System.out.println("**************************************" + relInfo.getHeaderPageId().toString() + "******************************");
 		addDataPageToHeaderPage(relInfo, pageId);
 
 		return pageId; //DataPage initialisée
@@ -58,9 +57,7 @@ public class FileManager {
 
     //Méthodeprivé permettant d'ajouter la data page au headerPage
     private void addDataPageToHeaderPage(RelationInfo relInfo, PageId pageId) throws IOException {
-		BufferManager bm = BufferManager.getInstance();
-		//bm.init();
-		//try {
+		  BufferManager bm = BufferManager.getInstance();
 			ByteBuffer buffHeaderPage = bm.getPage(relInfo.getHeaderPageId());
 			int nbDataPageIndexee = buffHeaderPage.getInt(0); //On récupère les 4 octets en début de la page
 			int enTete = 4; //4 octets qu'on réserve pour indiquer le nombre de pages indéxées
@@ -78,15 +75,10 @@ public class FileManager {
 			buffHeaderPage.putInt(0, nbDataPageIndexee); //Màj du nombre de DataPage dans le HeaderPage
 
 			bm.FreePage(relInfo.getHeaderPageId(), 1);
-		/*}
-		catch(IOException e) {
-			e.printStackTrace();
-		}*/
     }
 
     public PageId getFreeDataPageId(RelationInfo relInfo, int sizeRecord) throws FileNotFoundException, EmptyStackException, IOException {
     	BufferManager bm = BufferManager.getInstance();
-    	//bm.init();
     	PageId dataPageId = FileManager.getInstance().addDataPage(relInfo);
     	PageId headerPageId = relInfo.getHeaderPageId();
     	ByteBuffer bufferHeaderPage = bm.getPage(headerPageId); //contient toutes les informations sur les data page
@@ -112,9 +104,7 @@ public class FileManager {
 	}
 
     public RecordId writeRecordToDataPage(Record record, PageId dataPageId) throws IOException {
-    	//BufferManager.getInstance().init();
-		RecordId recordId = null;
-		//try {
+		  RecordId recordId = null;
 			ByteBuffer buffDataPage = BufferManager.getInstance().getPage(dataPageId);
 			int slotDirectory = DBParams.pageSize-4; //Donne la position de là où commence l'espace libre sur la data page
 			int posEspaceDispo = buffDataPage.getInt(slotDirectory); //Les derniers 4 octets du slot directory qui se trouve en fin de page donne la position de l'espace disponible
@@ -148,19 +138,16 @@ public class FileManager {
 			BufferManager.getInstance().FreePage(dataPageId, 1);
 			System.out.println("nSlots: "+nSlots);
 			recordId = new RecordId(dataPageId, nSlots);
-		/*} catch (IOException e) {
-			e.printStackTrace();
-		}*/
 
-		return recordId;
+		  return recordId;
     }
 
     public List<Record> getRecordsInDataPage(RelationInfo relInfo, PageId dataPageId) throws IOException {
     	//BufferManager.getInstance().init();
-    	 List<Record> listRecords = new ArrayList<Record>();
-    	 BufferManager.getInstance().init();
-    	 int posRecord = 0;
-    	 //try {
+  	 List<Record> listRecords = new ArrayList<Record>();
+  	 BufferManager.getInstance().init();
+  	 int posRecord = 0;
+
 			ByteBuffer buffDataPage = BufferManager.getInstance().getPage(dataPageId);
 			int slotDirectory = DBParams.pageSize-4;
 			int posNSlots = slotDirectory-4;
@@ -174,34 +161,25 @@ public class FileManager {
 				debRecordSlot+=8; //Next slot du record suivant
 			}
 			BufferManager.getInstance().FreePage(dataPageId, 1);
-		/*} catch (IOException e) {
-			e.printStackTrace();
-		}*/
-    	 return listRecords;
+      return listRecords;
     }
 
     public List<PageId> getAllDataPages(RelationInfo relInfo) throws IOException {
-    	//BufferManager.getInstance().init();
     	List<PageId> listePageId = new ArrayList<PageId>();
     	PageId headerPage = relInfo.getHeaderPageId();
     	int posDataPage = 4; //Position de la première data page dans le header page
-    	int infoDataPage = 12; //4 octets (fileIdx), 4 octets (pageIdx) et 4 octets (espace dispo dans la data page)
-    	//try {
-    		ByteBuffer buffHeaderPage = BufferManager.getInstance().getPage(headerPage);
-    		int nbPagesIndexee = buffHeaderPage.getInt(0); //Nombre de data page indexees sur 4 octets
-    		for(int i=0; i<nbPagesIndexee; i++) {
-    			int fileIdDataPage = buffHeaderPage.getInt(posDataPage);
-    			int pageIdDataPage = buffHeaderPage.getInt(posDataPage+4);
-    			PageId pageId = new PageId(fileIdDataPage, pageIdDataPage);
-    			listePageId.add(pageId);
-    			System.out.println("listeTaille : "+listePageId.size());
-    			posDataPage+=infoDataPage; //Next dataPage
-    		}
-    		BufferManager.getInstance().FreePage(headerPage, 1);
-    	/*}
-    	catch(IOException e) {
-    		e.printStackTrace();
-    	}*/
+  	  int infoDataPage = 12; //4 octets (fileIdx), 4 octets (pageIdx) et 4 octets (espace dispo dans la data page)
+  		ByteBuffer buffHeaderPage = BufferManager.getInstance().getPage(headerPage);
+  		int nbPagesIndexee = buffHeaderPage.getInt(0); //Nombre de data page indexees sur 4 octets
+  		for(int i=0; i<nbPagesIndexee; i++) {
+  			int fileIdDataPage = buffHeaderPage.getInt(posDataPage);
+  			int pageIdDataPage = buffHeaderPage.getInt(posDataPage+4);
+  			PageId pageId = new PageId(fileIdDataPage, pageIdDataPage);
+  			listePageId.add(pageId);
+  			System.out.println("listeTaille : "+listePageId.size());
+  			posDataPage+=infoDataPage; //Next dataPage
+  		}
+  		BufferManager.getInstance().FreePage(headerPage, 1);
     	return listePageId;
     }
 
@@ -210,7 +188,6 @@ public class FileManager {
 	}
 
     public List<Record> getAllRecords(RelationInfo relInfo) throws IOException {
-    	//BufferManager.getInstance().init();
     	List<Record> allRecords = new ArrayList<Record>();
     	List<PageId> allDataPages = getAllDataPages(relInfo);
     	List<Record> listeRecordInDataPage = new ArrayList<Record>();
