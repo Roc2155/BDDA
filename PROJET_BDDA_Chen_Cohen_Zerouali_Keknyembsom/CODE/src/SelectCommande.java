@@ -9,9 +9,11 @@ public class SelectCommande {
 	private String nomRelation;
 	private StringBuffer conditions;
 	private StringTokenizer recordTokens;
+	private ArrayList<String> listRecords;
 
 	public SelectCommande(String ch) {
 		resultatRecord = new ArrayList<Record>();
+		listRecords = new ArrayList<String>();
 
 		//Parsing de la chaine saisie par l'utilisateur
 		StringTokenizer tokenizer = new StringTokenizer(ch, " *");
@@ -37,8 +39,49 @@ public class SelectCommande {
 
 	public void recordsSelected() {
 		recordTokens = new StringTokenizer(conditions.toString(), " ");
+		String operation = "";
 		while(recordTokens.hasMoreElements()) {
-
+			String condition = recordTokens.nextToken();
+			if(condition.contains("==")) {
+				String[] recordsCondition = condition.split("==");
+				listRecords.add(recordsCondition[0]);
+				listRecords.add(recordsCondition[1]);
+				operation = "==";
+			}
+			else if(condition.contains(">=")) {
+				String[] recordsCondition = condition.split(">=");
+				listRecords.add(recordsCondition[0]);
+				listRecords.add(recordsCondition[1]);
+				operation = ">=";
+			}
+			else if(condition.contains("<=")) {
+				String[] recordsCondition = condition.split("<=");
+				listRecords.add(recordsCondition[0]);
+				listRecords.add(recordsCondition[1]);
+				operation = "<=";
+			}
+			else if(condition.contains("<")) {
+				String[] recordsCondition = condition.split("<");
+				listRecords.add(recordsCondition[0]);
+				listRecords.add(recordsCondition[1]);
+				operation = "<";
+			}
+			else if(condition.contains(">")) {
+				String[] recordsCondition = condition.split(">");
+				listRecords.add(recordsCondition[0]);
+				listRecords.add(recordsCondition[1]);
+				operation = ">";
+			}
+			else if(condition.contains("<>")) {
+				String[] recordsCondition = condition.split("<>");
+				listRecords.add(recordsCondition[0]);
+				listRecords.add(recordsCondition[1]);
+				operation = "<>";
+			}
 		}
+	}
+
+	public void RecordsSelected(ArrayList<String> list, String operation) {
+
 	}
 }
