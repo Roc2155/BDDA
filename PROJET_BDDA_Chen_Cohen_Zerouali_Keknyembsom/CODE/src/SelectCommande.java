@@ -40,45 +40,45 @@ public class SelectCommande {
 
 	}
 
-	public void recordsSelected() {
+	public void parseCritere() {
 		recordTokens = new StringTokenizer(conditions.toString(), " ");
 		String operation = "";
 		while(recordTokens.hasMoreElements()) {
-			String condition = recordTokens.nextToken();
+			String condition = recordTokens.nextToken(); //1 critère
 			if(condition.contains("==")) {
-				String[] recordsCondition = condition.split("==");
+				String[] nomColEtValeur = condition.split("==");
 				operation = "==";
-				recordsSelected(recordsCondition, operation);
+				recordsSelected(nomColEtValeur, operation);
 			}
 			else if(condition.contains(">=")) {
-				String[] recordsCondition = condition.split(">=");
+				String[] nomColEtValeur = condition.split(">=");
 				operation = ">=";
-				recordsSelected(recordsCondition, operation);
+				recordsSelected(nomColEtValeur, operation);
 			}
 			else if(condition.contains("<=")) {
-				String[] recordsCondition = condition.split("<=");
+				String[] nomColEtValeur = condition.split("<=");
 				operation = "<=";
-				recordsSelected(recordsCondition, operation);
+				recordsSelected(nomColEtValeur, operation);
 			}
 			else if(condition.contains("<")) {
-				String[] recordsCondition = condition.split("<");
+				String[] nomColEtValeur = condition.split("<");
 				operation = "<";
-				recordsSelected(recordsCondition, operation);
+				recordsSelected(nomColEtValeur, operation);
 			}
 			else if(condition.contains(">")) {
-				String[] recordsCondition = condition.split(">");
+				String[] nomColEtValeur = condition.split(">");
 				operation = ">";
-				recordsSelected(recordsCondition, operation);
+				recordsSelected(nomColEtValeur, operation);
 			}
 			else if(condition.contains("<>")) {
-				String[] recordsCondition = condition.split("<>");
+				String[] nomColEtValeur = condition.split("<>");
 				operation = "<>";
-				recordsSelected(recordsCondition, operation);
+				recordsSelected(nomColEtValeur, operation);
 			}
 		}
 	}
 
-	public void RecordsSelected(ArrayList<String> list, String operation) {
+	public void RecordsSelected(String[] nomColEtValeur, String operation) {
 		RelationInfo rel = Catalog.getCatalog().getRelationInfo(nomRelation);
 		PageId headerPage = rel.getHeaderPageId();
 		try {
