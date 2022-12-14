@@ -82,6 +82,13 @@ public class SelectCommande {
 	}
 
 	public void RecordsSelected(ArrayList<String> list, String operation) {
-
+		RelationInfo rel = Catalog.getCatalog().getRelationInfo(nomRelation);
+		PageId headerPage = rel.getHeaderPageId();
+		try {
+			FileManager.getInstance().getAllRecords(rel);
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
