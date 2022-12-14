@@ -8,13 +8,14 @@ public class DropDBCommand{
 	public DropDBCommand(String ch) {
 
 	}
-    public void Execute(){
-    	//suppression du dossier DB
-    	deleteDB(DBParams.DBPath);
-
-    	//remise � z�ro dans les classes de niveaux inférieurs
+    public void Execute() {
+    	//remise à zéro dans les classes de niveaux inférieurs
     	try {
     		BufferManager.getInstance().FlushAll();
+        Catalog.getCatalog().reset();
+    		DiskManager.getLeDiskManager().vide();
+        //suppression du dossier DB
+      	deleteDB(DBParams.DBPath);
     	}catch(IOException e ) {
     		e.printStackTrace();
     	}
