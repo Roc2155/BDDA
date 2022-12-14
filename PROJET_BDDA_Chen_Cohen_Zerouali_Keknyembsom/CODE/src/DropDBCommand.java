@@ -12,7 +12,7 @@ public class DropDBCommand{
     	//suppression du dossier DB
     	deleteDB(DBParams.DBPath);
 
-    	//remise � z�ro dans les classes inf�rieurs
+    	//remise � z�ro dans les classes de niveaux inférieurs
     	try {
     		BufferManager.getInstance().FlushAll();
     	}catch(IOException e ) {
