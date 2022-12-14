@@ -74,9 +74,49 @@ public class Record {
 
 	//Méthode qui prend en paramètre un buffer (alloué par l’appelant) et un entier pos correspondant à une position dans le buffer.
 	//Elle lit les valeurs du Record depuis le buffer à partir de pos.
-	 public void readFromBuffer(ByteBuffer buff,int pos) {
-
-	 }
+	public void readFromBuffer(ByteBuffer buffer, int position) {
+		buffer.position(position);
+		values.clear(); //Vider la liste de valeur au cas où si elle est pleine
+		List<ColInfo> listColInfo = relInfo.getListe();
+		int offsetDirectory = (relInfo.getNb()+1)*4;
+		String val = "";
+		int currentPos = position;
+		for(int i=0; i<listColInfo.size(); i++) {
+			String typeCol = listColInfo.get(i).getType();
+				if(typeCol.equals("REAL")) {
+					int posVal = buffer.getInt(currentPos); //Position de la valeur dans le buffer
+					float valeur = buffer.getFloat(posVal);
+					val=valeur+"";
+					values.add(val);
+					currentPos+=4; //position next valeur dans le directory
+				}
+				else if(typeCol.equals("INTEGER")) {
+					int posVal = buffer.getInt(currentPos);
+					int valeur = buffer.getInt(posVal);
+					System.out.println("posVal : " + posVal);
+					System.out.println("test :" + buffer.getInt(posVal));
+					System.out.println("valeur : "+valeur);
+					val=valeur+"";
+					values.add(val);
+					currentPos+=4; //position next valeur dans le directory
+					System.out.println("currentPos : " +currentPos);
+			 }
+			 else {
+				 StringBuffer sbMot = new StringBuffer();
+				 int posVal = buffer.getInt(currentPos);
+				 int sizeType = "VARCHAR(".length();
+				 int nbCarac = Integer.parseInt(typeCol.substring(sizeType, typeCol.length()-1));
+				 int posFinVal = posVal+nbCarac*2;
+				 System.out.println("posDebVal : " +posVal);
+				 System.out.println("posFinVal :" +posFinVal);
+				 for(int j=posVal; j<posFinVal; j+=2) {
+					 sbMot.append(buffer.getChar(j)); //Reconstitue la chaine de caractères
+				 }
+				 values.add(sbMot.toString());
+				 currentPos+=4; //Position next valeur dans le directory
+			 }
+			}
+	}
 
  	public int getWrittenSize() {
  		 return 0;
