@@ -15,6 +15,7 @@ public class InsertCommand {
 		tokenizer.nextToken(); //INSERT
 		tokenizer.nextToken(); //INTO
 		nomRelationInfo = tokenizer.nextToken();
+		tokenizer.nextToken(); //VALUES
 		//(val1,val2,...,valn)
 		StringTokenizer tokensValues = new StringTokenizer(tokenizer.nextToken(), ",)(");
 		System.out.println(tokensValues.countTokens());
