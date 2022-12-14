@@ -27,8 +27,7 @@ public class Main {
 
     private static void menu () {
     	System.out.println("DROPDB de la forme suivante:  DROPDB \n");
-    	System.out.println("CREATE TABLE de la forme suivance : CREATE TABLE NomRelation (NomCol_1:TypeCol_1,NomCol_2:TypeCol_2, ...\n"
-    			+ "NomCol_NbCol:TypeCol_NbCol) \n");
+    	System.out.println("CREATE TABLE de la forme suivance : CREATE TABLE NomRelation (NomCol_1:TypeCol_1,NomCol_2:TypeCol_2,...,NomCol_NbCol:TypeCol_NbCol) \n");
     	System.out.println("INSERT de la forme suivante : INSERT INTO nomRelation VALUES (val1,val2,...,valn) \n");
     	System.out.println("SELECT de la forme suivante :  SELECT * FROM nomRelation WHERE nomColonne1OPvaleur1\r\n"
     			+ " AND nomColonne2OPvaleur2\r\n"

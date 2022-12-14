@@ -1,10 +1,11 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.io.IOException;
 
 public class InsertCommand {
 	private String nomRelationInfo;
-	private List<String> valeurs;
+	private ArrayList<String> valeurs;
 
 	public InsertCommand(String ch) {
 		this.valeurs = new ArrayList<String>();
