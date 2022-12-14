@@ -199,30 +199,22 @@ public class SelectCommande {
 			}
 		}
 		else if(operation.equals(">=")) {
-			int val = Integer.parseInt(valeur);
-			int rVal = Integer.parseInt(recordVal);
-			if(rVal>=val) {
+			if(recordVal.compareTo(valeur)>=0) {
 				resultCritere = true;
 			}
 		}
 		else if(operation.equals("<=")) {
-			int val = Integer.parseInt(valeur);
-			int rVal = Integer.parseInt(recordVal);
-			if(rVal<=val) {
+			if(recordVal.compareTo(valeur)<=0) {
 				resultCritere = true;
 			}
 		}
 		else if(operation.equals(">")) {
-			int val = Integer.parseInt(valeur);
-			int rVal = Integer.parseInt(recordVal);
-			if(rVal>val) {
+			if(recordVal.compareTo(valeur)>0) {
 				resultCritere = true;
 			}
 		}
 		else if(operation.equals("<")) {
-			int val = Integer.parseInt(valeur);
-			int rVal = Integer.parseInt(recordVal);
-			if(rVal<val) {
+			if(recordVal.compareTo(valeur)<=0) {
 				resultCritere = true;
 			}
 		}
