@@ -78,7 +78,7 @@ public class SelectCommande {
 		}
 	}
 
-	public void RecordsSelected(String[] nomColEtValeur, String operation) {
+	public void recordsSelected(String[] nomColEtValeur, String operation) {
 		RelationInfo rel = Catalog.getCatalog().getRelationInfo(nomRelation);
 		PageId headerPage = rel.getHeaderPageId();
 		try {
